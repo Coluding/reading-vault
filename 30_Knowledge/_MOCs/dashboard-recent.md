@@ -11,7 +11,10 @@ Most recent items added to the vault, regardless of category. Refreshed by
 
 ## This week
 
-_Nothing yet — Worker has not received any webhooks._
+### Papers
+- [[papers/guo-2022-byol-explore]] — BYOL-style self-predictive loss as joint world-model + intrinsic reward; solves DM-HARD-8 without demos.
+- [[papers/khetarpal-2024-byol-ac]] — ODE theory for action-conditional BYOL representations; unifies BYOL-Π / BYOL-AC / BYOL-VAR.
+- [[papers/joseph-2026-physics-video-world-models]] — interpretability of physics in video encoders; identifies the Physics Emergence Zone and a circular population code for motion direction.
 
 ## Last week
 
