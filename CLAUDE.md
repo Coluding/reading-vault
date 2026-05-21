@@ -102,6 +102,17 @@ fabricate findings — if the vault doesn't know, say so.
 
 ## Part 4 — Reading discipline
 
+**At session start the `SessionStart` hook injects two things into your context automatically:**
+
+1. The result of `git pull` (fresh state from the GitHub remote).
+2. The output of `90_Meta/scripts/inbox-status.sh` — a one-paragraph summary of unprocessed raw inbox items.
+
+If the inbox-status line reports **non-zero unprocessed items**, **proactively surface this to the user as your first response** in the session — even before they ask anything. Format:
+
+> "You have N unprocessed item(s) in the inbox ({breakdown by day}). Want me to run `/process-inbox` to triage?"
+
+If the inbox is empty, do **not** mention it — silence is the right signal.
+
 **Always read at session start:**
 
 - `CLAUDE.md` (this file)

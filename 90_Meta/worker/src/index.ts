@@ -179,27 +179,35 @@ function decodeBase64Utf8(b64: string): string {
   return new TextDecoder("utf-8").decode(bytes);
 }
 
-async function appendBulletWithRetry(env: Env, path: string, bullet: string, header: string): Promise<void> {
-  const maxAttempts = 3;
+/**
+ * Read-modify-write with retry on SHA conflicts. GitHub's Contents API uses
+ * optimistic locking: if the file changes between our GET and our PUT, the
+ * PUT is rejected with 409/422. The `buildContent(current)` callback receives
+ * the freshly-read content (or null if the file doesn't exist) and returns
+ * the new content to PUT.
+ */
+async function ghPutWithRetry(
+  env: Env,
+  path: string,
+  buildContent: (current: string | null) => string,
+  message: string
+): Promise<void> {
+  const maxAttempts = 4;
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     const existing = await ghGet(env, path);
-    let newContent: string;
-    let sha: string | null;
-    if (existing) {
-      const current = decodeBase64Utf8(existing.content);
-      newContent = current.endsWith("\n") ? current + bullet + "\n" : current + "\n" + bullet + "\n";
-      sha = existing.sha;
-    } else {
-      newContent = header + "\n\n" + bullet + "\n";
-      sha = null;
-    }
+    const current = existing ? decodeBase64Utf8(existing.content) : null;
+    const sha = existing ? existing.sha : null;
+    const newContent = buildContent(current);
     try {
-      await ghPut(env, path, newContent, `ingest: ${bullet.slice(0, 80)}`, sha);
+      await ghPut(env, path, newContent, message, sha);
       return;
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       // 409 / 422 typically mean stale sha — retry with fresh GET
       if (attempt < maxAttempts && /409|422|sha/i.test(msg)) {
+        console.log(
+          `ghPutWithRetry: SHA conflict on ${path}, attempt ${attempt}/${maxAttempts}, retrying`
+        );
         await new Promise((r) => setTimeout(r, 200 * attempt));
         continue;
       }
@@ -208,20 +216,34 @@ async function appendBulletWithRetry(env: Env, path: string, bullet: string, hea
   }
 }
 
+async function appendBulletWithRetry(
+  env: Env,
+  path: string,
+  bullet: string,
+  header: string
+): Promise<void> {
+  await ghPutWithRetry(
+    env,
+    path,
+    (current) => {
+      if (current) {
+        return current.endsWith("\n")
+          ? current + bullet + "\n"
+          : current + "\n" + bullet + "\n";
+      }
+      return header + "\n\n" + bullet + "\n";
+    },
+    `ingest: ${bullet.slice(0, 80)}`
+  );
+}
+
 async function writeSidecarJson(env: Env, p: ReadwiseDocumentPayload): Promise<void> {
   const path = `00_Inbox/raw/payloads/${p.id}.json`;
-  const existing = await ghGet(env, path);
-  // Make a copy without the webhook secret (which rotates per webhook config)
+  // Strip the per-webhook secret — it rotates and has no value in git history.
   const scrubbed = { ...p };
   delete (scrubbed as Partial<ReadwiseDocumentPayload>).secret;
   const content = JSON.stringify(scrubbed, null, 2) + "\n";
-  await ghPut(
-    env,
-    path,
-    content,
-    `ingest: payload ${p.id}`,
-    existing ? existing.sha : null
-  );
+  await ghPutWithRetry(env, path, () => content, `ingest: payload ${p.id}`);
 }
 
 async function handleDocument(env: Env, p: ReadwiseDocumentPayload): Promise<Response> {
@@ -251,6 +273,13 @@ async function handleHighlight(_env: Env, p: ReadwiseHighlightPayload): Promise<
   });
 }
 
+function pingResponse(note: string): Response {
+  return new Response(
+    JSON.stringify({ ok: true, ping: note }),
+    { status: 200, headers: { "Content-Type": "application/json" } }
+  );
+}
+
 export default {
   async fetch(req: Request, env: Env): Promise<Response> {
     if (req.method === "GET") {
@@ -260,14 +289,34 @@ export default {
       return new Response("Method not allowed", { status: 405 });
     }
 
-    let payload: ReadwisePayload;
-    try {
-      payload = (await req.json()) as ReadwisePayload;
-    } catch {
-      return new Response("Invalid JSON", { status: 400 });
+    // Read as text first so we can distinguish "empty body" from "malformed JSON".
+    // Readwise's "Test Endpoint" check sends a POST with an empty (or near-empty)
+    // body before any secret has been generated — we must 200 those to pass the test.
+    const bodyText = await req.text();
+    if (!bodyText || bodyText.trim().length === 0) {
+      console.log("ping: empty body");
+      return pingResponse("empty body");
     }
 
-    if (!payload.secret || payload.secret !== env.READWISE_WEBHOOK_SECRET) {
+    let payload: ReadwisePayload;
+    try {
+      payload = JSON.parse(bodyText) as ReadwisePayload;
+    } catch {
+      console.log(`ping: non-JSON body (first 200 chars): ${bodyText.slice(0, 200)}`);
+      return pingResponse("non-JSON body acknowledged");
+    }
+
+    // Payload with no secret field — also a test ping. Don't 403; that would
+    // fail Readwise's connectivity check after the webhook is saved.
+    if (!payload.secret) {
+      console.log("ping: payload has no secret field");
+      return pingResponse("no secret field");
+    }
+
+    // Payload has a secret but it doesn't match — likely a misconfigured client
+    // or an attacker. 403 here is the right signal.
+    if (payload.secret !== env.READWISE_WEBHOOK_SECRET) {
+      console.warn("rejected: secret mismatch");
       return new Response("Forbidden", { status: 403 });
     }
 

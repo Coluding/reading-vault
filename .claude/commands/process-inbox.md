@@ -10,6 +10,8 @@ appropriate category inbox, then create deep notes in `30_Knowledge/`.
 
 ## Procedure
 
+0. **Pull latest state.** Run `git pull --quiet --rebase --autostash` to fetch any Worker-written commits that landed since session start. The `SessionStart` hook already pulled once on open, but if the user has saved more papers to Readwise during this session, those commits are only on GitHub until this step runs. If `git pull` fails (offline, conflict), report it and stop — don't triage stale state silently.
+
 1. **Find unprocessed raw files.** List `00_Inbox/raw/*.md` (excluding the `processed/` subdir). Filter out any date that already exists in `00_Inbox/raw/processed/`.
 
 2. **For each unprocessed bullet:**
