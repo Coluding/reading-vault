@@ -1,0 +1,16 @@
+# Worker build artifacts
+90_Meta/worker/node_modules/
+90_Meta/worker/.wrangler/
+90_Meta/worker/dist/
+90_Meta/worker/.dev.vars
+
+# Editor cruft
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*~
+
+# Obsidian (if you ever open the vault in Obsidian)
+.obsidian/workspace*
+.obsidian/cache

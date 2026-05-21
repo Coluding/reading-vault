@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && git pull --quiet --rebase --autostash 2>&1 | head -20 || echo 'git pull skipped'"
+          }
+        ]
+      }
+    ]
+  }
+}
