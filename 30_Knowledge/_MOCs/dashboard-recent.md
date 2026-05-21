@@ -15,6 +15,7 @@ Most recent items added to the vault, regardless of category. Refreshed by
 - [[papers/guo-2022-byol-explore]] — BYOL-style self-predictive loss as joint world-model + intrinsic reward; solves DM-HARD-8 without demos.
 - [[papers/khetarpal-2024-byol-ac]] — ODE theory for action-conditional BYOL representations; unifies BYOL-Π / BYOL-AC / BYOL-VAR.
 - [[papers/joseph-2026-physics-video-world-models]] — interpretability of physics in video encoders; identifies the Physics Emergence Zone and a circular population code for motion direction.
+- [[papers/higuera-2026-visuo-tactile-world-models]] — multi-task world model fusing vision + tactile; claims tactile grounding fixes physics-violation failure modes and yields up to 35% higher zero-shot real-robot success.
 
 ## Last week
 

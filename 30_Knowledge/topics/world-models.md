@@ -13,8 +13,11 @@ Learned models of environment dynamics — pixel-, latent-, or token-level predi
 
 ## Recent
 - [[papers/joseph-2026-physics-video-world-models]] — interpretability study showing modern video world models encode physics in a distributed, non-factorised manner with a sharp "Physics Emergence Zone" mid-network.
+- [[papers/higuera-2026-visuo-tactile-world-models]] — multi-task world model that fuses vision with tactile sensing; claims tactile grounding fixes physics-violation failure modes of vision-only models and yields 33% better object permanence in rollouts.
 
 ## Related topics
 - [[topics/self-predictive-learning]]
 - [[topics/video-world-models]]
 - [[topics/interpretability]]
+- [[topics/robotics]]
+- [[topics/tactile-sensing]]
