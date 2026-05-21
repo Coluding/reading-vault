@@ -5,13 +5,13 @@
   "author": "Zhaohan Daniel Guo, Shantanu Thakoor, Miruna Pîslar, Bernardo Avila Pires, Florent Altché, Corentin Tallec, Alaa Saade, Daniele Calandriello, Jean-Bastien Grill, Yunhao Tang, Michal Valko, Rémi Munos, Mohammad Gheshlaghi Azar, Bilal Piot",
   "source": "Readwise web highlighter",
   "category": "article",
-  "location": "new",
+  "location": "archive",
   "tags": {},
   "site_name": "arXiv.org",
   "word_count": 214,
   "reading_time": "1 min",
   "created_at": "2026-05-21T15:35:06.289994+00:00",
-  "updated_at": "2026-05-21T15:35:10.484577+00:00",
+  "updated_at": "2026-05-21T15:42:59.401223+00:00",
   "published_date": "2022-06-16",
   "summary": "BYOL-Explore is a new method that helps computers explore complex visual environments by learning and predicting in a simple way. It works well in hard tasks where previous methods needed human help. It also beats humans in tough Atari games while being easier to use.",
   "image_url": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png",
@@ -23,6 +23,6 @@
   "first_opened_at": "2026-05-21T15:35:06.138000+00:00",
   "last_opened_at": "2026-05-21T15:35:06.138000+00:00",
   "saved_at": "2026-05-21T15:35:06.138000+00:00",
-  "last_moved_at": "2026-05-21T15:35:06.138000+00:00",
-  "event_type": "reader.non_feed_document.created"
+  "last_moved_at": "2026-05-21T15:42:59.220000+00:00",
+  "event_type": "reader.document.archived"
 }
