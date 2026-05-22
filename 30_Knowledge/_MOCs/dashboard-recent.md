@@ -1,6 +1,6 @@
 ---
 type: moc
-last_updated: 2026-05-21
+last_updated: 2026-05-22
 status: living
 ---
 
@@ -12,6 +12,9 @@ Most recent items added to the vault, regardless of category. Refreshed by
 ## This week
 
 ### Papers
+- [[papers/wang-2025-hierarchical-reasoning-model]] — foundational HRM (Sapient Intelligence): two recurrent modules at slow/fast timescales, DEQ-style 1-step gradient; 27M params, 1000 examples solve Sudoku-Extreme / Maze-Hard / ARC-AGI without pretraining or CoT.
+- [[papers/baek-2026-gram]] — extends HRM into probabilistic multi-trajectory recursion via stochastic latent transitions + amortized variational inference; introduces width-based inference-time scaling; 99.7% N-Queens 8×8 vs HRM 78.7%.
+- [[papers/yang-2026-replaid-continuous-diffusion]] — closes the AR-vs-continuous-diffusion compute gap from 64× to 20× via protocol alignment; SOTA 22.1 PPL on OpenWebText among continuous DLMs; shows ELBO-variance noise schedule = linear cross-entropy.
 - [[papers/guo-2022-byol-explore]] — BYOL-style self-predictive loss as joint world-model + intrinsic reward; solves DM-HARD-8 without demos.
 - [[papers/khetarpal-2024-byol-ac]] — ODE theory for action-conditional BYOL representations; unifies BYOL-Π / BYOL-AC / BYOL-VAR.
 - [[papers/joseph-2026-physics-video-world-models]] — interpretability of physics in video encoders; identifies the Physics Emergence Zone and a circular population code for motion direction.
@@ -19,6 +22,9 @@ Most recent items added to the vault, regardless of category. Refreshed by
 - [[papers/tong-2026-beyond-language-modeling]] — controlled from-scratch native-multimodal pretraining (Transfusion + MoE); finds a scaling asymmetry (vision more data-hungry than language) and world-modeling capabilities emerge from generic training.
 - [[papers/huang-2026-semantic-tube-prediction]] — generalises JEPA to language via the "Geodesic Hypothesis"; claims 16× LLM data-efficiency over Chinchilla on NL-RX-SYNTH.
 - [[papers/maes-2026-leworldmodel]] — first stable end-to-end JEPA from pixels; two-term loss (prediction MSE + SIGReg) replaces EMA / stop-gradient / multi-term-loss orthodoxy; plans up to 48× faster than DINO-WM.
+
+### Blogs
+- [[blogs/biswas-rlm-deep-dive]] — practitioner deep-dive on Recursive Language Models: pass-by-reference agentic scaffold (LLM operates inside a Python REPL with `llm_query` for subagents); 60M-character Lex Fridman transcript in 4 minutes for $0.20.
 
 ## Last week
 
