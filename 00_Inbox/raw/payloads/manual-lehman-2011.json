@@ -1,0 +1,23 @@
+{
+  "id": "manual:lehman-2011",
+  "_manual_ingest": true,
+  "_ingest_source": "citation chase from papers/jiang-2022-rethinking-exploration",
+  "_ingest_date": "2026-05-22",
+  "title": "Abandoning Objectives: Evolution Through the Search for Novelty Alone",
+  "author": "Joel Lehman, Kenneth O. Stanley",
+  "category": "article",
+  "site_name": "Evolutionary Computation (MIT Press)",
+  "url": "https://doi.org/10.1162/evco_a_00025",
+  "source_url": "https://doi.org/10.1162/evco_a_00025",
+  "venue": "Evolutionary Computation 19(2):189-223, 2011",
+  "doi": "10.1162/evco_a_00025",
+  "published_date": "2011-06-01",
+  "summary": "Argues that searching for behavioral novelty (rather than optimizing an objective) can outperform conventional objective-based evolutionary methods on tasks like maze navigation and biped walking. Foundational novelty-search paper. Abstract elided by publisher; available verbatim only via DOI access.",
+  "quotes_from_metadata": [
+    "objective functions themselves may actively misdirect search toward dead ends",
+    "some problems are best solved by methods that ignore the objective"
+  ],
+  "abstract_verbatim": null,
+  "_abstract_status": "elided by publisher; only paraphrased summary + two direct quotes available via Crossref/Semantic Scholar",
+  "notes": "Cited by Jiang/Rocktäschel/Grefenstette 2022 as foundational for 'taming open-endedness'. 643+ citations as of 2026."
+}

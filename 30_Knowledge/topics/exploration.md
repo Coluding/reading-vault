@@ -11,6 +11,12 @@ Two distinct senses both treated under "exploration" in this vault: (1) the clas
 ## Foundational position
 
 - [[papers/jiang-2022-rethinking-exploration]] — Jiang, Rocktäschel, Grefenstette (Meta AI / UCL / Cohere, late 2022): position paper unifying exploration across SL and RL via a two-level outer/inner-loop framework; argues open-ended exploration is necessary for *increasingly general intelligence* (IGI). The conceptual map for the rest of the topic.
+- [[papers/clune-2019-ai-gas]] — proposes "AI-generating algorithms" with three pillars including automatic generation of learning environments; pre-LLM articulation of the "data/environment is the bottleneck" thesis.
+- [[papers/schmidhuber-2013-powerplay]] — algorithmic framework for self-invention of training problems via search over (new-task, solver-modification) pairs ordered by conditional computational complexity.
+
+## Outer-loop / self-curriculation
+
+- [[papers/lehman-2011-novelty-search]] — abandons explicit objectives in favour of selecting for behavioural novelty alone; foundational empirical demonstration that "objectives can mislead."
 
 ## Inner-loop / intrinsic-reward methods
 

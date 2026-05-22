@@ -1,0 +1,16 @@
+{
+  "id": "manual:clune-2019",
+  "_manual_ingest": true,
+  "_ingest_source": "citation chase from papers/jiang-2022-rethinking-exploration",
+  "_ingest_date": "2026-05-22",
+  "title": "AI-GAs: AI-generating algorithms, an alternate paradigm for producing general artificial intelligence",
+  "author": "Jeff Clune",
+  "category": "article",
+  "site_name": "arXiv.org",
+  "url": "https://arxiv.org/abs/1905.10985",
+  "source_url": "https://arxiv.org/abs/1905.10985",
+  "published_date": "2019-05-27",
+  "summary": "Clune proposes an alternative paradigm (AI-GAs) for producing general AI through automatically learning three pillars: meta-learning architectures, meta-learning the learning algorithms themselves, and generating effective learning environments. Contrasted with the dominant 'manual AI approach'.",
+  "abstract_verbatim": "Perhaps the most ambitious scientific quest in human history is the creation of general artificial intelligence, which roughly means AI that is as smart or smarter than humans. The dominant approach in the machine learning community is to attempt to discover each of the pieces required for intelligence, with the implicit assumption that some future group will complete the Herculean task of figuring out how to combine all of those pieces into a complex thinking machine. I call this the 'manual AI approach'. This paper describes another exciting path that ultimately may be more successful at producing general AI.",
+  "notes": "Cited by Jiang/Rocktäschel/Grefenstette 2022 as a foundational proposal for open-ended self-improving systems."
+}

@@ -13,6 +13,9 @@ Most recent items added to the vault, regardless of category. Refreshed by
 ## This week
 
 ### Papers
+- [[papers/clune-2019-ai-gas]] — *(manual citation chase from Jiang 2022)* "AI-Generating Algorithms" with three pillars: meta-learning architectures, meta-learning learning algorithms, generating environments. Pre-LLM articulation of the "data/environment is the bottleneck" thesis.
+- [[papers/schmidhuber-2013-powerplay]] — *(manual citation chase from Jiang 2022)* algorithmic framework for self-invention of training problems via Kolmogorov-complexity-ordered search over (new-task, solver-modification) pairs.
+- [[papers/lehman-2011-novelty-search]] — *(manual citation chase from Jiang 2022)* foundational novelty-search paper: abandoning explicit objectives and selecting purely for behavioural novelty can outperform objective-based search on deceptive problems.
 - [[papers/jiang-2022-rethinking-exploration]] — position paper (Meta/UCL/Cohere, late 2022): exploration is the bottleneck for general intelligence; proposes the outer/inner-loop generalized-exploration framework unifying SL and RL.
 - [[papers/pao-huang-2026-flux-matching]] — generalizes score matching to the full Fokker–Planck-consistent family of generative vector fields; turns the vector field into a design choice; faster mixing + interpretable fields + structured dynamics at 2–4× DSM training cost.
 - [[papers/wang-2025-hierarchical-reasoning-model]] — foundational HRM (Sapient Intelligence): two recurrent modules at slow/fast timescales, DEQ-style 1-step gradient; 27M params, 1000 examples solve Sudoku-Extreme / Maze-Hard / ARC-AGI without pretraining or CoT.
