@@ -1,6 +1,6 @@
 ---
 type: moc
-last_updated: 2026-05-22
+last_updated: 2026-05-25
 status: living
 
 ---
@@ -30,6 +30,11 @@ Most recent items added to the vault, regardless of category. Refreshed by
 - [[papers/maes-2026-leworldmodel]] — first stable end-to-end JEPA from pixels; two-term loss (prediction MSE + SIGReg) replaces EMA / stop-gradient / multi-term-loss orthodoxy; plans up to 48× faster than DINO-WM.
 
 ### Blogs
+- [[blogs/bansal-kv-cache]] — *(GPU/inference cluster, 05-25)* KV-cache management as the binding constraint in LLM serving; six-era evolution (contiguous → PagedAttention → heterogeneous → distributed → unified) mirroring OS memory management. Llama-3-70B at 8K × 32 reqs = 81.9 GB of KV cache alone.
+- [[blogs/bierling-coalesced-matmul]] — *(05-25, author = vault owner)* naive vs coalesced CUDA matmul; a one-line thread-index remap → coalesced global loads → ~10.5× (1433 ms → 136 ms on an A100). Stays memory-bound; tiling next.
+- [[blogs/bierling-prefix-scan]] — *(05-25, author = vault owner)* parallel prefix scan: shared-memory Hillis–Steele ($O(\log N)$ depth) + divide-and-conquer recursion over block sums for arbitrary sizes.
+- [[blogs/pytorch-torch-amp]] — *(05-25)* `torch.amp` reference: `autocast` (per-op dtype) + `GradScaler` (fp16 loss scaling); wrap forward only, cast back to fp32 on exit, bf16-pretrained models overflow in fp16.
+- [[blogs/aiwithmaha-cuda-concepts]] — *(05-25)* beginner glossary of 20 CUDA concepts (kernel/grid/block/thread/warp, global vs shared memory, occupancy, streams, tensor cores, cuDNN). Shared-vocabulary entry point for the GPU cluster.
 - [[blogs/biswas-rlm-deep-dive]] — practitioner deep-dive on Recursive Language Models: pass-by-reference agentic scaffold (LLM operates inside a Python REPL with `llm_query` for subagents); 60M-character Lex Fridman transcript in 4 minutes for $0.20.
 
 ## Last week
