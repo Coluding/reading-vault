@@ -42,6 +42,7 @@ SessionStart hook → git pull
 - `30_Knowledge/_MOCs/` — dashboards (recent, deep-read queue, orphans, …).
 - `40_Archive/` — long-term storage for items no longer active.
 - `50_Decisions/` — design decisions about the vault itself.
+- `60_Visualizations/` — generated HTML dashboards, slide decks, and React SPAs from `/visualize`. Single-file, work offline.
 - `90_Meta/worker/` — Cloudflare Worker source.
 - `90_Meta/scripts/` — utility scripts (snapshot, audit-topics, etc.).
 
@@ -67,8 +68,9 @@ See `90_Meta/worker/README.md` for full Worker deployment. Quick version:
 ## Usage
 
 - Open Claude in the vault root: `cd /home/lukas/projects/reading-vault && claude`
-- The `SessionStart` hook will `git pull` automatically.
+- The `SessionStart` hook will `git pull` automatically and surface any unprocessed inbox count.
 - Run `/process-inbox` to triage what's accumulated.
+- Run `/visualize` for a global HTML dashboard, or `/visualize {topic}` for a topic-focused view. Pass `--as=presentation` for slides or `--as=react` for a React SPA. Output lands in `60_Visualizations/` as a single self-contained HTML file.
 - Ask "what should I read next?" or "what do we know about flow matching?" for dashboard-style queries.
 
 See `CLAUDE.md` for the full operating spec.

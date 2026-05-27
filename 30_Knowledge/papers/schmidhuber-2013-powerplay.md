@@ -11,7 +11,7 @@ priority: high
 read_state: skimmed
 relevance: ""
 added: 2026-05-22
-last_updated: 2026-05-22
+last_updated: 2026-05-25
 ---
 
 # POWERPLAY
@@ -88,6 +88,22 @@ A new task $T_i$ is valid if it does *either*:
 > "On realistic but general architectures such as PCs and RNNs, at least once the upper storage size limit of $s$ is reached, PowerPlay will start 'compressing' previous solutions, making $s$ generalize in the sense that the same relatively short piece of code helps to solve different tasks."
 
 This is the route to *generalisation*: with a fixed-capacity solver, the only way to add new skills is to compress old ones, which forces the discovery of shared sub-routines.
+
+## Worked example [analyst's view]
+
+*Illustrative construction, not from the paper (the 2013 paper is theoretical). Domain: the solver $s$ is a small library of subroutines; a task $T$ is an input→output spec it must satisfy.*
+
+Start with $s_0$ = empty solver, empty history. The search enumerates programs $p$ in $Kt$ order (short + fast-to-verify first).
+
+- **Epoch 1 — invent `increment`.** $p_1$ outputs task $T_1$ = "given $n$, return $n+1$", a solver `inc(n)=n+1`, and the proof. Forward: $s_0$ can't increment ✅. Backward: no prior tasks ✅. Accept → $s_1=\{\texttt{inc}\}$. *Why not "multiply" first? Multiply is also unsolvable by $s_0$, but its build-and-verify program is longer/slower → higher $Kt$. Increment is the lowest-$Kt$ unsolvable task — "simplest still unsolvable."*
+- **Epoch 2 — invent `add`, reusing frozen `inc`.** $p_2$ outputs $T_2$ = "add $a,b$" and `add(a,b)` = call `inc` $b$ times. Because `inc` is already stored and callable, $p_2$ is *short* (OOPS "conditional on experience"). Forward: $s_1$ can't add arbitrary $b$ ✅. Backward: `inc` untouched, $T_1$ still solved ✅ (guaranteed by construction in the append-only/prefix variant). Accept → $s_2=\{\texttt{inc},\texttt{add}\}$.
+- **Epoch 3 — invent `multiply`, reusing `add`.** Same pattern: `mul(a,b)` = call `add` $a$ times. Forward ✅, backward ✅. The curriculum **self-orders** `inc → add → mul` — nobody scripted it; each step is just the cheapest new skill *given what's already known*.
+
+**A rejected candidate** (makes the conditions vivid): some $p_\text{bad}$ invents `multiply` but its $q$ *rewrites* `inc` into a buggy $n+2$. Forward ✅, but **backward ❌** — $q$ no longer solves $T_1$ (and `add`, which calls `inc`, breaks too). Rejected. This is exactly the "learn a new trick, silently break an old skill" failure that strict monotonicity forbids. (Symmetrically, a task $s_2$ can already solve fails the *forward* check.)
+
+**A wow-effect epoch:** with the solver near a capacity limit, the search instead finds $p_\text{wow}$ that invents *no new task* but refactors `inc`/`add`/`mul` into one shared counting primitive, proving all of $T_1,T_2,T_3$ still pass using *less total code*. Forward = solving prior tasks more cheaply (the wow-effect); backward ✅. Accept — the solver shrank while keeping every skill, and the shared primitive is the reusable structure that makes the *next* new skill cheap to invent.
+
+Across every epoch the search returns one program $p$ that invents $T$, proposes $q$, and proves forward + backward — always the lowest-$Kt$ such $p$ first, which is what produces the smooth `inc → add → mul → compress` trajectory rather than a random jumble.
 
 ## POWERPLAY Variant II — cost-based acceptance (Section 7.1)
 
@@ -199,3 +215,85 @@ Four reasons, after the full read:
 - Ingested manually via citation chase, not Readwise. Cite as Schmidhuber 2013, *Frontiers in Psychology* 4:313 (also arXiv:1112.5309).
 - Content extracted from the ar5iv HTML render of the full paper. Specific algorithm numbers (Algorithm 2, Algorithm 4.1, Algorithm 4.3, Algorithm 7.1) are as named in the ar5iv render; cross-check against the PDF if citing precise algorithm numbers in a paper.
 - The experimental analyses are in companion papers (referenced as [52, 53] in this paper, identified as Srivastava-Steunebrink-Schmidhuber work). Those have not been fetched as part of this triage; specific empirical claims about POWERPLAY behavior require fetching those separately.
+
+## Algo 4.1 Details
+
+What the search actually has to do
+
+  First, be clear on the search space. POWERPLAY isn't searching over tasks and over solver-modifications separately — it searches over programs $p$, where a single $p$ does three things when run: (1) emits a task description $T$,
+   (2) emits a modified solver $q$, (3) runs the correctness proof (q solves $T_1..T_i$, $s_{i-1}$ fails $T_i$). A program either validates (produces an accepted triple) or it doesn't.
+
+  Two hard facts make naïve enumeration impossible:
+
+  - You can't bound runtime in advance. Some $p$ halt fast, some halt slow, some loop forever. You can't just "run each candidate to completion" — the halting problem says you'll hang on the first non-terminating one.
+  - There are infinitely many candidates. You need to make progress on short/promising ones without starving them to test longer ones.
+
+  Universal (Levin) search is the classic answer to exactly this, and OOPS is Schmidhuber's incremental version of it. That's what Algorithm 4.1 plugs in.
+
+  The core: Levin search by time allocation
+
+  Assign every program a prior $P(p) = 2^{-L(p)}$ ($L(p)$ = length in bits). Because programs are encoded as a prefix (self-delimiting) code, the Kraft inequality gives
+
+  $$\sum_p P(p) = \sum_p 2^{-L(p)} \le 1.$$
+
+  That $\le 1$ is the load-bearing fact. Now run a phase with total budget $t_{lim}$: give program $p$ a slice of
+
+  $$\text{steps}(p) = \lfloor P(p)\cdot t_{lim}\rfloor = \lfloor 2^{-L(p)}, t_{lim}\rfloor$$
+
+  steps, and run all programs interleaved ("dovetailed") up to their slice. Total work in the phase is $\sum_p \text{steps}(p) \le t_{lim}\sum_p P(p) \le t_{lim}$ — a whole phase costs $O(t_{lim})$ no matter how many candidates 
+  exist. That's the entire trick of why slicing proportional to the prior is safe: the budget can't be overrun.
+
+  A program that needs more steps than its current slice is simply suspended (not failed) — it resumes with a bigger slice in the next phase.
+
+  The doubling schedule
+
+  If a phase finishes with no validating $p$ — i.e. the candidates carrying meaningful probability mass were all run to their slice and none succeeded — double $t_{lim}$ and rerun. This is iterative deepening, but on time budget
+  instead of search depth.
+
+  The cost bookkeeping is the reason it's free to not know the right budget ahead of time. Phase $k$ costs $\le 2^k t_0$, and the phases form a geometric series:
+
+  $$t_0 + 2t_0 + 4t_0 + \dots + 2^K t_0 < 2\cdot 2^K t_0,$$
+
+  so all the failed phases together cost less than the final successful phase. You pay at most a factor of 2 for searching blind on the budget.
+
+  Put the two together and you get Levin's bound: if some program $p^*$ would validate in $t(p^*)$ steps, the search finds a solution in time
+
+  $$O!\big(t(p^*)/P(p^*)\big) = O!\big(2^{L(p^*)}, t(p^*)\big).$$
+
+  The quantity being implicitly minimized is Levin complexity
+
+  $$Kt(p) = L(p) + \log_2 t(p),$$
+
+  a length-plus-log-runtime score. So the first program to validate is the one minimizing $Kt$ — short and fast to run-and-verify, jointly. That is the precise content of "explored in order of computational complexity (time &
+  space)."
+
+  What OOPS adds over plain Levin search: the "given prior experience" part
+
+  Plain Levin search restarts from scratch each problem. OOPS (Optimal Ordered Problem Solver) makes it incremental, which is why the note says ordering is by conditional complexity "given the stored experience so far." Two
+  additions:
+
+  1. Reuse of frozen prior solutions. Programs found in earlier epochs are kept on a stack and are callable by new candidate programs. So a new $p$ that invokes an existing subroutine is short — its $L(p)$ is small because the
+  heavy lifting is already encoded and just referenced. The effective prior becomes $P(p \mid \text{experience})$: programs that build on what's already known are cheap, so they're tried first. This is how "conditional
+  computational complexity given prior experience" enters — the bias isn't a fixed $2^{-L(p)}$, it's $2^{-L(p,\mid,\text{stored code})}$.
+  2. Bias-optimal split + protection of past solutions. OOPS splits its time budget (canonically half on extending the current best prefix, half on fresh search from scratch) and never overwrites already-found solutions. That
+  protection is what keeps the incremental search from regressing — it dovetails with POWERPLAY's monotonicity requirement.
+
+  Why this yields "the simplest still unsolvable problem"
+
+  Now the title phrase falls out mechanically:
+
+  - Acceptance condition (3) requires $s_{i-1}$ to fail $T_i$ — so any validated task is by definition currently unsolvable.
+  - The search returns the first validating triple in $Kt$-order.
+  - Therefore $T_i$ is the lowest-conditional-Levin-complexity task that the current solver can't yet do but some short, fast modification can solve-and-prove.
+
+  "Simplest still unsolvable" = "minimal $Kt(p \mid s_{i-1}, \text{history})$ among triples whose task $s_{i-1}$ fails." It's not "simplest" in some intuitive task-difficulty sense — it's simplest in the
+  invent-it-and-validate-it-cheaply sense, conditioned on everything already learned.
+
+  The link back to the validation-cost section
+
+  One connection the note leaves implicit: the runtime $t(p)$ in $Kt(p)$ includes the correctness-demonstration cost (re-checking $T_1..T_{i-1}$). So if validation cost grew linearly with repertoire size, the $\log t(p)$ term
+  would creep up every epoch and progressively penalize every candidate — the search would grind down as the agent learns more. That's exactly why the component-tracking and prefix-code mechanisms (the next section of the note)
+  matter: they hold the validation term roughly constant, which keeps the complexity ordering — and the per-epoch search cost — from degrading as the repertoire grows. The two sections are coupled: the search-ordering argument
+  only stays practical because the validation-cost argument keeps $t(p)$ bounded.
+
+

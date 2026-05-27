@@ -115,7 +115,7 @@ Section 2.1 builds the deception argument. The shape:
 - In domains where the goal is far from the starting region (mazes, biped walking, open-ended evolution), this is endemic, not exceptional.
 - Removing the explicit objective and selecting on novelty *side-steps* the gradient-direction problem: novelty pressure can't be deceived by the same misleading local structure because it doesn't reference the goal at all.
 
-The conceptual move is closer to *random* search than to optimisation — but with the crucial addition of the archive, which prevents re-exploration and produces directed coverage of behaviour space.
+==The conceptual move is closer to *random* search than to optimisation — but with the crucial addition of the archive, which prevents re-exploration and produces directed coverage of behaviour space.==  --> the archive is the important part here!!
 
 ## When novelty search works vs. fails (Section 9)
 

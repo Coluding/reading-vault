@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Reading Vault — Dashboard 2026-05-22</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .ink { color: #e5e7eb; }
+  .panel { background: #0f172a; border: 1px solid #1e293b; }
+  .panel-hover:hover { border-color: #334155; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 9999px; font-size: 10px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  .badge-high { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+  .badge-medium { background: rgba(245, 158, 11, 0.12); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.25); }
+  .badge-low { background: rgba(148, 163, 184, 0.12); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.25); }
+  .badge-queued { background: rgba(59, 130, 246, 0.12); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.25); }
+  .badge-skimmed { background: rgba(168, 85, 247, 0.12); color: #c4b5fd; border: 1px solid rgba(168, 85, 247, 0.25); }
+  .badge-deep { background: rgba(34, 197, 94, 0.12); color: #86efac; border: 1px solid rgba(34, 197, 94, 0.25); }
+  .badge-topic { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
+  .analyst-tag { background: rgba(99, 102, 241, 0.12); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.25); padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+  .paper-border-high { border-left: 3px solid #fb7185; }
+  .paper-border-medium { border-left: 3px solid #fbbf24; }
+  .paper-border-low { border-left: 3px solid #94a3b8; }
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] .chevron { transform: rotate(180deg); }
+  .chevron { transition: transform 0.15s; display: inline-block; }
+  .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: #0f172a; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+</style>
+</head>
+<body class="bg-slate-950 ink min-h-screen">
+<script type="application/json" id="vault-data">{
+  "generated_at": "2026-05-22T11:03:03Z",
+  "scope": {
+    "type": "global",
+    "name": "all"
+  },
+  "stats": {
+    "papers": 10,
+    "blogs": 1,
+    "threads": 0,
+    "topics": 5,
+    "authors_indexed": 11,
+    "authors_total_distinct": 83,
+    "queued": 10,
+    "deep_read": 0
+  },
+  "papers": [
+    {
+      "slug": "baek-2026-gram",
+      "title": "Generative Recursive Reasoning",
+      "authors": [
+        "Junyeob Baek",
+        "Mingyu Jo",
+        "Minsu Kim",
+        "Mengye Ren",
+        "Yoshua Bengio",
+        "Sungjin Ahn"
+      ],
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2605.19376",
+      "rw_id": "01ks7dp5jgc81wgnqyr9vq5hjc",
+      "topics": [
+        "recursive-reasoning",
+        "latent-reasoning",
+        "variational-inference",
+        "inference-time-scaling",
+        "generative-models"
+      ],
+      "priority": "high",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-22",
+      "tldr": "GRAM extends deterministic Recursive Reasoning Models (HRM, TRM, Looped Transformers) into *probabilistic* multi-trajectory recursion. At each recursion step a Gaussian \"stochastic guidance\" perturbation $\\epsilon_t \\sim \\mathcal{N}(\\mu_\\theta, \\sigma_\\theta^2 I)$ is added to the deterministic update $u_t$, turning the latent trajectory into a sample from a learned distribution. Trained with **amortized variational inference** (ELBO over latent trajectories), GRAM enables (i) parallel-trajectory inference-time scaling, (ii) coverage of multi-solution tasks where HRM collapses, and (iii) an *unconditional* generative interpretation $p_\\theta(x)$ via empty conditioning. Headline numbers: 99.7% accuracy on N-Queens 8\u00d78 (vs HRM 78.7%, TRM 66.8%), 97.0% Sudoku-Extreme with N=20 parallel samples at 16 iterations (vs TRM 90.5% at 320 iterations).",
+      "key_claims": [
+        "GRAM \"consistently outperforms prior recursive models across all benchmarks.\"",
+        "**Parallel scaling wins big**: \"GRAM with $N=20$ samples at 16 iterations outperforms all deterministic baselines at 320 iterations, including TRM (97.0% vs 90.5%), despite comparable computational budget.\"",
+        "**Sudoku-from-empty**: 99.05% validity with 10.9M params + 16 supervision steps; D3PM baseline uses 55.1M params + 1000 denoising steps."
+      ],
+      "word_count": 1758
+    },
+    {
+      "slug": "guo-2022-byol-explore",
+      "title": "BYOL-Explore: Exploration by Bootstrapped Prediction",
+      "authors": [
+        "Zhaohan Daniel Guo",
+        "Shantanu Thakoor",
+        "Miruna P\u00eeslar",
+        "Bernardo Avila Pires",
+        "Florent Altch\u00e9",
+        "Corentin Tallec",
+        "Alaa Saade",
+        "Daniele Calandriello",
+        "Jean-Bastien Grill",
+        "Yunhao Tang",
+        "Michal Valko",
+        "R\u00e9mi Munos",
+        "Mohammad Gheshlaghi Azar",
+        "Bilal Piot"
+      ],
+      "year": 2022,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2206.08332",
+      "rw_id": "01ks5jt54te29qhtdk1ew77dpb",
+      "topics": [
+        "exploration",
+        "self-predictive-learning",
+        "world-models"
+      ],
+      "priority": "medium",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-21",
+      "tldr": "A curiosity-driven exploration agent in which a single BYOL-style self-predictive loss in latent space jointly trains the world representation, the world-dynamics model, and an exploration policy; the prediction error doubles as the intrinsic reward. Authors claim it solves DM-HARD-8 without human demonstrations and achieves superhuman performance on the ten hardest Atari exploration games.",
+      "key_claims": [],
+      "word_count": 474
+    },
+    {
+      "slug": "higuera-2026-visuo-tactile-world-models",
+      "title": "Visuo-Tactile World Models",
+      "authors": [
+        "Carolina Higuera",
+        "Sergio Arnaud",
+        "Byron Boots",
+        "Mustafa Mukadam",
+        "Francois Robert Hogan",
+        "Franziska Meier"
+      ],
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2602.06001",
+      "rw_id": "01ks5mgnj18t4dc3s5f44n1fqr",
+      "topics": [
+        "world-models",
+        "robotics",
+        "tactile-sensing",
+        "multimodal-representation"
+      ],
+      "priority": "high",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-21",
+      "tldr": "A multi-task world model (VT-WM) that fuses vision with tactile sensing to model the physics of contact for robot manipulation. The authors claim that grounding the latent dynamics in touch fixes vision-only failure modes \u2014 objects disappearing, teleporting, or violating physics under occlusion \u2014 yielding 33% better object permanence and 29% better motion-law compliance in autoregressive rollouts, and up to 35% higher zero-shot real-robot success on contact-rich tasks.",
+      "key_claims": [],
+      "word_count": 840
+    },
+    {
+      "slug": "huang-2026-semantic-tube-prediction",
+      "title": "Semantic Tube Prediction: Beating LLM Data Efficiency with JEPA",
+      "authors": [
+        "Hai Huang",
+        "Yann LeCun",
+        "Randall Balestriero"
+      ],
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2602.22617",
+      "rw_id": "01ks5mhmyyhm9g84hrbwt8yb5c",
+      "topics": [
+        "jepa",
+        "llm-pretraining",
+        "data-efficiency",
+        "scaling-laws",
+        "geometric-deep-learning"
+      ],
+      "priority": "high",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-21",
+      "tldr": "Introduces the **Geodesic Hypothesis** \u2014 that token sequences trace geodesics on a smooth semantic manifold and are therefore *locally linear* \u2014 and operationalises it as **Semantic Tube Prediction (STP)**: a JEPA-style regulariser that confines hidden-state trajectories to a tubular neighbourhood of the geodesic. Authors claim STP \"generalizes JEPA to language without requiring explicit multi-view augmentations\" and matches baseline accuracy with 16\u00d7 less training data on NL-RX-SYNTH \u2014 explicitly framed as violating the *data term* of Chinchilla scaling laws.",
+      "key_claims": [
+        "**16\u00d7 less training data at matched accuracy on NL-RX-SYNTH** \u2014 \"STP allows LLMs to match baseline accuracy with 16\u00d7 less training data on the NL-RX-SYNTH dataset, directly violating the data term of Chinchilla-style scaling laws.\"",
+        "Authors frame this as evidence that \"principled geometric priors can surpass brute-force scaling.\"",
+        "Per-task breakdowns, sample-efficiency curves, and ablations are _not addressed by the source_."
+      ],
+      "word_count": 969
+    },
+    {
+      "slug": "joseph-2026-physics-video-world-models",
+      "title": "Interpreting Physics in Video World Models",
+      "authors": [
+        "Sonia Joseph",
+        "Quentin Garrido",
+        "Randall Balestriero",
+        "Matthew Kowal",
+        "Thomas Fel",
+        "Shahab Bakhtiari",
+        "Blake Richards",
+        "Mike Rabbat"
+      ],
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2602.07050",
+      "rw_id": "01ks5kaw3q3rjgtqj2njvhfbxz",
+      "topics": [
+        "interpretability",
+        "video-world-models",
+        "world-models"
+      ],
+      "priority": "high",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-21",
+      "tldr": "Probes large video encoders for physical variables and finds a sharp intermediate-depth \"Physics Emergence Zone\" where physics becomes decodable. Direction is encoded as a high-dimensional population code with circular geometry, not as a factorised scalar \u2014 so modern video world models do not internally implement a classical physics engine, but their distributed representation is still sufficient for accurate physical prediction.",
+      "key_claims": [],
+      "word_count": 610
+    },
+    {
+      "slug": "khetarpal-2024-byol-ac",
+      "title": "A Unifying Framework for Action-Conditional Self-Predictive Reinforcement Learning",
+      "authors": [
+        "Khimya Khetarpal",
+        "Zhaohan Daniel Guo",
+        "Bernardo Avila Pires",
+        "Yunhao Tang",
+        "Clare Lyle",
+        "Mark Rowland",
+        "Nicolas Heess",
+        "Diana Borsa",
+        "Arthur Guez",
+        "Will Dabney"
+      ],
+      "year": 2024,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2406.02035",
+      "rw_id": "01ks5eqrn0a0s77qfqb2t0zmsv",
+      "topics": [
+        "self-predictive-learning",
+        "representation-learning-rl"
+      ],
+      "priority": "medium",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-21",
+      "tldr": "Extends the BYOL-\u03a0 ODE theory of self-predictive representation learning to the action-conditional case (BYOL-AC), derives a third objective (BYOL-VAR) from the variance relation between BYOL-\u03a0 and BYOL-AC, and unifies all three under both a model-based (low-rank dynamics approximation) and model-free (value/Q/advantage) lens. Empirically BYOL-AC wins across linear and Deep RL settings.",
+      "key_claims": [],
+      "word_count": 494
+    },
+    {
+      "slug": "maes-2026-leworldmodel",
+      "title": "LeWorldModel: Stable End-to-End Joint-Embedding Predictive Architecture from Pixels",
+      "authors": [
+        "Lucas Maes",
+        "Quentin Le Lidec",
+        "Damien Scieur",
+        "Yann LeCun",
+        "Randall Balestriero"
+      ],
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2603.19312",
+      "rw_id": "01ks5nwzpjcrjxth0p8ss96tfs",
+      "topics": [
+        "jepa",
+        "world-models",
+        "self-supervised-learning",
+        "latent-dynamics",
+        "model-predictive-control",
+        "representation-collapse"
+      ],
+      "priority": "high",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-21",
+      "tldr": "LeWM is the first JEPA that trains *stably* end-to-end from raw pixels with just two loss terms: a next-embedding prediction MSE and **SIGReg**, a regulariser that enforces isotropic Gaussian latent embeddings to prevent collapse. No stop-gradient, no EMA, no pretrained encoder, no reconstruction loss. At 15M parameters trainable on a single GPU in a few hours, LeWM plans up to 48\u00d7 faster than DINO-WM while remaining competitive on PushT / OGBench-Cube / Reacher / Two-Room, and latent probes show physical quantities (agent location, block position, block angle) are recoverable. The headline structural simplification is going from PLDM's seven-term VICReg-derived loss to a two-term loss with a single effective hyperparameter \u03bb.",
+      "key_claims": [
+        "**PushT**: LeWM (pixels-only) beats PLDM by \"18% higher success rate\" and *also* beats DINO-WM with proprioceptive input.",
+        "**Reacher**: LeWM \"consistently outperforms PLDM and DINO-WM.\"",
+        "**OGBench-Cube**: \"DINO-WM slightly outperforms LeWM, possibly due to the higher visual complexity and the 3D nature of the environment, which makes encoder training more challenging.\""
+      ],
+      "word_count": 2208
+    },
+    {
+      "slug": "tong-2026-beyond-language-modeling",
+      "title": "Beyond Language Modeling: An Exploration of Multimodal Pretraining",
+      "authors": [
+        "Shengbang Tong",
+        "David Fan",
+        "John Nguyen",
+        "Ellis Brown",
+        "Gaoyue Zhou",
+        "Shengyi Qian",
+        "Boyang Zheng",
+        "Th\u00e9ophane Vallaeys",
+        "Junlin Han",
+        "Rob Fergus",
+        "Naila Murray",
+        "Marjan Ghazvininejad",
+        "Mike Lewis",
+        "Nicolas Ballas",
+        "Amir Bar",
+        "Michael Rabbat",
+        "Jakob Verbeek",
+        "Luke Zettlemoyer",
+        "Koustuv Sinha",
+        "Yann LeCun",
+        "Saining Xie"
+      ],
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2603.03276",
+      "rw_id": "01ks5mjw1pv57jart7tvrccrb0",
+      "topics": [
+        "multimodal-pretraining",
+        "mixture-of-experts",
+        "scaling-laws",
+        "vision-language",
+        "world-models"
+      ],
+      "priority": "high",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-21",
+      "tldr": "A large-scale, from-scratch, controlled study of native multimodal pretraining (text + image + video + action-conditioned video) using the Transfusion framework (next-token-prediction for language, diffusion for vision). Four reported takeaways: (i) the Representation Autoencoder (RAE) is the right unified visual representation; (ii) vision and language data are complementary; (iii) unified multimodal pretraining produces emergent world-modeling capabilities; (iv) Mixture-of-Experts is the architectural fix for the *scaling asymmetry* the paper uncovers \u2014 vision is significantly more data-hungry than language, and MoE lets you give language enough capacity while feeding vision enough data.",
+      "key_claims": [
+        "**(i) RAE is the right unified visual encoder** \u2014 \"provides an optimal unified visual representation by excelling at both visual understanding and generation.\"",
+        "**(ii) Vision + language complementarity** \u2014 \"visual and language data are complementary and yield synergy for downstream capabilities.\"",
+        "**(iii) Emergent world modeling** \u2014 \"unified multimodal pretraining leads naturally to world modeling, with capabilities emerging from general training.\""
+      ],
+      "word_count": 1076
+    },
+    {
+      "slug": "wang-2025-hierarchical-reasoning-model",
+      "title": "Hierarchical Reasoning Model",
+      "authors": [
+        "Guan Wang",
+        "Jin Li",
+        "Yuhao Sun",
+        "Xing Chen",
+        "Changling Liu",
+        "Yue Wu",
+        "Meng Lu",
+        "Sen Song",
+        "Yasin Abbasi Yadkori"
+      ],
+      "year": 2025,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2506.21734",
+      "rw_id": "01ks7dra0pb5jsf6fx6jr11e9g",
+      "topics": [
+        "recursive-reasoning",
+        "latent-reasoning",
+        "brain-inspired",
+        "equilibrium-models",
+        "adaptive-computation"
+      ],
+      "priority": "high",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-22",
+      "tldr": "A brain-inspired recurrent architecture (Sapient Intelligence) with two interlocked modules \u2014 a *slow* high-level $f_H$ and a *fast* low-level $f_L$ \u2014 that performs $N \\times T$ steps of internal latent computation per forward pass. With only ~27M params and ~1000 training examples per task, HRM solves Sudoku-Extreme, Maze-Hard, and ARC-AGI puzzles end-to-end without pretraining or CoT data, beating much larger LLMs that use chain-of-thought. The key tricks: (i) \"hierarchical convergence\" where $f_L$ converges within a cycle and $f_H$ then resets its target, preventing the premature-convergence pathology of plain RNNs; (ii) a 1-step DEQ-style approximate gradient that needs $O(1)$ memory; (iii) deep supervision across segments; (iv) adaptive computational time (Q-learning halting).",
+      "key_claims": [
+        "**Sudoku-Extreme**: HRM achieves \"nearly perfect performance\" with 1000 training examples. Direct-prediction baselines and CoT LLMs \"fail entirely.\" Direct-pred with full 3.8M Sudoku-Extreme reaches only 16.9% accuracy.",
+        "**Maze-Hard**: similar story \u2014 HRM solves it; CoT baselines \"almost never manage to solve the tasks.\" 175M-param Transformer on 1M examples (Lehnert et al.) \"marginal success ... below 20% using the pass@64 evaluation metric.\"",
+        "**ARC-AGI**: HRM outperforms \"much larger models with significantly longer context windows.\""
+      ],
+      "word_count": 1828
+    },
+    {
+      "slug": "yang-2026-replaid-continuous-diffusion",
+      "title": "Continuous Diffusion Scales Competitively with Discrete Diffusion for Language",
+      "authors": [
+        "Zhihan Yang",
+        "Wei Guo",
+        "Subham Sekhar Sahoo",
+        "Yongxin Chen",
+        "Morteza Mardani",
+        "John Thickstun",
+        "Shuibai Zhang",
+        "Arash Vahdat"
+      ],
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2605.18530",
+      "rw_id": "01ks7ds32gk7a714w9my9bw261",
+      "topics": [
+        "diffusion-language-models",
+        "continuous-diffusion",
+        "scaling-laws",
+        "generative-models"
+      ],
+      "priority": "high",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-22",
+      "tldr": "Revisits the Plaid likelihood-based continuous diffusion language model and argues its prior \"continuous diffusion doesn't scale\" reputation was a *protocol* artifact, not an intrinsic limitation. By aligning Plaid's architecture with modern discrete-DLM practice (LayerNorm, AdaLN-Zero, bidirectional attention, GELU-tanh, RoPE) the authors get **RePlaid**, which closes the AR-vs-continuous-DLM compute gap from a frequently-cited 64\u00d7 down to **20\u00d7** (with self-conditioning), reaching state-of-the-art 22.1 PPL on OpenWebText *among continuous DLMs*, and beating MDLM in the over-trained regime. Two theoretical results: (i) minimising ELBO variance via the noise-schedule yields a linear cross-entropy schedule \"for free\"; (ii) ELBO-based embedding optimisation creates structured latent geometry that drives most of the likelihood gain.",
+      "key_claims": [
+        "AR vs **MDLM** compute gap: **14\u00d7**.",
+        "AR vs **RePlaid (with self-conditioning)** compute gap: **20\u00d7**.",
+        "AR vs RePlaid (without self-conditioning): 27\u00d7."
+      ],
+      "word_count": 1665
+    }
+  ],
+  "blogs": [
+    {
+      "slug": "biswas-rlm-deep-dive",
+      "title": "Recursive Language Models: An All-in-One Deep Dive",
+      "author": "Avishek Biswas",
+      "url": "https://towardsdatascience.com/recursive-language-models-one-example-deep-dive-that-explains-everything/",
+      "rw_id": "01ks7cjhh1ed1jdb6zyap0fm6y",
+      "topics": [
+        "agentic-harnesses",
+        "long-context",
+        "recursive-reasoning",
+        "llm-scaffolds",
+        "codeact"
+      ],
+      "priority": "medium",
+      "read_state": "queued",
+      "added": "2026-05-22",
+      "tldr": "A 6.5K-word walkthrough of **Recursive Language Models (RLMs)** \u2014 an agentic harness pattern in which the LLM operates inside a persistent Python REPL with an `llm_query(...)` function for spawning subagents. The user's prompt is exposed as a `context` variable, not loaded into the LLM's context window directly; subagent outputs land as REPL variables, not LLM messages. The core idea Biswas highlights: **pass-by-reference instead of pass-by-value** across agent boundaries. He contrasts RLMs with ReAct / CodeAct / vanilla subagents through a toy \"count R's in 50 fruit names\" example, walks through a 60M-character Lex Fridman transcript trajectory that cost $0.20, and shares the full system prompt from his open-source `fast-rlm` implementation.",
+      "word_count": 1413
+    }
+  ],
+  "threads": [],
+  "topics": [
+    {
+      "slug": "jepa",
+      "title": "Jepa",
+      "description": "The line of self-supervised methods, introduced by [LeCun, 2022], that learn to predict the embeddings of future or masked observations in a compact latent space rather than reconstructing pixels. The central engineering challenge is preventing representation collapse \u2014 different JEPA recipes choose between EMA + stop-gradient (I-JEPA / V-JEPA), foundation-model encoders frozen for stability (DINO-WM), multi-term VICReg-style losses end-to-end (PLDM), or anti-collapse distributional regularisers (LeWM's SIGReg).",
+      "paper_slugs": [
+        "huang-2026-semantic-tube-prediction",
+        "maes-2026-leworldmodel"
+      ],
+      "blog_slugs": [],
+      "related_topics": [
+        "world-models",
+        "self-predictive-learning",
+        "representation-collapse",
+        "scaling-laws"
+      ]
+    },
+    {
+      "slug": "recursive-reasoning",
+      "title": "Recursive Reasoning",
+      "description": "Architectures and scaffolds that scale reasoning depth through *repeated computation*, in contrast to scaling reasoning through *longer generation* (CoT) or *bigger models*. Two distinct senses of \"recursive\" coexist in the literature: (1) **latent recursion** \u2014 recurrent neural architectures that refine a hidden state across many steps (HRM, GRAM, TRM, Looped/Universal Transformers); (2) **symbolic recursion** \u2014 agentic harnesses where an LLM spawns subagents inside a programmable environment (RLMs). Same word, different mechanism.",
+      "paper_slugs": [
+        "wang-2025-hierarchical-reasoning-model",
+        "baek-2026-gram"
+      ],
+      "blog_slugs": [
+        "biswas-rlm-deep-dive"
+      ],
+      "related_topics": [
+        "latent-reasoning",
+        "brain-inspired",
+        "agentic-harnesses",
+        "inference-time-scaling",
+        "equilibrium-models"
+      ]
+    },
+    {
+      "slug": "scaling-laws",
+      "title": "Scaling Laws",
+      "description": "Empirical power-law characterizations of how model loss / capability scales with compute, data, and parameters. Three papers in vault deal with scaling-law deltas: one revising the data term of Chinchilla, one revising the AR-vs-continuous-diffusion compute gap, one identifying a vision-vs-language asymmetry inside unified multimodal training. Together they suggest the headline scaling-law numbers from any era are *protocol-bound*, not laws of nature.",
+      "paper_slugs": [
+        "tong-2026-beyond-language-modeling",
+        "huang-2026-semantic-tube-prediction",
+        "yang-2026-replaid-continuous-diffusion"
+      ],
+      "blog_slugs": [],
+      "related_topics": [
+        "jepa",
+        "multimodal-pretraining",
+        "diffusion-language-models",
+        "data-efficiency"
+      ]
+    },
+    {
+      "slug": "self-predictive-learning",
+      "title": "Self Predictive Learning",
+      "description": "Latent-bootstrapping objectives for representation learning, especially in RL. The agent predicts future latent representations of its own encoder (BYOL-style) instead of pixels or rewards, so the loss has no auxiliary terms.",
+      "paper_slugs": [
+        "guo-2022-byol-explore",
+        "khetarpal-2024-byol-ac"
+      ],
+      "blog_slugs": [],
+      "related_topics": [
+        "representation-learning-rl",
+        "world-models"
+      ]
+    },
+    {
+      "slug": "world-models",
+      "title": "World Models",
+      "description": "Learned models of environment dynamics \u2014 pixel-, latent-, or token-level predictors used for planning, exploration, or as substrates for downstream reasoning.",
+      "paper_slugs": [
+        "guo-2022-byol-explore",
+        "joseph-2026-physics-video-world-models",
+        "higuera-2026-visuo-tactile-world-models",
+        "maes-2026-leworldmodel",
+        "tong-2026-beyond-language-modeling"
+      ],
+      "blog_slugs": [],
+      "related_topics": [
+        "jepa",
+        "self-predictive-learning",
+        "video-world-models",
+        "interpretability",
+        "robotics",
+        "tactile-sensing",
+        "multimodal-pretraining"
+      ]
+    }
+  ],
+  "authors": [
+    {
+      "slug": "avishek-biswas",
+      "name": "Avishek Biswas",
+      "paper_slugs": [],
+      "blog_slugs": [
+        "biswas-rlm-deep-dive"
+      ]
+    },
+    {
+      "slug": "carolina-higuera",
+      "name": "Carolina Higuera",
+      "paper_slugs": [
+        "higuera-2026-visuo-tactile-world-models"
+      ],
+      "blog_slugs": []
+    },
+    {
+      "slug": "guan-wang",
+      "name": "Guan Wang",
+      "paper_slugs": [
+        "wang-2025-hierarchical-reasoning-model"
+      ],
+      "blog_slugs": []
+    },
+    {
+      "slug": "hai-huang",
+      "name": "Hai Huang",
+      "paper_slugs": [
+        "huang-2026-semantic-tube-prediction"
+      ],
+      "blog_slugs": []
+    },
+    {
+      "slug": "junyeob-baek",
+      "name": "Junyeob Baek",
+      "paper_slugs": [
+        "baek-2026-gram"
+      ],
+      "blog_slugs": []
+    },
+    {
+      "slug": "khimya-khetarpal",
+      "name": "Khimya Khetarpal",
+      "paper_slugs": [
+        "khetarpal-2024-byol-ac"
+      ],
+      "blog_slugs": []
+    },
+    {
+      "slug": "lucas-maes",
+      "name": "Lucas Maes",
+      "paper_slugs": [
+        "maes-2026-leworldmodel"
+      ],
+      "blog_slugs": []
+    },
+    {
+      "slug": "shengbang-tong",
+      "name": "Shengbang Tong",
+      "paper_slugs": [
+        "tong-2026-beyond-language-modeling"
+      ],
+      "blog_slugs": []
+    },
+    {
+      "slug": "sonia-joseph",
+      "name": "Sonia Joseph",
+      "paper_slugs": [
+        "joseph-2026-physics-video-world-models"
+      ],
+      "blog_slugs": []
+    },
+    {
+      "slug": "zhaohan-daniel-guo",
+      "name": "Zhaohan Daniel Guo",
+      "paper_slugs": [
+        "guo-2022-byol-explore",
+        "khetarpal-2024-byol-ac"
+      ],
+      "blog_slugs": []
+    },
+    {
+      "slug": "zhihan-yang",
+      "name": "Zhihan Yang",
+      "paper_slugs": [
+        "yang-2026-replaid-continuous-diffusion"
+      ],
+      "blog_slugs": []
+    }
+  ],
+  "top_authors": [
+    [
+      "Yann LeCun",
+      3
+    ],
+    [
+      "Randall Balestriero",
+      3
+    ],
+    [
+      "Zhaohan Daniel Guo",
+      2
+    ],
+    [
+      "Bernardo Avila Pires",
+      2
+    ],
+    [
+      "Yunhao Tang",
+      2
+    ],
+    [
+      "Junyeob Baek",
+      1
+    ],
+    [
+      "Mingyu Jo",
+      1
+    ],
+    [
+      "Minsu Kim",
+      1
+    ],
+    [
+      "Mengye Ren",
+      1
+    ],
+    [
+      "Yoshua Bengio",
+      1
+    ],
+    [
+      "Sungjin Ahn",
+      1
+    ],
+    [
+      "Shantanu Thakoor",
+      1
+    ],
+    [
+      "Miruna P\u00eeslar",
+      1
+    ],
+    [
+      "Florent Altch\u00e9",
+      1
+    ],
+    [
+      "Corentin Tallec",
+      1
+    ]
+  ],
+  "reading_queue": [
+    {
+      "slug": "higuera-2026-visuo-tactile-world-models",
+      "title": "Visuo-Tactile World Models",
+      "authors": [
+        "Carolina Higuera",
+        "Sergio Arnaud",
+        "Byron Boots",
+        "Mustafa Mukadam",
+        "Francois Robert Hogan",
+        "Franziska Meier"
+      ],
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2602.06001",
+      "rw_id": "01ks5mgnj18t4dc3s5f44n1fqr",
+      "topics": [
+        "world-models",
+        "robotics",
+        "tactile-sensing",
+        "multimodal-representation"
+      ],
+      "priority": "high",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-21",
+      "tldr": "A multi-task world model (VT-WM) that fuses vision with tactile sensing to model the physics of contact for robot manipulation. The authors claim that grounding the latent dynamics in touch fixes vision-only failure modes \u2014 objects disappearing, teleporting, or violating physics under occlusion \u2014 yielding 33% better object permanence and 29% better motion-law compliance in autoregressive rollouts, and up to 35% higher zero-shot real-robot success on contact-rich tasks.",
+      "key_claims": [],
+      "word_count": 840
+    },
+    {
+      "slug": "huang-2026-semantic-tube-prediction",
+      "title": "Semantic Tube Prediction: Beating LLM Data Efficiency with JEPA",
+      "authors": [
+        "Hai Huang",
+        "Yann LeCun",
+        "Randall Balestriero"
+      ],
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2602.22617",
+      "rw_id": "01ks5mhmyyhm9g84hrbwt8yb5c",
+      "topics": [
+        "jepa",
+        "llm-pretraining",
+        "data-efficiency",
+        "scaling-laws",
+        "geometric-deep-learning"
+      ],
+      "priority": "high",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-21",
+      "tldr": "Introduces the **Geodesic Hypothesis** \u2014 that token sequences trace geodesics on a smooth semantic manifold and are therefore *locally linear* \u2014 and operationalises it as **Semantic Tube Prediction (STP)**: a JEPA-style regulariser that confines hidden-state trajectories to a tubular neighbourhood of the geodesic. Authors claim STP \"generalizes JEPA to language without requiring explicit multi-view augmentations\" and matches baseline accuracy with 16\u00d7 less training data on NL-RX-SYNTH \u2014 explicitly framed as violating the *data term* of Chinchilla scaling laws.",
+      "key_claims": [
+        "**16\u00d7 less training data at matched accuracy on NL-RX-SYNTH** \u2014 \"STP allows LLMs to match baseline accuracy with 16\u00d7 less training data on the NL-RX-SYNTH dataset, directly violating the data term of Chinchilla-style scaling laws.\"",
+        "Authors frame this as evidence that \"principled geometric priors can surpass brute-force scaling.\"",
+        "Per-task breakdowns, sample-efficiency curves, and ablations are _not addressed by the source_."
+      ],
+      "word_count": 969
+    },
+    {
+      "slug": "joseph-2026-physics-video-world-models",
+      "title": "Interpreting Physics in Video World Models",
+      "authors": [
+        "Sonia Joseph",
+        "Quentin Garrido",
+        "Randall Balestriero",
+        "Matthew Kowal",
+        "Thomas Fel",
+        "Shahab Bakhtiari",
+        "Blake Richards",
+        "Mike Rabbat"
+      ],
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2602.07050",
+      "rw_id": "01ks5kaw3q3rjgtqj2njvhfbxz",
+      "topics": [
+        "interpretability",
+        "video-world-models",
+        "world-models"
+      ],
+      "priority": "high",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-21",
+      "tldr": "Probes large video encoders for physical variables and finds a sharp intermediate-depth \"Physics Emergence Zone\" where physics becomes decodable. Direction is encoded as a high-dimensional population code with circular geometry, not as a factorised scalar \u2014 so modern video world models do not internally implement a classical physics engine, but their distributed representation is still sufficient for accurate physical prediction.",
+      "key_claims": [],
+      "word_count": 610
+    },
+    {
+      "slug": "maes-2026-leworldmodel",
+      "title": "LeWorldModel: Stable End-to-End Joint-Embedding Predictive Architecture from Pixels",
+      "authors": [
+        "Lucas Maes",
+        "Quentin Le Lidec",
+        "Damien Scieur",
+        "Yann LeCun",
+        "Randall Balestriero"
+      ],
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2603.19312",
+      "rw_id": "01ks5nwzpjcrjxth0p8ss96tfs",
+      "topics": [
+        "jepa",
+        "world-models",
+        "self-supervised-learning",
+        "latent-dynamics",
+        "model-predictive-control",
+        "representation-collapse"
+      ],
+      "priority": "high",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-21",
+      "tldr": "LeWM is the first JEPA that trains *stably* end-to-end from raw pixels with just two loss terms: a next-embedding prediction MSE and **SIGReg**, a regulariser that enforces isotropic Gaussian latent embeddings to prevent collapse. No stop-gradient, no EMA, no pretrained encoder, no reconstruction loss. At 15M parameters trainable on a single GPU in a few hours, LeWM plans up to 48\u00d7 faster than DINO-WM while remaining competitive on PushT / OGBench-Cube / Reacher / Two-Room, and latent probes show physical quantities (agent location, block position, block angle) are recoverable. The headline structural simplification is going from PLDM's seven-term VICReg-derived loss to a two-term loss with a single effective hyperparameter \u03bb.",
+      "key_claims": [
+        "**PushT**: LeWM (pixels-only) beats PLDM by \"18% higher success rate\" and *also* beats DINO-WM with proprioceptive input.",
+        "**Reacher**: LeWM \"consistently outperforms PLDM and DINO-WM.\"",
+        "**OGBench-Cube**: \"DINO-WM slightly outperforms LeWM, possibly due to the higher visual complexity and the 3D nature of the environment, which makes encoder training more challenging.\""
+      ],
+      "word_count": 2208
+    },
+    {
+      "slug": "tong-2026-beyond-language-modeling",
+      "title": "Beyond Language Modeling: An Exploration of Multimodal Pretraining",
+      "authors": [
+        "Shengbang Tong",
+        "David Fan",
+        "John Nguyen",
+        "Ellis Brown",
+        "Gaoyue Zhou",
+        "Shengyi Qian",
+        "Boyang Zheng",
+        "Th\u00e9ophane Vallaeys",
+        "Junlin Han",
+        "Rob Fergus",
+        "Naila Murray",
+        "Marjan Ghazvininejad",
+        "Mike Lewis",
+        "Nicolas Ballas",
+        "Amir Bar",
+        "Michael Rabbat",
+        "Jakob Verbeek",
+        "Luke Zettlemoyer",
+        "Koustuv Sinha",
+        "Yann LeCun",
+        "Saining Xie"
+      ],
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2603.03276",
+      "rw_id": "01ks5mjw1pv57jart7tvrccrb0",
+      "topics": [
+        "multimodal-pretraining",
+        "mixture-of-experts",
+        "scaling-laws",
+        "vision-language",
+        "world-models"
+      ],
+      "priority": "high",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-21",
+      "tldr": "A large-scale, from-scratch, controlled study of native multimodal pretraining (text + image + video + action-conditioned video) using the Transfusion framework (next-token-prediction for language, diffusion for vision). Four reported takeaways: (i) the Representation Autoencoder (RAE) is the right unified visual representation; (ii) vision and language data are complementary; (iii) unified multimodal pretraining produces emergent world-modeling capabilities; (iv) Mixture-of-Experts is the architectural fix for the *scaling asymmetry* the paper uncovers \u2014 vision is significantly more data-hungry than language, and MoE lets you give language enough capacity while feeding vision enough data.",
+      "key_claims": [
+        "**(i) RAE is the right unified visual encoder** \u2014 \"provides an optimal unified visual representation by excelling at both visual understanding and generation.\"",
+        "**(ii) Vision + language complementarity** \u2014 \"visual and language data are complementary and yield synergy for downstream capabilities.\"",
+        "**(iii) Emergent world modeling** \u2014 \"unified multimodal pretraining leads naturally to world modeling, with capabilities emerging from general training.\""
+      ],
+      "word_count": 1076
+    },
+    {
+      "slug": "baek-2026-gram",
+      "title": "Generative Recursive Reasoning",
+      "authors": [
+        "Junyeob Baek",
+        "Mingyu Jo",
+        "Minsu Kim",
+        "Mengye Ren",
+        "Yoshua Bengio",
+        "Sungjin Ahn"
+      ],
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2605.19376",
+      "rw_id": "01ks7dp5jgc81wgnqyr9vq5hjc",
+      "topics": [
+        "recursive-reasoning",
+        "latent-reasoning",
+        "variational-inference",
+        "inference-time-scaling",
+        "generative-models"
+      ],
+      "priority": "high",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-22",
+      "tldr": "GRAM extends deterministic Recursive Reasoning Models (HRM, TRM, Looped Transformers) into *probabilistic* multi-trajectory recursion. At each recursion step a Gaussian \"stochastic guidance\" perturbation $\\epsilon_t \\sim \\mathcal{N}(\\mu_\\theta, \\sigma_\\theta^2 I)$ is added to the deterministic update $u_t$, turning the latent trajectory into a sample from a learned distribution. Trained with **amortized variational inference** (ELBO over latent trajectories), GRAM enables (i) parallel-trajectory inference-time scaling, (ii) coverage of multi-solution tasks where HRM collapses, and (iii) an *unconditional* generative interpretation $p_\\theta(x)$ via empty conditioning. Headline numbers: 99.7% accuracy on N-Queens 8\u00d78 (vs HRM 78.7%, TRM 66.8%), 97.0% Sudoku-Extreme with N=20 parallel samples at 16 iterations (vs TRM 90.5% at 320 iterations).",
+      "key_claims": [
+        "GRAM \"consistently outperforms prior recursive models across all benchmarks.\"",
+        "**Parallel scaling wins big**: \"GRAM with $N=20$ samples at 16 iterations outperforms all deterministic baselines at 320 iterations, including TRM (97.0% vs 90.5%), despite comparable computational budget.\"",
+        "**Sudoku-from-empty**: 99.05% validity with 10.9M params + 16 supervision steps; D3PM baseline uses 55.1M params + 1000 denoising steps."
+      ],
+      "word_count": 1758
+    },
+    {
+      "slug": "wang-2025-hierarchical-reasoning-model",
+      "title": "Hierarchical Reasoning Model",
+      "authors": [
+        "Guan Wang",
+        "Jin Li",
+        "Yuhao Sun",
+        "Xing Chen",
+        "Changling Liu",
+        "Yue Wu",
+        "Meng Lu",
+        "Sen Song",
+        "Yasin Abbasi Yadkori"
+      ],
+      "year": 2025,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2506.21734",
+      "rw_id": "01ks7dra0pb5jsf6fx6jr11e9g",
+      "topics": [
+        "recursive-reasoning",
+        "latent-reasoning",
+        "brain-inspired",
+        "equilibrium-models",
+        "adaptive-computation"
+      ],
+      "priority": "high",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-22",
+      "tldr": "A brain-inspired recurrent architecture (Sapient Intelligence) with two interlocked modules \u2014 a *slow* high-level $f_H$ and a *fast* low-level $f_L$ \u2014 that performs $N \\times T$ steps of internal latent computation per forward pass. With only ~27M params and ~1000 training examples per task, HRM solves Sudoku-Extreme, Maze-Hard, and ARC-AGI puzzles end-to-end without pretraining or CoT data, beating much larger LLMs that use chain-of-thought. The key tricks: (i) \"hierarchical convergence\" where $f_L$ converges within a cycle and $f_H$ then resets its target, preventing the premature-convergence pathology of plain RNNs; (ii) a 1-step DEQ-style approximate gradient that needs $O(1)$ memory; (iii) deep supervision across segments; (iv) adaptive computational time (Q-learning halting).",
+      "key_claims": [
+        "**Sudoku-Extreme**: HRM achieves \"nearly perfect performance\" with 1000 training examples. Direct-prediction baselines and CoT LLMs \"fail entirely.\" Direct-pred with full 3.8M Sudoku-Extreme reaches only 16.9% accuracy.",
+        "**Maze-Hard**: similar story \u2014 HRM solves it; CoT baselines \"almost never manage to solve the tasks.\" 175M-param Transformer on 1M examples (Lehnert et al.) \"marginal success ... below 20% using the pass@64 evaluation metric.\"",
+        "**ARC-AGI**: HRM outperforms \"much larger models with significantly longer context windows.\""
+      ],
+      "word_count": 1828
+    },
+    {
+      "slug": "yang-2026-replaid-continuous-diffusion",
+      "title": "Continuous Diffusion Scales Competitively with Discrete Diffusion for Language",
+      "authors": [
+        "Zhihan Yang",
+        "Wei Guo",
+        "Subham Sekhar Sahoo",
+        "Yongxin Chen",
+        "Morteza Mardani",
+        "John Thickstun",
+        "Shuibai Zhang",
+        "Arash Vahdat"
+      ],
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2605.18530",
+      "rw_id": "01ks7ds32gk7a714w9my9bw261",
+      "topics": [
+        "diffusion-language-models",
+        "continuous-diffusion",
+        "scaling-laws",
+        "generative-models"
+      ],
+      "priority": "high",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-22",
+      "tldr": "Revisits the Plaid likelihood-based continuous diffusion language model and argues its prior \"continuous diffusion doesn't scale\" reputation was a *protocol* artifact, not an intrinsic limitation. By aligning Plaid's architecture with modern discrete-DLM practice (LayerNorm, AdaLN-Zero, bidirectional attention, GELU-tanh, RoPE) the authors get **RePlaid**, which closes the AR-vs-continuous-DLM compute gap from a frequently-cited 64\u00d7 down to **20\u00d7** (with self-conditioning), reaching state-of-the-art 22.1 PPL on OpenWebText *among continuous DLMs*, and beating MDLM in the over-trained regime. Two theoretical results: (i) minimising ELBO variance via the noise-schedule yields a linear cross-entropy schedule \"for free\"; (ii) ELBO-based embedding optimisation creates structured latent geometry that drives most of the likelihood gain.",
+      "key_claims": [
+        "AR vs **MDLM** compute gap: **14\u00d7**.",
+        "AR vs **RePlaid (with self-conditioning)** compute gap: **20\u00d7**.",
+        "AR vs RePlaid (without self-conditioning): 27\u00d7."
+      ],
+      "word_count": 1665
+    },
+    {
+      "slug": "guo-2022-byol-explore",
+      "title": "BYOL-Explore: Exploration by Bootstrapped Prediction",
+      "authors": [
+        "Zhaohan Daniel Guo",
+        "Shantanu Thakoor",
+        "Miruna P\u00eeslar",
+        "Bernardo Avila Pires",
+        "Florent Altch\u00e9",
+        "Corentin Tallec",
+        "Alaa Saade",
+        "Daniele Calandriello",
+        "Jean-Bastien Grill",
+        "Yunhao Tang",
+        "Michal Valko",
+        "R\u00e9mi Munos",
+        "Mohammad Gheshlaghi Azar",
+        "Bilal Piot"
+      ],
+      "year": 2022,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2206.08332",
+      "rw_id": "01ks5jt54te29qhtdk1ew77dpb",
+      "topics": [
+        "exploration",
+        "self-predictive-learning",
+        "world-models"
+      ],
+      "priority": "medium",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-21",
+      "tldr": "A curiosity-driven exploration agent in which a single BYOL-style self-predictive loss in latent space jointly trains the world representation, the world-dynamics model, and an exploration policy; the prediction error doubles as the intrinsic reward. Authors claim it solves DM-HARD-8 without human demonstrations and achieves superhuman performance on the ten hardest Atari exploration games.",
+      "key_claims": [],
+      "word_count": 474
+    },
+    {
+      "slug": "khetarpal-2024-byol-ac",
+      "title": "A Unifying Framework for Action-Conditional Self-Predictive Reinforcement Learning",
+      "authors": [
+        "Khimya Khetarpal",
+        "Zhaohan Daniel Guo",
+        "Bernardo Avila Pires",
+        "Yunhao Tang",
+        "Clare Lyle",
+        "Mark Rowland",
+        "Nicolas Heess",
+        "Diana Borsa",
+        "Arthur Guez",
+        "Will Dabney"
+      ],
+      "year": 2024,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2406.02035",
+      "rw_id": "01ks5eqrn0a0s77qfqb2t0zmsv",
+      "topics": [
+        "self-predictive-learning",
+        "representation-learning-rl"
+      ],
+      "priority": "medium",
+      "read_state": "queued",
+      "relevance": "",
+      "added": "2026-05-21",
+      "tldr": "Extends the BYOL-\u03a0 ODE theory of self-predictive representation learning to the action-conditional case (BYOL-AC), derives a third objective (BYOL-VAR) from the variance relation between BYOL-\u03a0 and BYOL-AC, and unifies all three under both a model-based (low-rank dynamics approximation) and model-free (value/Q/advantage) lens. Empirically BYOL-AC wins across linear and Deep RL settings.",
+      "key_claims": [],
+      "word_count": 494
+    },
+    {
+      "slug": "biswas-rlm-deep-dive",
+      "title": "Recursive Language Models: An All-in-One Deep Dive",
+      "author": "Avishek Biswas",
+      "url": "https://towardsdatascience.com/recursive-language-models-one-example-deep-dive-that-explains-everything/",
+      "rw_id": "01ks7cjhh1ed1jdb6zyap0fm6y",
+      "topics": [
+        "agentic-harnesses",
+        "long-context",
+        "recursive-reasoning",
+        "llm-scaffolds",
+        "codeact"
+      ],
+      "priority": "medium",
+      "read_state": "queued",
+      "added": "2026-05-22",
+      "tldr": "A 6.5K-word walkthrough of **Recursive Language Models (RLMs)** \u2014 an agentic harness pattern in which the LLM operates inside a persistent Python REPL with an `llm_query(...)` function for spawning subagents. The user's prompt is exposed as a `context` variable, not loaded into the LLM's context window directly; subagent outputs land as REPL variables, not LLM messages. The core idea Biswas highlights: **pass-by-reference instead of pass-by-value** across agent boundaries. He contrasts RLMs with ReAct / CodeAct / vanilla subagents through a toy \"count R's in 50 fruit names\" example, walks through a 60M-character Lex Fridman transcript trajectory that cost $0.20, and shares the full system prompt from his open-source `fast-rlm` implementation.",
+      "word_count": 1413
+    }
+  ],
+  "timeline": {
+    "2026-05-22": 4,
+    "2026-05-21": 7
+  }
+}</script>
+
+<header class="border-b border-slate-800 bg-slate-900/50 sticky top-0 z-40 backdrop-blur">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+    <div>
+      <div class="text-xs uppercase tracking-widest text-slate-500">Reading Vault</div>
+      <h1 class="text-2xl font-bold text-slate-100">Dashboard</h1>
+    </div>
+    <input id="search" type="text" placeholder="Search papers, topics, authors..." class="flex-1 max-w-md bg-slate-800 border border-slate-700 rounded-md px-4 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+    <div class="text-xs text-slate-500" id="meta"></div>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-6 py-8 space-y-10">
+
+<section id="stats-section" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+</section>
+
+<section>
+  <div class="flex items-baseline justify-between mb-4">
+    <h2 class="text-lg font-bold text-slate-100">Topics</h2>
+    <span class="text-xs text-slate-500" id="topics-count"></span>
+  </div>
+  <div id="topic-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+</section>
+
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <div class="lg:col-span-2 panel rounded-lg p-5">
+    <div class="flex items-baseline justify-between mb-4">
+      <h2 class="text-lg font-bold text-slate-100">Reading Queue</h2>
+      <div class="flex gap-2 text-xs">
+        <button class="queue-filter px-2 py-1 rounded border border-slate-700 text-slate-400 hover:text-slate-100" data-pri="all">All</button>
+        <button class="queue-filter px-2 py-1 rounded border border-rose-900 text-rose-400 hover:text-rose-200" data-pri="high">High</button>
+        <button class="queue-filter px-2 py-1 rounded border border-amber-900 text-amber-400 hover:text-amber-200" data-pri="medium">Medium</button>
+      </div>
+    </div>
+    <div id="queue-list" class="space-y-2 max-h-[600px] overflow-y-auto scrollbar-thin pr-2"></div>
+  </div>
+  <div class="panel rounded-lg p-5">
+    <h2 class="text-lg font-bold text-slate-100 mb-4">Authors</h2>
+    <div id="author-list" class="space-y-1.5 text-sm max-h-[600px] overflow-y-auto scrollbar-thin"></div>
+  </div>
+</section>
+
+<section class="panel rounded-lg p-5">
+  <h2 class="text-lg font-bold text-slate-100 mb-4">Additions Timeline</h2>
+  <div style="position: relative; height: 220px;">
+    <canvas id="timeline-chart"></canvas>
+  </div>
+</section>
+
+<section>
+  <h2 class="text-lg font-bold text-slate-100 mb-4">All Papers &amp; Blogs</h2>
+  <div id="paper-list" class="space-y-3"></div>
+</section>
+
+</main>
+
+<footer class="border-t border-slate-800 mt-12 py-6 text-center text-xs text-slate-500">
+  Generated <span id="gen-time"></span> · Self-contained · All data inline · No runtime fetches
+</footer>
+
+<script>
+const data = JSON.parse(document.getElementById('vault-data').textContent);
+const escapeHtml = (s) => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const truncate = (s, n) => { s = String(s||''); return s.length > n ? s.slice(0, n).trim() + '…' : s; };
+
+// ── Meta + gen time
+document.getElementById('gen-time').textContent = data.generated_at;
+document.getElementById('meta').innerHTML = `<div>Vault scope: <span class="text-slate-300 font-semibold">${data.scope.name}</span></div><div>${data.generated_at.slice(0,10)}</div>`;
+
+// ── Stats
+const statDefs = [
+  { key: 'papers', label: 'Papers', color: 'text-indigo-300' },
+  { key: 'blogs', label: 'Blogs', color: 'text-sky-300' },
+  { key: 'threads', label: 'Threads', color: 'text-purple-300' },
+  { key: 'topics', label: 'Topics', color: 'text-emerald-300' },
+  { key: 'authors_indexed', label: 'Indexed authors', color: 'text-amber-300' },
+  { key: 'queued', label: 'Queued', color: 'text-rose-300' },
+  { key: 'deep_read', label: 'Deep-read', color: 'text-teal-300' },
+];
+document.getElementById('stats-section').innerHTML = statDefs.map(s => `
+  <div class="panel rounded-lg p-4">
+    <div class="text-3xl font-bold ${s.color}">${data.stats[s.key]}</div>
+    <div class="text-xs uppercase tracking-wider text-slate-500 mt-1">${s.label}</div>
+  </div>
+`).join('');
+
+// ── Topic grid
+const papersBySlug = Object.fromEntries(data.papers.map(p => [p.slug, p]));
+const blogsBySlug = Object.fromEntries(data.blogs.map(b => [b.slug, b]));
+const topicGridEl = document.getElementById('topic-grid');
+document.getElementById('topics-count').textContent = `${data.topics.length} MOCs · ${data.papers.length + data.blogs.length} linked items`;
+
+function renderTopics(filterFn = () => true) {
+  topicGridEl.innerHTML = data.topics.filter(filterFn).map(t => {
+    const items = [...t.paper_slugs.map(s => papersBySlug[s]).filter(Boolean), ...t.blog_slugs.map(s => blogsBySlug[s]).filter(Boolean)];
+    const topItems = items.slice(0, 3).map(p => `<li class="truncate text-slate-400 text-xs">• ${escapeHtml(p.title)}</li>`).join('');
+    const related = t.related_topics.map(r => `<span class="badge badge-topic">${escapeHtml(r)}</span>`).join(' ');
+    return `<div class="panel panel-hover rounded-lg p-4 cursor-pointer" data-topic="${t.slug}">
+      <div class="flex items-baseline justify-between mb-2">
+        <h3 class="font-semibold text-slate-100">${escapeHtml(t.title)}</h3>
+        <span class="text-xs text-slate-500">${items.length} item${items.length === 1 ? '' : 's'}</span>
+      </div>
+      <p class="text-xs text-slate-400 mb-3 line-clamp-3">${escapeHtml(truncate(t.description, 220))}</p>
+      <ul class="space-y-0.5 mb-3">${topItems}</ul>
+      ${related ? `<div class="flex flex-wrap gap-1 pt-2 border-t border-slate-800">${related}</div>` : ''}
+    </div>`;
+  }).join('');
+  // Click handler to scroll-filter paper list
+  topicGridEl.querySelectorAll('[data-topic]').forEach(el => {
+    el.addEventListener('click', () => {
+      const topic = el.dataset.topic;
+      document.getElementById('search').value = '';
+      const matching = data.papers.filter(p => (p.topics || []).includes(topic));
+      const blogMatching = data.blogs.filter(b => (b.topics || []).includes(topic));
+      renderPapers([...matching, ...blogMatching]);
+      document.getElementById('paper-list').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+}
+renderTopics();
+
+// ── Reading queue
+let queueFilter = 'all';
+function renderQueue() {
+  const items = data.reading_queue.filter(it => queueFilter === 'all' || (it.priority || 'medium') === queueFilter);
+  document.getElementById('queue-list').innerHTML = items.length === 0
+    ? `<div class="text-sm text-slate-500 italic py-8 text-center">No items in queue under this filter.</div>`
+    : items.map(p => {
+        const isBlog = blogsBySlug[p.slug];
+        const author = isBlog ? p.author : (p.authors || []).slice(0, 2).join(', ') + ((p.authors || []).length > 2 ? ' et al.' : '');
+        return `<div class="paper-border-${p.priority || 'medium'} bg-slate-900 rounded p-3 hover:bg-slate-800">
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="badge badge-${p.priority || 'medium'}">${p.priority || 'medium'}</span>
+                <span class="badge badge-${p.read_state || 'queued'}">${p.read_state || 'queued'}</span>
+                ${isBlog ? '<span class="badge badge-topic">blog</span>' : '<span class="badge badge-topic">paper</span>'}
+                <span class="text-xs text-slate-500">added ${escapeHtml(p.added || '')}</span>
+              </div>
+              <div class="font-semibold text-slate-100 mt-1 text-sm">${escapeHtml(p.title)}</div>
+              <div class="text-xs text-slate-400 mt-0.5">${escapeHtml(author)}${p.year ? ' · ' + p.year : ''}${p.venue ? ' · ' + escapeHtml(p.venue) : ''}</div>
+              <div class="text-xs text-slate-300 mt-2 leading-relaxed">${escapeHtml(truncate(p.tldr, 280))}</div>
+              <div class="text-[10px] text-slate-600 mt-2 font-mono">rw_id: ${escapeHtml(p.rw_id || '—')}</div>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+}
+renderQueue();
+document.querySelectorAll('.queue-filter').forEach(b => b.addEventListener('click', () => {
+  queueFilter = b.dataset.pri;
+  document.querySelectorAll('.queue-filter').forEach(x => x.classList.toggle('bg-slate-800', x.dataset.pri === queueFilter));
+  renderQueue();
+}));
+
+// ── Authors leaderboard (by total appearances, not just first-author)
+document.getElementById('author-list').innerHTML = data.top_authors.map(([name, count]) => `
+  <div class="flex items-center justify-between gap-3 py-1 px-2 rounded hover:bg-slate-800 cursor-pointer" data-author="${escapeHtml(name)}">
+    <span class="text-slate-200 truncate">${escapeHtml(name)}</span>
+    <span class="text-xs text-slate-500 font-mono shrink-0">${count}</span>
+  </div>
+`).join('');
+document.querySelectorAll('[data-author]').forEach(el => {
+  el.addEventListener('click', () => {
+    const name = el.dataset.author;
+    const matching = data.papers.filter(p => (p.authors || []).includes(name));
+    renderPapers(matching);
+    document.getElementById('paper-list').scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// ── Timeline chart
+const dates = Object.keys(data.timeline).sort();
+const counts = dates.map(d => data.timeline[d]);
+new Chart(document.getElementById('timeline-chart'), {
+  type: 'bar',
+  data: {
+    labels: dates,
+    datasets: [{
+      label: 'Items added',
+      data: counts,
+      backgroundColor: 'rgba(99, 102, 241, 0.6)',
+      borderColor: 'rgba(99, 102, 241, 1)',
+      borderWidth: 1,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+      y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8', precision: 0 }, beginAtZero: true },
+    },
+  },
+});
+
+// ── Paper / blog list
+function renderPapers(items) {
+  if (items === undefined) items = [...data.papers, ...data.blogs];
+  // Sort by added desc
+  items = items.slice().sort((a, b) => (b.added || '').localeCompare(a.added || ''));
+  document.getElementById('paper-list').innerHTML = items.length === 0
+    ? `<div class="text-sm text-slate-500 italic py-8 text-center">No matches.</div>`
+    : items.map(p => {
+        const isBlog = blogsBySlug[p.slug];
+        const author = isBlog ? p.author : (p.authors || []).join(', ');
+        const topicBadges = (p.topics || []).map(t => `<span class="badge badge-topic">${escapeHtml(t)}</span>`).join(' ');
+        const claims = (p.key_claims || []).slice(0, 3).map(c => `<li class="text-xs text-slate-300 leading-relaxed pl-2">• ${escapeHtml(c)}</li>`).join('');
+        return `<details class="paper-border-${p.priority || 'medium'} bg-slate-900 rounded p-4 panel-hover">
+          <summary class="flex items-start gap-3">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="badge badge-${p.priority || 'medium'}">${p.priority || 'medium'}</span>
+                <span class="badge badge-${p.read_state || 'queued'}">${p.read_state || 'queued'}</span>
+                <span class="badge badge-topic">${isBlog ? 'blog' : 'paper'}</span>
+                ${p.year ? `<span class="text-xs text-slate-500">${p.year}</span>` : ''}
+              </div>
+              <div class="font-semibold text-slate-100 mt-1.5">${escapeHtml(p.title)}</div>
+              <div class="text-xs text-slate-400 mt-1">${escapeHtml(author)}${p.venue ? ' · ' + escapeHtml(p.venue) : ''}</div>
+              <div class="text-sm text-slate-200 mt-2.5 leading-relaxed">${escapeHtml(p.tldr)}</div>
+              <div class="flex flex-wrap gap-1 mt-3">${topicBadges}</div>
+            </div>
+            <span class="chevron text-slate-500">▾</span>
+          </summary>
+          <div class="mt-4 pt-4 border-t border-slate-800 space-y-3">
+            ${claims ? `<div><div class="text-xs uppercase tracking-wider text-slate-500 mb-2">Key claims <span class="analyst-tag">verbatim from note</span></div><ul class="space-y-1.5">${claims}</ul></div>` : ''}
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div>
+                <div class="text-slate-500 uppercase tracking-wider mb-1">rw_id</div>
+                <div class="font-mono text-slate-300 break-all">${escapeHtml(p.rw_id || '—')}</div>
+              </div>
+              <div>
+                <div class="text-slate-500 uppercase tracking-wider mb-1">Source URL</div>
+                <a href="${escapeHtml(p.url || '#')}" target="_blank" rel="noopener" class="text-indigo-400 hover:text-indigo-300 break-all">${escapeHtml(p.url || '—')}</a>
+              </div>
+            </div>
+            <div class="text-xs text-slate-500">Slug: <span class="font-mono text-slate-400">${escapeHtml(p.slug)}</span> · Added: ${escapeHtml(p.added || '—')} · Body: ${p.word_count || 0} words</div>
+          </div>
+        </details>`;
+      }).join('');
+}
+renderPapers();
+
+// ── Search
+document.getElementById('search').addEventListener('input', (e) => {
+  const q = e.target.value.toLowerCase().trim();
+  if (!q) { renderTopics(); renderPapers(); return; }
+  // Filter topics
+  renderTopics(t => t.slug.toLowerCase().includes(q) || (t.description || '').toLowerCase().includes(q));
+  // Filter papers + blogs
+  const matchAll = [...data.papers, ...data.blogs].filter(p =>
+    (p.title || '').toLowerCase().includes(q)
+    || (p.tldr || '').toLowerCase().includes(q)
+    || (p.slug || '').toLowerCase().includes(q)
+    || (p.authors || []).some(a => a.toLowerCase().includes(q))
+    || (p.author || '').toLowerCase().includes(q)
+    || (p.topics || []).some(t => t.toLowerCase().includes(q))
+  );
+  renderPapers(matchAll);
+});
+</script>
+</body>
+</html>

@@ -46,12 +46,9 @@ The user runs `/process-inbox` or says "process today's inbox". You:
 4. **Route**: append the bullet to the category inbox
    `00_Inbox/{type}/{YYYY-MM-DD}.md`.
 5. **Deepen**: create `30_Knowledge/{type}/{slug}.md` with the frontmatter
-   in Part 7 and a body that includes:
-   - One-line TL;DR
-   - 3–5 key claims (cited from the fetched content)
-   - Why it matters (your synthesis, labelled as such)
-   - Open questions
-   - Cross-links to topic MOCs and author indices
+   in Part 7 and a **substantial** body. These notes are the durable record — depth here saves you from re-reading the source later. Body templates differ by type (see Part 12).
+
+   **Hard requirement for all types**: no fabricated quotes, numbers, or claims. Everything stated as fact must come from the fetched content (Readwise API for papers/blogs, webhook payload summary for threads/newsletters). Your synthesis must be labelled `[analyst's view]` so future-you can tell facts from interpretation. If a template section can't be filled because the source doesn't address it, write `_not addressed by the source_` instead of inventing.
 6. For papers and blogs, **fetch full content** via the Readwise Document
    Export API using the rw-id. Use the full text to write the TL;DR and
    key claims. For threads and newsletters, the webhook payload's summary
@@ -330,7 +327,186 @@ After processing the inbox:
 
 ---
 
-## Part 12 — Gotchas
+## Part 12 — Deep note body templates
+
+Use these structures when creating notes under `30_Knowledge/{type}/{slug}.md`. The target lengths are floors, not ceilings — go longer when the source warrants it.
+
+### Paper notes (target: 800–2000+ words)
+
+```markdown
+## TL;DR
+
+(3–5 sentences) What the paper does, the core trick, why it matters.
+Write this so a colleague who has 60 seconds gets the actual contribution,
+not just the topic.
+
+## Context & motivation
+
+(1–2 paragraphs) The problem being attacked. What prior approaches failed
+to solve or did inefficiently. The paper's stated contribution. Cite prior
+work the paper itself cites, only where it matters for understanding the
+contribution — don't fabricate citations.
+
+## Method
+
+### Problem formulation
+Input / output / objective. What's being optimized.
+
+### Core idea
+1–2 sentences capturing the central insight.
+
+### Architecture / algorithm
+Each component and how they connect. Use LaTeX-style math for key
+equations — loss functions, update rules, sampling procedures.
+For example: $\mathcal{L} = \mathbb{E}_{x,t}[\| \epsilon - \epsilon_\theta(x_t, t) \|^2]$
+
+### Training procedure
+Datasets used, optimizer, hyperparameters, schedule. Be specific —
+"AdamW, lr=1e-4, cosine schedule, 200k steps" beats "standard setup".
+
+### Inference / sampling (if generative)
+How is generation done at test time — number of steps, guidance scales,
+solver choice.
+
+## Experimental setup
+
+- Datasets: list explicitly
+- Baselines: which methods, which papers
+- Metrics: which numbers are being compared, what's "good"
+
+## Key results
+
+Specific numbers with table/section references from the paper.
+- Headline metrics vs baselines
+- Most surprising findings (positive or negative)
+- Reported failure cases
+
+## Ablations
+
+What was ablated and what it revealed. This often matters more than the
+headline number for understanding what's load-bearing.
+
+## Limitations
+
+Paper's own acknowledged limits + what an honest reader would flag.
+Label which is which.
+
+## Why it matters [analyst's view]
+
+*This section is your synthesis, not paper claims.* What does this enable
+downstream? Which directions does it open or close? What does it connect
+to elsewhere in the vault?
+
+## Open questions / things to verify
+
+Anything that wasn't fully convincing. References you'd want to chase.
+Experiments you'd want to see done.
+
+## Connections
+
+- Builds on: [[papers/...]]
+- Extends to: [[papers/...]]
+- Contrasts with: [[papers/...]]
+- Topic MOCs: [[topics/...]]
+- Author indices: [[authors/...]]
+
+## Selected quotes (optional)
+
+2–5 verbatim passages with section/page references, for direct citation later.
+
+> "Quote text" — §3.2, p.5
+```
+
+### Blog notes (target: 300–800 words)
+
+```markdown
+## TL;DR
+
+(2–3 sentences)
+
+## Context
+
+(1 paragraph) What prompted the post, intended audience, where it sits
+in the author's broader work.
+
+## Core argument
+
+The main claim, with key supporting evidence the author provides. Not
+exhaustive — just the load-bearing parts.
+
+## Notable details
+
+- Specific technical points worth remembering
+- Examples / case studies the author uses
+- Counter-intuitive claims with the reasoning
+
+## Why it matters [analyst's view]
+
+Connection to your interests / current work.
+
+## Connections
+
+- Topic MOCs: [[topics/...]]
+- Related papers: [[papers/...]]
+- Author index: [[authors/...]]
+
+## Selected quotes (optional)
+
+2–3 passages worth preserving verbatim.
+```
+
+### Thread notes (target: 100–300 words)
+
+```markdown
+## TL;DR
+
+(1–2 sentences)
+
+## Key claims
+
+- 3–7 bullets capturing what the thread argues
+- Quote the actual tweet language when the phrasing matters
+
+## Context
+
+(1 sentence) Author, when, what they were responding to.
+
+## Why it matters [analyst's view]
+
+(1–2 sentences)
+
+## Connections
+
+- Topic MOCs: [[topics/...]]
+- Related papers / blogs: [[...]]
+```
+
+### Newsletter notes (target: 200–500 words)
+
+```markdown
+## TL;DR
+
+(2–3 sentences)
+
+## What it covered
+
+Brief rundown of the main items / topics in this issue.
+
+## Worth following up on
+
+- Items, links, or papers mentioned that warrant a deeper read
+- These can later become their own paper/blog notes after you save them
+  to Readwise
+
+## Connections
+
+- Topic MOCs: [[topics/...]]
+- Newsletter source: [[authors/...]]
+```
+
+---
+
+## Part 13 — Gotchas
 
 - **Don't auto-fetch the full content of every item.** Only papers and blogs warrant the Readwise API call. Threads have low information density per call; newsletters are usually summaries already.
 - **Don't classify aggressively.** If unsure between blog and paper (e.g. a workshop note hosted on a personal site), default to blog and add a comment in the note. Reclassification is cheap; mis-filing into `papers/` pollutes the venue analysis.

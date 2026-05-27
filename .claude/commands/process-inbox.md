@@ -25,22 +25,22 @@ appropriate category inbox, then create deep notes in `30_Knowledge/`.
      - `reject` — clearly off-topic (promo emails, unrelated news)
    - **Route**: append the bullet (verbatim) to `00_Inbox/{type}/{YYYY-MM-DD}.md`. For rejects, just note `[reject: {reason}]` in the processed file and move on — no deep note.
 
-3. **For each non-reject item, create a deep note** at `30_Knowledge/{type}/{slug}.md`:
+3. **For each non-reject item, create a substantial deep note** at `30_Knowledge/{type}/{slug}.md`:
    - Slug per `CLAUDE.md` Part 5
    - Frontmatter per `CLAUDE.md` Part 7
+   - **Body per `CLAUDE.md` Part 12** — these notes are the durable record; depth matters. Target lengths:
+     - **Paper**: 800–2000+ words across the full template (TL;DR, context, method with subsections, experimental setup, results with specific numbers, ablations, limitations, analyst's synthesis, open questions, connections, optional quotes). Use LaTeX math for key equations.
+     - **Blog**: 300–800 words (TL;DR, context, core argument, notable details, why it matters, connections, optional quotes).
+     - **Thread**: 100–300 words (TL;DR, key claims, context, why it matters, connections).
+     - **Newsletter**: 200–500 words (TL;DR, what it covered, follow-ups, connections).
    - For papers and blogs: fetch full content via the Readwise Document Export API:
      ```
      GET https://readwise.io/api/v3/list/?id={rw-id}
      Authorization: Token {READWISE_TOKEN}
      ```
-     (The user has the token set as `READWISE_TOKEN` env var or in `.env`. Read it from there; do not hardcode.)
+     (The user has the token set as `READWISE_TOKEN` env var or in `.env`. Read it from there; do not hardcode.) The full text is what makes a deep note possible — without it, you'd be writing a stub.
    - For threads and newsletters: use the `summary` field from the webhook payload — do not call the API.
-   - Body sections:
-     - One-line TL;DR (your synthesis from fetched content)
-     - 3–5 key claims (quoted or paraphrased from the content, with attribution)
-     - "Why it matters" — your synthesis, labelled as such
-     - "Open questions" — what you'd want to verify
-     - "Related" — `[[wikilinks]]` to existing vault notes you can find via grep on topics/authors
+   - **No fabrication**: every fact, quote, or number must trace to the fetched content. Your synthesis goes in sections labelled `[analyst's view]`. If the source doesn't address a template section (e.g. a paper with no ablations), write `_not addressed by the source_` rather than inventing.
 
 4. **Update topic MOCs**: for each topic in the new note's `topics:` field, append a `[[link]]` to `30_Knowledge/topics/{topic}.md` under the appropriate section. Create the MOC if missing (skeleton per `CLAUDE.md` Part 6). **But:** skip creating a MOC for a topic that would only have one paper — wait for the second.
 
