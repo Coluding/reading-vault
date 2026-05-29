@@ -1,6 +1,6 @@
 ---
 type: moc
-last_updated: 2026-05-25
+last_updated: 2026-05-27
 status: living
 
 ---
@@ -30,6 +30,8 @@ Most recent items added to the vault, regardless of category. Refreshed by
 - [[papers/maes-2026-leworldmodel]] — first stable end-to-end JEPA from pixels; two-term loss (prediction MSE + SIGReg) replaces EMA / stop-gradient / multi-term-loss orthodoxy; plans up to 48× faster than DINO-WM.
 
 ### Blogs
+- [[blogs/shing-diffusionblocks]] — *(Sakana AI, 05-27, ICLR 2026 summary)* train networks one block at a time by casting block-wise dynamics as diffusion denoising; ~1/B training memory at performance comparable to end-to-end across 5 architectures (ViT/DiT/Masked-Diffusion/AR/Recurrent-depth). Bonus: replaces K-step BPTT with a single forward pass for looped Transformers. _Headline numbers in the paper, not yet verified._
+- [[blogs/blainsmith-just-use-go]] — *(05-27, off the AI/math axis — CS/backend polemic)* "use boring Go": stdlib-as-framework, cheap goroutines, single static binary deploy. Low durable value; kept for the audit trail + as a boring-monolith reference.
 - [[blogs/bansal-kv-cache]] — *(GPU/inference cluster, 05-25)* KV-cache management as the binding constraint in LLM serving; six-era evolution (contiguous → PagedAttention → heterogeneous → distributed → unified) mirroring OS memory management. Llama-3-70B at 8K × 32 reqs = 81.9 GB of KV cache alone.
 - [[blogs/bierling-coalesced-matmul]] — *(05-25, author = vault owner)* naive vs coalesced CUDA matmul; a one-line thread-index remap → coalesced global loads → ~10.5× (1433 ms → 136 ms on an A100). Stays memory-bound; tiling next.
 - [[blogs/bierling-prefix-scan]] — *(05-25, author = vault owner)* parallel prefix scan: shared-memory Hillis–Steele ($O(\log N)$ depth) + divide-and-conquer recursion over block sums for arbitrary sizes.
