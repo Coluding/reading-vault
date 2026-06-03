@@ -1,6 +1,6 @@
 ---
 type: moc
-last_updated: 2026-05-27
+last_updated: 2026-06-03
 status: living
 
 ---
@@ -11,6 +11,19 @@ Most recent items added to the vault, regardless of category. Refreshed by
 `/process-inbox`.
 
 ## This week
+
+### Papers
+- [[papers/ding-2024-diffusion-world-model]] — *(06-03)* Diffusion World Model: predicts a whole future trajectory in one diffusion pass (conditioned on state/action/return-to-go), killing the compounding error of recursive one-step rollouts; +44% over one-step models on D4RL, 4.6× faster than Decision Diffuser, closes the model-based-vs-model-free gap.
+- [[papers/lee-2026-looped-diffusion-lm]] — *(06-03, looped-models cluster)* **LoopMDM**: first looped transformer for masked diffusion LMs; selectively loops early-middle layers for up to 3.3× fewer training FLOPs, +8.5 GSM8K, with loop count as an inference-time compute knob.
+- [[papers/deng-2026-lt2-looped]] — *(06-03, looped-models cluster)* **LT2**: replaces softmax attention in looped transformers with subquadratic (linear/sparse) mixers — "looping turns compute into context" (rank-$T$ memory / $O(Tw)$ receptive field); hybrid beats the full-attention loop at ~5× decode throughput; converts pretrained Ouro → Ouro-Hybrid-1.4B.
+- [[papers/chen-2026-training-free-looped]] — *(06-03, looped-models cluster)* loops a frozen checkpoint's mid-block at inference (no training) via the forward-Euler/ODE view; Runge–Kutta integration, +2.64 pp MMLU-Pro on Qwen3-4B; layer-mode needed for MoE.
+- [[papers/bartosh-2026-dual-rate-diffusion]] — *(05-31)* heavy context encoder (every $K$-th step) + light denoiser (every step) → 2–4× cheaper diffusion inference at equal/better ImageNet FID; composes with Moment Matching Distillation (student beats teacher).
+- [[papers/knight-2026-riemannian-low-rank]] — *(06-03)* Riemannian gradient descent over ten geometries for rank-factored attention params; honest **negative result** — does not conclusively beat AdamW at small scale; nice framing of AdamW/Muon as steepest descent under $\ell_\infty$/spectral norms.
+
+### Blogs
+- [[blogs/lampinen-continual-learning-problems]] — *(06-03, Andrew Lampinen / Infinite Faculty)* argues scale + pretraining largely dissolve catastrophic interference & loss of plasticity; the real frontier of continual learning is positive transfer / cumulative learning, and dissolving the in-context-vs-parametric boundary.
+
+## Last week
 
 ### Papers
 - [[papers/clune-2019-ai-gas]] — *(manual citation chase from Jiang 2022)* "AI-Generating Algorithms" with three pillars: meta-learning architectures, meta-learning learning algorithms, generating environments. Pre-LLM articulation of the "data/environment is the bottleneck" thesis.
@@ -38,10 +51,6 @@ Most recent items added to the vault, regardless of category. Refreshed by
 - [[blogs/pytorch-torch-amp]] — *(05-25)* `torch.amp` reference: `autocast` (per-op dtype) + `GradScaler` (fp16 loss scaling); wrap forward only, cast back to fp32 on exit, bf16-pretrained models overflow in fp16.
 - [[blogs/aiwithmaha-cuda-concepts]] — *(05-25)* beginner glossary of 20 CUDA concepts (kernel/grid/block/thread/warp, global vs shared memory, occupancy, streams, tensor cores, cuDNN). Shared-vocabulary entry point for the GPU cluster.
 - [[blogs/biswas-rlm-deep-dive]] — practitioner deep-dive on Recursive Language Models: pass-by-reference agentic scaffold (LLM operates inside a Python REPL with `llm_query` for subagents); 60M-character Lex Fridman transcript in 4 minutes for $0.20.
-
-## Last week
-
-_Nothing yet._
 
 ## Older
 
