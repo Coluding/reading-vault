@@ -73,6 +73,21 @@ The user asks dashboard-style questions:
 Synthesis output must cite specific notes via `[[wikilinks]]`. Never
 fabricate findings — if the vault doesn't know, say so.
 
+### Mode D — Drafting (turning reading into writing)
+
+The user wants to **write** blog posts, not just file what they read. This lives
+in `50_Writing/` (see Part 14). Triggers:
+
+- "Start a blog on {topic}" → create `50_Writing/{slug}/` from `50_Writing/_template/`, set the angle in `index.md`, then run a first research pass (Mode-D gather).
+- "Gather research for the {slug} blog" → re-scan `30_Knowledge/**` for relevant notes (`grep` by topic/frontmatter), append findings to `research.md`, **each linked to its source note** via `[[wikilinks]]`.
+- "Outline / draft the {slug} blog" → work `draft.md` from `research.md`; outline before prose.
+
+The same **no-fabrication** rule applies: everything in `research.md` must trace
+to a `30_Knowledge` note (which traces to a real source). If the piece needs
+something the vault doesn't have, mark it `_needs note_` in `research.md` and add
+it to the reading queue — don't write from memory. `draft.md` prose is the user's
+voice; Claude scaffolds and gathers, and only ghost-writes sections when asked.
+
 ---
 
 ## Part 3 — Hard rules
@@ -83,8 +98,10 @@ fabricate findings — if the vault doesn't know, say so.
    don't know it. Write `_needs verification_` and stop.
 3. **Always cite the rw-id** in deep notes via the `rw_id` frontmatter
    field, so future-you can re-fetch the source.
-4. **Never invent new note types** (`papers | blogs | threads | newsletters`
-   are the only categories). Ask before extending.
+4. **Never invent new note types in `30_Knowledge`** (`papers | blogs | threads | newsletters`
+   are the only categories there). Ask before extending. _(The `50_Writing/`
+   workspace has its own draft types — `blog-draft | blog-research | blog-draft-body` —
+   per Part 14; these are separate and do not count as Knowledge categories.)_
 5. **Never edit `90_Meta/`** unless the user explicitly asks (that's
    Worker code and scripts).
 6. **One commit per `/process-inbox` run.** The Worker writes commit-per-
@@ -281,6 +298,7 @@ last_updated: 2026-05-21
 - Deep note: `30_Knowledge/{papers|blogs|threads}/{slug}.md` (kebab-case slug per Part 5)
 - Topic MOC: `30_Knowledge/topics/{topic-slug}.md`
 - Author index: `30_Knowledge/authors/{firstname-lastname}.md`
+- Blog draft workspace: `50_Writing/{blog-slug}/{index|research|draft}.md` (kebab-case blog-slug; see Part 14)
 
 ---
 
@@ -512,3 +530,58 @@ Brief rundown of the main items / topics in this issue.
 - **Don't classify aggressively.** If unsure between blog and paper (e.g. a workshop note hosted on a personal site), default to blog and add a comment in the note. Reclassification is cheap; mis-filing into `papers/` pollutes the venue analysis.
 - **Don't create a topic MOC for a topic with only one paper.** Wait for the second. Singleton MOCs are noise.
 - **Don't deep-read during triage.** Triage is fast: fetch content, summarise, file, link. Deep reading is a separate session. The `read_state: queued | skimmed | deep` field tracks this.
+
+---
+
+## Part 14 — Writing workspace (`50_Writing/`)
+
+The vault doesn't just capture reading — it feeds **writing**. `50_Writing/` is
+where the user drafts blog posts, mining the knowledge base for material.
+
+### Structure
+
+```
+50_Writing/
+  README.md            # human-facing overview
+  _template/           # canonical three-file scaffold — copy, never edit in place
+    index.md
+    research.md
+    draft.md
+  {blog-slug}/         # one subdirectory per blog the user wants to write
+    index.md           # the brief: frontmatter + thesis, key messages, source notes
+    research.md        # gathered material, every claim [[linked]] to a 30_Knowledge note
+    draft.md           # outline → prose (the user's voice)
+```
+
+### The three files
+
+- **`index.md`** (`type: blog-draft`) — control panel. Frontmatter: `title`,
+  `slug`, `status`, `audience`, `angle` (one-sentence thesis), `target_length`,
+  `topics`, `source_notes` (vault notes as `[[wikilinks]]`), `created`,
+  `last_updated`. Body: thesis/hook, why-write-this, key messages, working titles,
+  source notes, a running **status log**.
+- **`research.md`** (`type: blog-research`) — the evidence base. Organised into
+  core claims / supporting numbers / quotes / connections / gaps. **Every factual
+  item links to its `30_Knowledge` source note.** Nothing here is written from
+  memory — if it's not in the vault, mark `_needs note_` and queue the reading.
+- **`draft.md`** (`type: blog-draft-body`) — outline first, then prose. Claude
+  scaffolds the outline and gathers ammunition; the user writes (or asks Claude to
+  draft named sections). Keep every factual claim traceable to `research.md`.
+
+### Status lifecycle
+
+`gathering` → `outlining` → `drafting` → `revising` → `published`
+(tracked in `index.md` frontmatter; update it as the piece moves.)
+
+### Rules
+
+- **No fabrication, same as everywhere.** `research.md` is an evidence base that
+  traces to vault notes; the gather step is `grep`-then-link, not recall.
+- **Don't confuse with `30_Knowledge/blogs/`.** Those notes summarise things the
+  user *read*; `50_Writing/` holds things the user intends to *write*.
+- **The gather step deepens the vault.** If a draft exposes a gap (`_needs note_`),
+  that's a signal to read & deep-note the missing source — writing and reading
+  reinforce each other.
+- **Don't ghost-write unprompted.** Default to scaffolding + research; only write
+  prose into `draft.md` when the user asks.
+- Published pieces may stay here (`status: published`) or move to `40_Archive/`.
