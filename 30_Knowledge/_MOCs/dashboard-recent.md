@@ -1,6 +1,6 @@
 ---
 type: moc
-last_updated: 2026-06-03
+last_updated: 2026-06-04
 status: living
 
 ---
@@ -21,6 +21,9 @@ Most recent items added to the vault, regardless of category. Refreshed by
 - [[papers/knight-2026-riemannian-low-rank]] — *(06-03)* Riemannian gradient descent over ten geometries for rank-factored attention params; honest **negative result** — does not conclusively beat AdamW at small scale; nice framing of AdamW/Muon as steepest descent under $\ell_\infty$/spectral norms.
 
 ### Blogs
+- [[blogs/clark-surfing-uncertainty-precis]] — *(06-04, predictive-processing cluster)* Andy Clark's own précis of *Surfing Uncertainty*: the brain as a hierarchical prediction machine; prediction-as-bootstrap of world knowledge; action as active inference. The cognitive-science taproot of self-supervised prediction.
+- [[blogs/alexander-surfing-uncertainty-review]] — *(06-04, predictive-processing cluster)* Scott Alexander's SSC explainer: two precision-weighted streams reconciled by Bayes at every layer; "controlled hallucination," surprisal minimization, autism (over-precise priors) vs schizophrenia (weak priors). The ML-legible on-ramp.
+- [[blogs/buskell-surfing-uncertainty-review]] — *(06-04, predictive-processing cluster)* Buskell's BSPS scholarly review: PP as a "mid-level organizational sketch"; flags an ambiguity in what "moving up the hierarchy" means (scope vs gist vs hyperprior). The honest counterweight.
 - [[blogs/lampinen-continual-learning-problems]] — *(06-03, Andrew Lampinen / Infinite Faculty)* argues scale + pretraining largely dissolve catastrophic interference & loss of plasticity; the real frontier of continual learning is positive transfer / cumulative learning, and dissolving the in-context-vs-parametric boundary.
 
 ## Last week

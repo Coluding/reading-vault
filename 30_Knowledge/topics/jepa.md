@@ -21,5 +21,6 @@ _Not yet in vault — JEPA itself, I-JEPA, V-JEPA, PLDM, DINO-WM remain to be de
 
 - [[topics/world-models]]
 - [[topics/self-predictive-learning]]
+- [[topics/predictive-processing]]
 - [[topics/representation-collapse]]
 - [[topics/scaling-laws]]

@@ -17,3 +17,4 @@ Latent-bootstrapping objectives for representation learning, especially in RL. T
 ## Related topics
 - [[topics/representation-learning-rl]]
 - [[topics/world-models]]
+- [[topics/predictive-processing]]
