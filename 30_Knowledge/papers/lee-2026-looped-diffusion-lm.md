@@ -11,7 +11,7 @@ priority: high
 read_state: skimmed
 relevance: ""
 added: 2026-06-03
-last_updated: 2026-06-03
+last_updated: 2026-06-10
 ---
 
 # Looped Diffusion Language Models (LoopMDM)
@@ -38,6 +38,93 @@ unclear it should help, since MDMs already iterate across denoising steps. Prior
 looping work focused on parameter efficiency or inference-time refinement, and
 gains at *fixed training compute* were non-trivial. LoopMDM asks: integrate
 looping into MDMs *under matched training compute* — where and how much to loop?
+
+## Background: the masked-diffusion framework (§2.1)
+
+*The paper's preliminaries. This is the shared MDM scaffolding (LLaDA / Dream /
+MDLM / MD4 lineage) that LoopMDM plugs its looped denoiser into — worth keeping
+in full because every result below is stated against these three equations.*
+
+### Notation
+Sequences $x = (x^1,\dots,x^L)$ of length $L$; each token $x^i$ is a one-hot over
+vocabulary $V=\{1,\dots,V\}$. Augment with a **mask token** $m$: $\bar V = V\cup\{m\}$.
+$\mathrm{Cat}(\cdot\mid p)$ is a categorical with probability vector $p$. The one
+piece of notation that unlocks everything is the **point mass** $\delta_a(b)$ — a
+distribution that puts *all* its probability on the single value $a$, so as a
+function of the outcome $b$ it is just the indicator "$1$ if $b=a$, else $0$"
+(the discrete Dirac / Kronecker delta). Every equation below is a **mixture of
+point masses**: deltas are the building blocks ("definitely this value"), the
+$\alpha$'s are the mixing weights.
+
+### Forward process (corruption) — Eq. (1)
+A strictly decreasing schedule $\alpha_t:[0,1]\to[0,1]$ runs from $\alpha_0\simeq1$
+(clean) to $\alpha_1\simeq0$ (all masked). Each token is corrupted **independently**:
+
+$$q(x^i_t \mid x^i_0) = \alpha_t\,\delta_{x^i_0}(x^i_t) + (1-\alpha_t)\,\delta_m(x^i_t)$$
+
+A per-token coin flip: **keep** the clean token $x^i_0$ with prob $\alpha_t$,
+**replace with mask** $m$ with prob $1-\alpha_t$. Because the only two point
+masses in the mixture are $\delta_{x^i_0}$ and $\delta_m$, a token can *only* end
+up unchanged or masked — never corrupted into a different real token (this is
+what "absorbing-state" means, and what separates masked diffusion from Gaussian
+diffusion). Reading the formula at each outcome: $x^i_t=x^i_0\to\alpha_t$,
+$x^i_t=m\to 1-\alpha_t$, anything else $\to 0$. So $1-\alpha_t$ is literally the
+expected fraction of masked positions at time $t$.
+
+> `The cat sat on the mat` → (at some $t$) → `The [M] sat on [M] mat`
+
+### Reverse process (denoising) — Eq. (2)
+Generation runs the schedule backwards: start from the all-mask sequence
+$x_1=(m,\dots,m)$ and progressively unmask, $x_1\to x_t\to x_s\to\cdots\to x_0$
+with $s<t$. A denoiser $p_\theta(x^i_0\mid x_t)$ reads the whole partially-masked
+sequence and predicts a distribution over the **clean** token at each masked
+position. With $\alpha_{s\mid t}=(1-\alpha_s)/(1-\alpha_t)$, masked positions update as
+
+$$p_\theta(x^i_s\mid x_t) = \alpha_{s\mid t}\,\delta_m(x^i_t) + (1-\alpha_{s\mid t})\,\mathrm{Cat}\!\big(x^i_s\mid p_\theta(x^i_0\mid x_t)\big),\qquad x^i_t=m.$$
+
+Same mixture-of-point-masses shape as the forward process, read in reverse. For a
+currently-masked position: **stay masked** with prob $\alpha_{s\mid t}$ (the
+$\delta_m$ term), or **reveal** with prob $1-\alpha_{s\mid t}$, sampling the actual
+token from the model's predicted clean distribution. Two structural facts:
+- **Already-unmasked tokens are frozen** — the transition only acts on masked
+  positions; once revealed, a token never changes again.
+- $\alpha_{s\mid t}$ compares masking fractions: $1-\alpha_t$ masked now vs.
+  $1-\alpha_s$ masked at the (less noisy) target $s$. Since fewer are masked at
+  $s$, the ratio $<1$ and each step reveals a fraction of the remaining masks.
+
+> `The [M] sat on [M] mat`, model predicts pos-2 {cat .8, dog .1, …} & pos-5
+> {mat .7, floor .2, …}; with $\alpha_{s\mid t}=0.4$, each mask reveals w.p. 0.6 →
+> `The cat sat on [M] mat` → … → `The cat sat on the mat`.
+
+**Conditional independence:** the reverse process factorizes,
+$p_\theta(x_s\mid x_t)=\prod_i p_\theta(x^i_s\mid x_t)$ — once the transformer has
+produced its predictions, masked positions are sampled independently. All the
+cross-position dependence lives in the transformer's contextual representation,
+not in the sampling step.
+
+### Training objective (NELBO) — Eq. (3)
+$$\mathcal{L}_{\text{NELBO}} = \mathbb{E}_{t\sim U[0,1],\,x_t\sim q}\!\left[\sum_{i=1}^L \mathbb{I}[x^i_t=m]\,\frac{\alpha_t'}{1-\alpha_t}\,\log\langle p^i_\theta(x_t,t),\,x^i_0\rangle\right]$$
+
+Three pieces:
+- **$\mathbb{I}[x^i_t=m]$** — only **currently-masked** positions contribute. The
+  model is graded purely on reconstruction, exactly like BERT-style masked LM.
+- **$\langle p^i_\theta,\,x^i_0\rangle$** — inner product of the predicted
+  distribution with the one-hot true token simply **selects the probability mass
+  on the correct token**, so $\log\langle\cdot,\cdot\rangle$ is the standard
+  cross-entropy / log-likelihood of the right token.
+- **$\frac{\alpha_t'}{1-\alpha_t}$** — the schedule-derived per-timestep weight
+  from the ELBO derivation ($\alpha_t'<0$ since $\alpha_t$ decreases; that sign
+  flips the bound so *minimizing* the NELBO *maximizes* weighted log-likelihood).
+  This factor is the only thing separating a valid diffusion ELBO from a plain
+  masked-LM loss — strip it and you're back to BERT.
+
+[analyst] Net: sample a noise level, mask tokens by Eq. (1), train the network to
+predict the originals at masked spots via weighted cross-entropy. The whole
+generative story is "predict the masked tokens, commit some, repeat." LoopMDM
+changes *only* the denoiser $p_\theta$ (looping its early-middle layers) — the
+forward process, the reverse-transition form, and this objective are inherited
+unchanged, which is why its NELBO (above) is identical save the loop-count
+superscript $S$.
 
 ## Method
 
