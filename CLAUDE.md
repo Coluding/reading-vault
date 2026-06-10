@@ -347,16 +347,19 @@ After processing the inbox:
 
 ## Part 12 — Deep note body templates
 
-Use these structures when creating notes under `30_Knowledge/{type}/{slug}.md`. The target lengths are floors, not ceilings — go longer when the source warrants it.
+Use these structures when creating notes under `30_Knowledge/{type}/{slug}.md`. The target lengths are **floors, not ceilings** — and they are deliberately generous. Default to the *fuller, more detailed* end of each range: a note that captures specifics (exact numbers, equations, hyperparameters, named methods, concrete examples) is far more valuable later than a terse one. When in doubt, write more. The only hard limit is the no-fabrication rule — depth must come from the fetched source, never from filler or invention. If a section is genuinely unsupported by the source, write `_not addressed by the source_` rather than padding.
 
-### Paper notes (target: 800–2000+ words)
+**Where to spend the words (priority order):** the **Method and any derivations** are the point of the note — go deep there. Reconstruct the formulation, the core idea, the architecture/algorithm, and especially the **math: write out the key equations, define every symbol, and walk through the derivation steps** (objective → loss → update/sampling rule) rather than just stating the final loss. If the paper proves something, sketch the proof's logic. **Results can be summarized** — report the headline numbers and the most telling comparisons/ablations concisely; you do not need to transcribe every table. A good paper note is one you could re-implement the method from, even if you'd re-open the paper to check exact benchmark scores.
+
+### Paper notes (target: 1200–2500+ words; go longer for rich papers)
 
 ```markdown
 ## TL;DR
 
-(3–5 sentences) What the paper does, the core trick, why it matters.
-Write this so a colleague who has 60 seconds gets the actual contribution,
-not just the topic.
+(4–7 sentences) What the paper does, the core trick, why it matters, and
+the headline result with its key number. Write this so a colleague who has
+60 seconds gets the actual contribution — the mechanism and the evidence,
+not just the topic. Name the method, state what it beats and by how much.
 
 ## Context & motivation
 
@@ -374,9 +377,20 @@ Input / output / objective. What's being optimized.
 1–2 sentences capturing the central insight.
 
 ### Architecture / algorithm
-Each component and how they connect. Use LaTeX-style math for key
-equations — loss functions, update rules, sampling procedures.
-For example: $\mathcal{L} = \mathbb{E}_{x,t}[\| \epsilon - \epsilon_\theta(x_t, t) \|^2]$
+Each component and how they connect. **This is where the note earns its
+keep — be thorough.** Use LaTeX-style math for every key equation (loss
+functions, update rules, sampling procedures) and **define each symbol as
+you introduce it**. Don't just quote the final loss — show how it's built:
+the objective, the assumptions, the intermediate steps, and any derivation
+or proof sketch the paper gives. Where the paper relies on a known result,
+name it and state how it's used.
+For example: $\mathcal{L} = \mathbb{E}_{x,t}[\| \epsilon - \epsilon_\theta(x_t, t) \|^2]$ — then explain what each term is and where it comes from.
+
+### Derivations / why it works (when the paper has them)
+Reconstruct the load-bearing math: the steps from setup to result, the key
+inequality or identity, what assumption each step rests on. The goal is that
+future-you understands *why* the method is correct, not just *what* it is.
+Skip only if the paper is purely empirical (then write `_no derivation; empirical paper_`).
 
 ### Training procedure
 Datasets used, optimizer, hyperparameters, schedule. Be specific —
@@ -394,8 +408,9 @@ solver choice.
 
 ## Key results
 
-Specific numbers with table/section references from the paper.
-- Headline metrics vs baselines
+*Summarize — don't transcribe.* A few headline numbers with table/section
+references are enough; the method sections above are where the depth goes.
+- Headline metrics vs baselines (the one or two numbers that matter)
 - Most surprising findings (positive or negative)
 - Reported failure cases
 
@@ -435,32 +450,38 @@ Experiments you'd want to see done.
 > "Quote text" — §3.2, p.5
 ```
 
-### Blog notes (target: 300–800 words)
+### Blog notes (target: 500–1200 words; go longer for substantive technical posts)
 
 ```markdown
 ## TL;DR
 
-(2–3 sentences)
+(3–5 sentences) The post's central claim, the reasoning or evidence behind
+it, and why it's worth remembering. Enough that you needn't re-read the post
+to recall its actual argument, not just its subject.
 
 ## Context
 
-(1 paragraph) What prompted the post, intended audience, where it sits
-in the author's broader work.
+(1–2 paragraphs) What prompted the post, intended audience, where it sits
+in the author's broader work, and what debate or prior post it responds to.
 
 ## Core argument
 
-The main claim, with key supporting evidence the author provides. Not
-exhaustive — just the load-bearing parts.
+The main claim laid out in full, with the key supporting evidence, examples,
+and intermediate steps the author uses to get there. Capture the chain of
+reasoning, not just the conclusion — but stay to the load-bearing parts.
 
 ## Notable details
 
-- Specific technical points worth remembering
-- Examples / case studies the author uses
-- Counter-intuitive claims with the reasoning
+- Specific technical points worth remembering (with the actual numbers /
+  names / mechanisms, not just that they were mentioned)
+- Examples / case studies the author uses, and what each illustrates
+- Counter-intuitive claims with the author's reasoning for them
+- Caveats or hedges the author flags
 
 ## Why it matters [analyst's view]
 
-Connection to your interests / current work.
+Connection to your interests / current work, and how it relates to other
+notes in the vault. Where you agree, doubt, or want to dig further.
 
 ## Connections
 

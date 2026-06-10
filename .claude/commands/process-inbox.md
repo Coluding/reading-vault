@@ -28,9 +28,9 @@ appropriate category inbox, then create deep notes in `30_Knowledge/`.
 3. **For each non-reject item, create a substantial deep note** at `30_Knowledge/{type}/{slug}.md`:
    - Slug per `CLAUDE.md` Part 5
    - Frontmatter per `CLAUDE.md` Part 7
-   - **Body per `CLAUDE.md` Part 12** — these notes are the durable record; depth matters. Target lengths:
-     - **Paper**: 800–2000+ words across the full template (TL;DR, context, method with subsections, experimental setup, results with specific numbers, ablations, limitations, analyst's synthesis, open questions, connections, optional quotes). Use LaTeX math for key equations.
-     - **Blog**: 300–800 words (TL;DR, context, core argument, notable details, why it matters, connections, optional quotes).
+   - **Body per `CLAUDE.md` Part 12** — these notes are the durable record; depth matters. Target lengths are **floors** — default to the fuller, more detailed end and go longer when the source warrants it. **Spend the words on Method and derivations** (write out and explain the key equations, define symbols, walk the derivation/proof logic); **results can be summarized** (a few headline numbers, not every table):
+     - **Paper**: 1200–2500+ words across the full template (TL;DR, context, method with subsections + derivations, experimental setup, results summarized with key numbers, ablations, limitations, analyst's synthesis, open questions, connections, optional quotes). Use LaTeX math for every key equation and define its symbols. Aim for a note you could re-implement the method from.
+     - **Blog**: 500–1200 words (TL;DR, context, core argument, notable details, why it matters, connections, optional quotes). Capture the chain of reasoning and concrete details, not just the conclusion.
      - **Thread**: 100–300 words (TL;DR, key claims, context, why it matters, connections).
      - **Newsletter**: 200–500 words (TL;DR, what it covered, follow-ups, connections).
    - For papers and blogs: fetch full content via the Readwise Document Export API:
