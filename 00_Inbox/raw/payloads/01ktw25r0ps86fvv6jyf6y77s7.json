@@ -25,5 +25,5 @@
   "last_opened_at": "2026-06-11T19:22:33.878000+00:00",
   "saved_at": "2026-06-11T19:22:33.878000+00:00",
   "last_moved_at": "2026-06-11T19:22:33.878000+00:00",
-  "event_type": "reader.non_feed_document.created"
+  "event_type": "reader.any_document.created"
 }
