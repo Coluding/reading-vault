@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: generative-models
-last_updated: 2026-06-03
+last_updated: 2026-06-22
 ---
 
 # Generative Models
@@ -15,6 +15,15 @@ The line of methods that learn $p(x)$ or $p(x \mid c)$ from samples — covering
 - [[blogs/shing-diffusionblocks]] — *(Sakana AI, ICLR 2026 summary)* casts block-wise network training as a diffusion denoising process so each block trains independently on its own "closeness-to-target" range; ~1/B training memory at performance comparable to end-to-end across ViT/DiT/text models. Diffusion-as-block-roles is another instance of *designing the dynamics a network implements*.
 - [[papers/lee-2026-looped-diffusion-lm]] — **LoopMDM**: brings looped (weight-shared) transformers into masked diffusion LMs; looping early-middle layers buys 3.3× training-FLOP efficiency and reasoning gains, with the loop count as an inference-time compute knob. (See also [[topics/looped-transformers]].)
 
+## Flow matching / optimal-transport coupling
+
+- [[papers/malnick-2026-designing-ot-flows]] — stop *solving* OT; **design a prior whose identity coupling to the data is OT-optimal** (low-frequency image projections). Straightens flow-matching trajectories (>2× lower curvature) with no OT solver, composing with latent diffusion, CFG, and one-step MeanFlow. (See [[topics/flow-matching]], [[topics/optimal-transport]].)
+- [[papers/cai-2026-mode-mean-seeking]] — decoupled diffusion transformer: a mean-seeking flow-matching head (long-video coherence from scarce data) + a mode-seeking distribution-matching head distilled from a frozen short-video teacher; FM head discarded at inference for fast minute-scale video.
+- [[blogs/dieleman-diffusion-integral]] — unifying tutorial on **flow maps** and the three consistency rules (compositionality / Lagrangian / Eulerian); the map of the 2024–26 few-step-sampling literature.
+- [[blogs/flow-based-llms-intro]] — flow-based language models: softmax + cross-entropy = the Variational-Flow-Matching objective on the simplex; flows are distillable into Categorical Flow Maps (discrete diffusion is not).
+- [[blogs/jiha-autoregression-vs-diffusion]] — AR vs diffusion as two parameterizations of one optimal-transport problem (Knothe–Rosenblatt rearrangement vs learned Brenier map).
+- [[blogs/accelerated-diffusion-tutorial]] — CVPR 2026 "FastGen" tutorial: faster sampling, efficient samplers, and distillation for real-time image/video generation.
+
 ## Efficient inference / sampling
 
 - [[papers/bartosh-2026-dual-rate-diffusion]] — splits the denoiser into a heavy **context encoder** (run every $K$-th step for global structure) and a light **denoising model** (run every step for local detail); 2–4× lower FLOPs at equal/better ImageNet FID, composes with Moment Matching Distillation. Spectral framing: global low-frequencies are slow, so don't recompute them every step.
@@ -27,6 +36,9 @@ The line of methods that learn $p(x)$ or $p(x \mid c)$ from samples — covering
 ## Related topics
 
 - [[topics/diffusion-models]]
+- [[topics/flow-matching]]
+- [[topics/optimal-transport]]
+- [[topics/distillation]]
 - [[topics/score-matching]]
 - [[topics/diffusion-language-models]]
 - [[topics/variational-inference]]

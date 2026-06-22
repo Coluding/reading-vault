@@ -1,17 +1,24 @@
 ---
 type: paper
 title: "AI-GAs: AI-generating algorithms, an alternate paradigm for producing general artificial intelligence"
-authors: ["Jeff Clune"]
+authors:
+  - Jeff Clune
 year: 2019
 venue: arXiv
 url: https://arxiv.org/abs/1905.10985
-rw_id: "manual:clune-2019"
-topics: [open-ended-learning, exploration, general-intelligence, meta-learning, position-paper]
+rw_id: manual:clune-2019
+topics:
+  - open-ended-learning
+  - exploration
+  - general-intelligence
+  - meta-learning
+  - position-paper
 priority: high
 read_state: skimmed
 relevance: ""
 added: 2026-05-22
 last_updated: 2026-05-22
+comment: I guess he is advocating a lot for NAS. But in 2026 I haven't really heard much of it anymore.  The main property right now is scaling. However, the big companies are actively working on self improving AI systems which falls into this domain probably. Evolutionary systems that rewrite their own training code are an example for that. Also, the suggestion of self-evolving tasks/environments in combination with novelty search behavior is something we have not really explored (well, we tried it a bit but it has not really led to major success).
 ---
 
 # AI-GAs: AI-generating algorithms
