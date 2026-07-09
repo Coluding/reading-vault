@@ -1,15 +1,30 @@
 ---
 type: paper
-title: "Mode Seeking meets Mean Seeking for Fast Long Video Generation"
-authors: ["Shengqu Cai", "Weili Nie", "Chao Liu", "Julius Berner", "Lvmin Zhang", "Nanye Ma", "Hansheng Chen", "Maneesh Agrawala", "Leonidas Guibas", "Gordon Wetzstein", "Arash Vahdat"]
+title: Mode Seeking meets Mean Seeking for Fast Long Video Generation
+authors:
+  - Shengqu Cai
+  - Weili Nie
+  - Chao Liu
+  - Julius Berner
+  - Lvmin Zhang
+  - Nanye Ma
+  - Hansheng Chen
+  - Maneesh Agrawala
+  - Leonidas Guibas
+  - Gordon Wetzstein
+  - Arash Vahdat
 year: 2026
 venue: arXiv
 url: https://arxiv.org/abs/2602.24289
 rw_id: 01ktspg3hj0qw41frj8wwe8jmh
-topics: [video-generation, generative-models, distillation, flow-matching]
+topics:
+  - video-generation
+  - generative-models
+  - distillation
+  - flow-matching
 priority: high
-read_state: queued
-relevance: ""
+read_state: read
+relevance: high
 added: 2026-06-10
 last_updated: 2026-06-17
 ---

@@ -1,6 +1,6 @@
 ---
 type: moc
-last_updated: 2026-06-22
+last_updated: 2026-07-08
 status: living
 
 ---
@@ -11,6 +11,36 @@ Most recent items added to the vault, regardless of category. Refreshed by
 `/process-inbox`.
 
 ## This week
+
+_(Triaged 2026-07-08 — **backfill** of the 2026-06-15 → 07-07 Worker-outage gap: world models, video/physics diffusion, reasoning & looped transformers, representation learning, robotics. 14 papers, 7 blogs, 1 reject.)_
+
+### Papers
+- [[papers/zou-2026-latent-thought-flow]] — **Latent Thought Flow: Efficient Latent Reasoning in Large Language Models**: Latent Thought Flow (LTF) makes LLM reasoning happen inside the model's continuous hidden space instead of decoded chain-of-thought tokens, and — unli.
+- [[papers/esmati-2026-invisible-hand-physics]] — **The Invisible Hand of Physics: When Video Diffusion Models Know More Than They Show**: This paper asks whether video diffusion models internally *encode* physical structure even when their generated outputs violate physics.
+- [[papers/daithankar-2026-temporal-difference-vision]] — **You Don't Need Strong Assumptions: Visual Representation Learning via Temporal Differences**: TDV (Temporal Difference in Vision) is a self-supervised recipe for learning image representations from video that deliberately drops the strong induc.
+- [[papers/jiang-2024-dexmimicgen]] — **DexMimicGen: Automated Data Generation for Bimanual Dexterous Manipulation via Imitation Learning**: DexMimicGen (DexMG) is an automated data-generation system that turns a *handful* of human teleoperation demos into a large imitation-learning dataset.
+- [[papers/groger-2026-aristotelian-view]] — **Revisiting the Platonic Representation Hypothesis: An Aristotelian View**: This paper argues that the **Platonic Representation Hypothesis (PRH)** — the claim that neural nets trained on different data/modalities converge to.
+- [[papers/movahedi-2026-fixed-point-reasoners]] — **Fixed-Point Reasoners: Stable and Adaptive Deep Looped Transformers**: FPRM (Fixed-Point Reasoning Model) is a non-hierarchical Looped Transformer for latent reasoning that (a) makes deep looping trainable by switching fr.
+- [[papers/ye-2026-world-action-models]] — **World Action Models are Zero-shot Policies**: The paper introduces **DreamZero**, a 14B **World Action Model (WAM)** built on a pretrained image-to-video diffusion backbone (Wan2.1-I2V-14B) that j.
+- [[papers/porcher-2026-flowwm]] — **Flow Matching in Feature Space for Stochastic World Modeling**: **FlowWM** is a stochastic visual world model that runs **flow matching directly inside the high-dimensional feature space of a frozen pretrained enco.
+- [[papers/kumar-2026-supervised-memory-training]] — **Pretraining Recurrent Networks without Recurrence**: The paper introduces **Supervised Memory Training (SMT)**, a way to train nonlinear RNNs *without* backpropagation through time (BPTT).
+- [[papers/yuan-2026-physics-alignment]] — **Inference-time Physics Alignment of Video Generative Models with Latent World Models**: The paper (from FAIR / Meta Superintelligence Labs, dated March 2, 2026) shows that a large share of the physics-implausibility in state-of-the-art vi.
+- [[papers/bayat-2026-tapered-language-models]] — Tapered Language Models: Transformers (and their modern relatives) allocate the same MLP width to every layer.
+- [[papers/momennejad-2026-compositional-open-ended]] — A Compositional Framework for Open-ended Intelligence: This is a **theoretical / position paper** (no experiments) that proposes a formal object for open-ended intelligence built from a finite set of primi.
+- [[papers/jiang-2025-world4rl]] — World4RL: Diffusion World Models for Policy Refinement with Reinforcement Learning for Robotic Manipulation: **World4RL** is a two-stage framework that uses a **diffusion-based world model as a high-fidelity, frozen simulator** in which to refine an imitation.
+- [[papers/shi-2026-gpc-motor-control]] — GPC: Large-Scale Generative Pretraining for Transferable Motor Control: GPC (Generative Pretrained Controllers) builds general-purpose, reusable controllers for physics-based character animation by borrowing the LLM recipe.
+
+### Blogs
+- [[blogs/joseph-world-models-interpretability]] — **World models and interpretability are two sides of the same coin**: Sonia Joseph proposes a fourth definition of "world model" that cuts against the dominant generative/3D/latent-prediction framings: the **Internal Wor.
+- [[blogs/interlatent-ai-robotics]] — **An Overview of Modern AI Robotics from First Principles**: A first-principles tour of how modern "physical AI" robot policies are built, framed around the idea that a robot policy is just a function mapping ob.
+- [[blogs/mccormick-world-models]] — **World Models: Computing the Uncomputable**: A long (~18k word) manifesto from Packy McCormick, co-written with the team at his World Model startup **General Intuition**, arguing that World Model.
+- [[blogs/haegele-magnitude-direction]] — Improving Neural Network Training by Decoupling the Magnitude and Direction of Weight Vectors: The post introduces **Magnitude-Direction Decoupling (MD)**: constrain each weight matrix's *direction* to a fixed-norm sphere while giving it a separ.
+- _Readwise changelogs (low priority):_ [[blogs/readwise-changelog-2026-06-26]], [[blogs/readwise-changelog-2026-07-03]], [[blogs/readwise-changelog-2026-06-19]].
+
+### Rejected
+- Loom (loom.com) — off-topic product page (not AI/math/CS).
+
+## Earlier
 
 _(Triaged 2026-06-22 — the flow-matching / OT / generative cluster, plus robotics, attention, reliability, and geometry. Source-saved 06-10 to 06-15.)_
 

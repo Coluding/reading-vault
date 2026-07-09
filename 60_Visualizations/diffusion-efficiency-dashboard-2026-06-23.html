@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Making Diffusion Fast — a hand-drawn dashboard (Reading Vault)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Gaegu:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.js"></script>
+<style>
+  :root{
+    --ink:#23252b; --paper:#f6f1e4; --paper2:#fbf8ef; --line:#3a3d44;
+    --amber:#e0951f; --rose:#d24a66; --violet:#7c5cbf; --teal:#1f9183; --slate:#46699f;
+    --muted:#6b6256;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif; line-height:1.5;
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(0,0,0,.025) 0, transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(0,0,0,.025) 0, transparent 40%);
+  }
+  .wrap{max-width:1180px; margin:0 auto; padding:28px 20px 80px}
+  h1,h2,h3{font-family:'Caveat',cursive; font-weight:700; line-height:1.05; margin:0}
+  h1{font-size:clamp(38px,6vw,68px)}
+  h2{font-size:clamp(28px,3.6vw,42px); margin-bottom:6px}
+  .hand{font-family:'Gaegu',cursive}
+  .caveat{font-family:'Caveat',cursive}
+  a{color:inherit}
+  /* hero */
+  header.hero{position:relative; padding:10px 0 6px}
+  .kicker{font-family:'Gaegu',cursive; font-size:18px; letter-spacing:.5px; color:var(--rose); text-transform:uppercase}
+  .sub{max-width:740px; font-size:17px; color:var(--muted); margin-top:8px}
+  .meta{margin-top:12px; font-family:'Gaegu',cursive; font-size:15px; color:var(--muted)}
+  .meta b{color:var(--ink)}
+  /* sketchy card */
+  .card{position:relative; background:var(--paper2); border-radius:14px; padding:18px 18px 16px;
+        box-shadow:2px 3px 0 rgba(0,0,0,.10); margin:0}
+  .sketch{border:2.5px solid var(--line); border-radius:255px 12px 225px 12px/12px 230px 12px 255px}
+  .grid{display:grid; gap:18px}
+  /* stat tiles */
+  .stats{grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); margin:22px 0 8px}
+  .stat{padding:14px 16px}
+  .stat .n{font-family:'Caveat',cursive; font-size:44px; line-height:.9; color:var(--ink)}
+  .stat .l{font-family:'Gaegu',cursive; font-size:15px; color:var(--muted); margin-top:4px}
+  .stat .c{position:absolute; top:10px; right:14px; font-size:22px}
+  /* section heads */
+  section{margin-top:46px}
+  .secnum{font-family:'Caveat',cursive; font-size:26px; color:var(--rose); margin-right:8px}
+  .lead{max-width:760px; color:var(--muted); font-size:15.5px; margin:6px 0 18px}
+  /* levers */
+  .levers{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+  .lever{padding:16px 16px 14px; display:flex; flex-direction:column; gap:8px}
+  .lever .tag{display:inline-flex; align-items:center; gap:8px; font-family:'Gaegu',cursive; font-weight:700; font-size:19px}
+  .lever .dot{width:16px; height:16px; border-radius:50%}
+  .lever p{margin:0; font-size:14px; color:var(--muted)}
+  .lever ul{margin:6px 0 0; padding-left:0; list-style:none; font-size:13.5px}
+  .lever li{padding:3px 0; border-top:1px dashed #cdc3ad}
+  .lever li b{font-weight:600}
+  .glyph{height:64px}
+  /* leaderboard */
+  .bars{padding:8px 6px 0}
+  .barrow{display:grid; grid-template-columns:200px 1fr; gap:14px; align-items:center; padding:10px 6px}
+  .barrow .who{font-family:'Gaegu',cursive; font-size:16px; line-height:1.1}
+  .barrow .who small{display:block; color:var(--muted); font-size:12px; font-family:'Inter'}
+  .barwrap{position:relative}
+  .barcap{font-family:'Gaegu',cursive; font-size:15px; margin-top:2px}
+  /* paper cards */
+  .filters{display:flex; flex-wrap:wrap; gap:8px; margin:4px 0 18px}
+  .chip{cursor:pointer; font-family:'Gaegu',cursive; font-size:15px; padding:5px 14px; border-radius:20px;
+        border:2px solid var(--line); background:var(--paper2); user-select:none; transition:.15s}
+  .chip.active{color:#fff; border-color:transparent}
+  .papers{grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}
+  .pcard{padding:0; overflow:hidden; display:flex; flex-direction:column}
+  .pcard .top{padding:14px 16px 10px; border-bottom:2px dashed #d6ccb6}
+  .pcard .lvbar{height:7px}
+  .pcard h3{font-size:25px; line-height:1}
+  .pcard .auth{font-family:'Gaegu',cursive; font-size:13.5px; color:var(--muted); margin-top:3px}
+  .pcard .body{padding:12px 16px 14px; font-size:13.6px; flex:1}
+  .pcard .mech{font-family:'Inter'; color:var(--ink)}
+  .headline{font-family:'Caveat',cursive; font-size:30px; line-height:1; margin:8px 0 4px}
+  .badges{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px}
+  .badge{font-family:'Gaegu',cursive; font-size:12px; padding:2px 9px; border-radius:12px; border:1.5px solid var(--line)}
+  .badge.lv{color:#fff; border:none}
+  .badge.an{background:#fff5d6; border-color:#e0c45a; color:#7a5a00}
+  .rw{font-family:'Inter'; font-size:10.5px; color:var(--muted); margin-top:9px; word-break:break-all}
+  .rw a{color:var(--slate)}
+  .typepill{float:right; font-family:'Gaegu',cursive; font-size:12px; color:var(--muted)}
+  /* constellation */
+  #constellation{width:100%; height:520px}
+  .note{font-family:'Gaegu',cursive; font-size:14px; color:var(--muted)}
+  footer{margin-top:54px; padding-top:18px; border-top:2px dashed #cdc3ad; font-size:13px; color:var(--muted)}
+  .an-inline{background:#fff5d6; border-radius:4px; padding:0 5px; font-style:italic}
+  /* spotlight */
+  .spotlight{margin-top:18px; display:grid; grid-template-columns:minmax(260px,1fr) 1.25fr; gap:22px; align-items:center}
+  .spotlight .spot-text p{font-size:14.5px; color:#3a3d44; margin:10px 0}
+  .spot-yes{font-family:'Gaegu',cursive; font-weight:700; font-size:18px; color:var(--rose) !important; margin:2px 0 8px !important}
+  .spot-why{font-size:13.6px !important; color:var(--muted) !important}
+  .eq{font-family:'Cambria Math','Georgia',serif; font-style:italic; white-space:nowrap}
+  .eq.big{font-size:20px}
+  .eqbox{background:#fff; border:2px dashed #d6ccb6; border-radius:8px; padding:12px 14px; text-align:center; margin:12px 0}
+  .eqbox .eq sup,.eqbox .eq sub{font-style:normal}
+  @media(max-width:720px){.spotlight{grid-template-columns:1fr}}
+  .legend{display:flex; flex-wrap:wrap; gap:14px; margin-top:14px; font-family:'Gaegu',cursive; font-size:14px}
+  .legend span{display:inline-flex; align-items:center; gap:6px}
+  .legend i{width:14px;height:14px;border-radius:50%; display:inline-block}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="kicker">Reading Vault · self-drawn dashboard</div>
+    <h1>Making Diffusion Fast</h1>
+    <div class="sub">A hand-drawn tour of the vault's 2026 notes on <b>cutting the cost of diffusion &amp; flow models</b> — through straighter trajectories, distillation into few-step generators, <b>looping</b> shared computation, cheaper per-step networks, and reframings that change <i>what</i> the model learns.</div>
+    <div class="meta">Generated <b>2026-06-23</b> &nbsp;·&nbsp; scope: <b>diffusion-efficiency</b> &nbsp;·&nbsp; <b>6</b> papers + <b>5</b> blogs across <b>5</b> efficiency levers &nbsp;·&nbsp; every number traces to a deep note (<span class="an-inline">analyst's view</span> = my synthesis, not a source claim)</div>
+    <div class="legend" id="legend"></div>
+  </header>
+
+  <!-- ============ STAT TILES ============ -->
+  <div class="grid stats" id="stats"></div>
+
+  <!-- ============ CORE PROBLEM ============ -->
+  <section>
+    <h2><span class="secnum">1</span>Why diffusion is slow — and the one lever everything pulls</h2>
+    <div class="lead">Deterministic sampling is just <b>numerical integration of a velocity field</b> along the path from noise to data (<a href="#">[[blogs/dieleman-diffusion-integral]]</a>). Independently-paired noise &amp; data force the field to average over <i>crossing</i> paths → <b>curved trajectories → many ODE steps</b>. Almost every efficiency idea below is an attack on that curve: straighten it, jump across it, reuse work along it, or make each step cheaper.</div>
+    <div class="card sketch"><svg id="coreDiagram" width="100%" height="300" viewBox="0 0 1080 300"></svg></div>
+
+    <!-- spotlight: consistency models = the integral -->
+    <div class="card sketch spotlight">
+      <div class="spot-diagram"><svg id="consistencyDiagram" width="100%" height="330" viewBox="0 0 560 330"></svg></div>
+      <div class="spot-text">
+        <h3 style="font-size:30px;color:var(--rose)">Spotlight — are consistency models learning the integral?</h3>
+        <p class="spot-yes">Yes — and that's exactly why they sample in one step.</p>
+        <p>A diffusion <b>denoiser</b> only gives the <i>integrand</i>: the instantaneous tangent <span class="eq">v(x<sub>t</sub>, t)</span> at the current point. Sampling re-evaluates it and accumulates many small steps — that's the cost.</p>
+        <div class="eqbox">
+          <span class="eq big">x<sub>0</sub> = F(x<sub>s</sub>, s, 0) = x<sub>s</sub> + ∫<sub>s</sub><sup>0</sup> v(x<sub>τ</sub>, τ) dτ</span>
+        </div>
+        <p>A <b>consistency model</b> is the flow map with its target time <b>pinned to t = 0</b> (the data end). It maps <i>any</i> point on a trajectory straight to that trajectory's clean endpoint — so what it outputs <b>is</b> the definite integral of the velocity from <span class="eq">s</span> all the way to <span class="eq">0</span>. One evaluation replaces the whole integration loop.</p>
+        <p class="spot-why"><b>Why it's called "consistency":</b> every point on the same ODE path must map to the <i>same</i> <span class="eq">x<sub>0</sub></span> — i.e. <span class="eq">F(·, s, 0)</span> is invariant as you slide <span class="eq">s</span>. That's the compositionality / self-consistency rule with the target fixed at 0, anchored by <span class="eq">F(x<sub>t</sub>, t, t) = x<sub>t</sub></span>. Enforcing that invariance is what forces the network to actually <i>be</i> a correct integral.</p>
+        <div class="badges"><span class="badge an">analyst's view</span>
+          <span style="font-size:12.5px;color:var(--muted)">Consistency models are the <b>restricted</b> flow map (one free time, target = 0); CTM lifts them to the full two-time map <span class="eq">F(x<sub>s</sub>,s,t)</span>. No free lunch: learning the integral is harder than the integrand — the loss needs stop-gradient, and consistency <i>distillation</i> bootstraps v from a diffusion teacher.</span></div>
+        <div class="rw">from <a href="https://sander.ai/2026/05/06/flow-maps.html" target="_blank" rel="noopener">[[blogs/dieleman-diffusion-integral]]</a> · rw_id <code>01ktspgqg2drmy8w0rkd9k0j7q</code></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FIVE LEVERS ============ -->
+  <section>
+    <h2><span class="secnum">2</span>Five levers for cheaper generation <span class="caveat" style="font-size:22px;color:var(--muted)">— an analyst's taxonomy</span></h2>
+    <div class="lead">The vault's diffusion-efficiency notes sort cleanly into five mechanisms. The grouping is my synthesis (<span class="an-inline">analyst's view</span>); each note's own framing is preserved in its card in §4.</div>
+    <div class="grid levers" id="levers"></div>
+  </section>
+
+  <!-- ============ SPEEDUP LEADERBOARD ============ -->
+  <section>
+    <h2><span class="secnum">3</span>The headline wins <span class="caveat" style="font-size:22px;color:var(--muted)">— drawn to scale</span></h2>
+    <div class="lead">Each bar is a single reported efficiency number, captioned with exactly what it means and what it's measured against. Bars are <b>not</b> mutually comparable units — they're separate claims, sized by their stated factor.</div>
+    <div class="card sketch bars"><svg id="barChart" width="100%" height="430" viewBox="0 0 1080 430"></svg></div>
+  </section>
+
+  <!-- ============ PAPER CARDS ============ -->
+  <section>
+    <h2><span class="secnum">4</span>The notes <span class="caveat" style="font-size:22px;color:var(--muted)">— filter by lever</span></h2>
+    <div class="filters" id="filters"></div>
+    <div class="grid papers" id="papers"></div>
+  </section>
+
+  <!-- ============ CONSTELLATION ============ -->
+  <section>
+    <h2><span class="secnum">5</span>How they connect</h2>
+    <div class="lead">Edges are the cross-links recorded in the deep notes (composes-with, contrasts-with, same-cluster). <a href="#">[[blogs/dieleman-diffusion-integral]]</a> is the hub — the survey that maps the whole few-step literature.</div>
+    <div class="card sketch"><svg id="constellation" viewBox="0 0 1080 520"></svg></div>
+    <div class="note" style="margin-top:8px">Tap a node to highlight its links. Node colour = lever.</div>
+  </section>
+
+  <footer>
+    <b>Provenance.</b> Built from <code>30_Knowledge/papers/</code> and <code>30_Knowledge/blogs/</code> deep notes, themselves fetched via the Readwise Document Export API (rw-ids cited on every card). No quote, number, or claim here was invented — sections a source didn't support are simply omitted. The five-lever taxonomy, the constellation grouping, and any text badged <span class="an-inline">analyst's view</span> are my synthesis, not source claims. &nbsp;·&nbsp; Reading Vault · 2026-06-23.
+  </footer>
+</div>
+
+<script type="application/json" id="vault-data">
+{
+  "levers": [
+    {"key":"straighter","name":"Straighten the path","color":"#e0951f","glyph":"straight",
+     "blurb":"Fewer ODE steps by reducing trajectory curvature — change the coupling so straight conditional paths stop crossing."},
+    {"key":"distill","name":"Distill to few steps","color":"#d24a66","glyph":"jump",
+     "blurb":"Learn the integral of the velocity field (a flow map) or distribution-match a teacher, so generation jumps across time in 1–4 steps."},
+    {"key":"loop","name":"Loop / reuse compute","color":"#7c5cbf","glyph":"loop",
+     "blurb":"Apply a shared block repeatedly to buy effective depth at zero extra parameters; loop count becomes a test-time compute knob."},
+    {"key":"cheaper","name":"Cheaper per step / train","color":"#1f9183","glyph":"heavylight",
+     "blurb":"Keep many steps but make each one cheap — split heavy/light networks, or train one block at a time for ~1/B memory."},
+    {"key":"reframe","name":"Reframe the target","color":"#46699f","glyph":"reframe",
+     "blurb":"Change what the model learns — a family of vector fields, a continuous-vs-discrete latent, or an optimal-transport view of sampling."}
+  ],
+  "items": [
+    {
+      "slug":"lee-2026-looped-diffusion-lm","type":"paper","lever":"loop",
+      "title":"LoopMDM","full":"Looped Diffusion Language Models",
+      "authors":"Lee, Hong, Kim, Lee, Park, Park · 2026",
+      "rw":"01kt7ndspbccq5ar718xm6k09r","url":"https://arxiv.org/abs/2605.26106","read":"skimmed",
+      "mech":"Selectively loops a few <b>early-middle layers</b> of a masked-diffusion-LM denoiser, sharing weights across S repetitions — depth scaling at zero extra params. Trained with stochastic S so any loop count works at inference, even S beyond the training max.",
+      "headline":"3.3× fewer training FLOPs",
+      "detail":"Matches baseline test NLL at S≥6 (3.34×/2.95×/2.34× on LM1B/OWT/FineWeb-Edu); +8.5 GSM8K; S=24 keeps improving past S_max=12.",
+      "analyst":"Existence proof that looping helps even when the model already iterates across denoising steps — the loop adds intra-step mask-to-mask refinement."
+    },
+    {
+      "slug":"cai-2026-mode-mean-seeking","type":"paper","lever":"distill",
+      "title":"Mode meets Mean (mmm)","full":"Mode Seeking meets Mean Seeking for Fast Long Video Generation",
+      "authors":"Cai, Nie, Liu, Berner, Zhang, … Vahdat · 2026",
+      "rw":"01ktspg3hj0qw41frj8wwe8jmh","url":"https://arxiv.org/abs/2602.24289","read":"read",
+      "mech":"Decoupled dual-head transformer: a <b>mean-seeking</b> flow-matching head learns long-horizon coherence from scarce real long video; a <b>mode-seeking</b> head is distilled from a frozen short-video teacher via reverse-KL DMD/VSD on every sliding window. At inference the FM head is discarded — only the few-step DM head runs.",
+      "headline":"4 NFE vs 50",
+      "detail":"≈12× fewer function evals than the SFT baselines while topping Aesthetic (0.5735), Image Quality (0.6982) & VLM Consistency (75.42) on a 200-prompt VBench-Long, Wan 1.3B.",
+      "analyst":"Reverse-KL (mode) and forward-objective (mean) are separated by architecture rather than blended in one loss — the gradient-interference fix generalizes well beyond video."
+    },
+    {
+      "slug":"malnick-2026-designing-ot-flows","type":"paper","lever":"straighter",
+      "title":"OT Flows by Design","full":"Optimal Transport Flow Matching by Design",
+      "authors":"Malnick, Rusanovsky, Fried, Avidan · 2026",
+      "rw":"01ktspdnv04p2dryetc15r45q4","url":"https://arxiv.org/abs/2606.04092","read":"queued",
+      "mech":"Stop <i>solving</i> optimal transport — <b>design the prior so its identity coupling is already OT-optimal</b>. Low-frequency projections of natural images (1/f² spectra) are such a prior; pairing each image with its low-freq version gives straight, non-crossing paths with no solver. No change to the flow model.",
+      "headline":"2.4× straighter",
+      "detail":"Curvature 0.083 vs 0.201 (IFM) on FFHQ; 1-step FID +38% over independent FM, +20% over minibatch OT-FM. Composes with MeanFlow.",
+      "analyst":"Recasts cascaded / coarse-to-fine generation as an OT-coupling statement; orthogonal to objective-side few-step methods, hence composable with them."
+    },
+    {
+      "slug":"bartosh-2026-dual-rate-diffusion","type":"paper","lever":"cheaper",
+      "title":"Dual-Rate Diffusion","full":"Accelerating diffusion with an interleaved heavy-light network",
+      "authors":"Bartosh, Ruhe, Hoogeboom, Heek, Mensink, Salimans · 2026",
+      "rw":"01kszyjtfsjdxsn0s9x5fyzt25","url":"https://arxiv.org/abs/2605.18190","read":"skimmed",
+      "mech":"Splits the denoiser into a <b>heavy context encoder run every K-th step</b> (global low-frequency structure, slow to change) and a <b>light denoiser run every step</b> that reuses those features for local detail. Spectral logic: global structure settles early, so recomputing it each step wastes capacity.",
+      "headline":"≈4× less compute",
+      "detail":"ImageNet 64²: FID 1.12 at 13.14 TFLOPs vs base 1.25 at 55.5. Dual-Rate + Moment-Matching-Distillation: 8-step FID 1.17 — the student beats its teacher.",
+      "analyst":"Orthogonal to the few-step race and composes with it; a structurally honest heavy/light split rather than an in-network caching heuristic."
+    },
+    {
+      "slug":"shing-diffusionblocks","type":"blog","lever":"cheaper",
+      "title":"DiffusionBlocks","full":"Training Neural Networks One Block at a Time",
+      "authors":"Makoto Shing (Sakana AI) · ICLR 2026",
+      "rw":"01ksnq9sr865sd2yew5sephwd0","url":"https://pub.sakana.ai/diffusionblocks/","read":"skimmed",
+      "mech":"Train <b>one block at a time, independently</b>, by casting each block as a <b>range of a denoising process</b> — each owns one slice of 'closeness to the target', so it never needs the other blocks. Sample one random block per iteration; the rest aren't computed.",
+      "headline":"~1/B training memory",
+      "detail":"Comparable to end-to-end across 5 architectures / 3 domains. Bonus: looped transformers swap K-iteration BPTT for a single forward pass at training time.",
+      "analyst":"A memory-side analogue to what LoRA did for parameter-side fine-tuning cost — a different axis from the GPU-kernel efficiency cluster. 'Comparable to end-to-end' still needs the paper's numbers."
+    },
+    {
+      "slug":"dieleman-diffusion-integral","type":"blog","lever":"distill",
+      "title":"Learning the integral","full":"Learning the integral of a diffusion model (flow maps)",
+      "authors":"Sander Dieleman · 2026",
+      "rw":"01ktspgqg2drmy8w0rkd9k0j7q","url":"https://sander.ai/2026/05/06/flow-maps.html","read":"queued",
+      "mech":"The organizing survey. A <b>flow map</b> F(x,s,t) predicts any point on a path from any other — the integral of the velocity over a finite interval — so generation is 1–few steps. The whole 2024–26 few-step literature reduces to enforcing one of <b>three equivalent consistency rules</b> (compositional / Lagrangian / Eulerian), tamed by stop-gradient / JVP tricks.",
+      "headline":"3 rules, one idea",
+      "detail":"Maps consistency models, MeanFlow, shortcut models, Align-Your-Flow, FreeFlow, TVM … onto one grid. No-free-lunch: sampling is cheap, but training a flow map is harder and usually bootstraps from a diffusion model.",
+      "analyst":"The scaffolding that makes the primary few-step papers readable; the MeanFlow stop-gradient doing load-bearing statistical (not just engineering) work is the quietly important bit."
+    },
+    {
+      "slug":"flow-based-llms-intro","type":"blog","lever":"distill",
+      "title":"Flow-Based LLMs","full":"An Intuitive Introduction to Flow-Based Language Generation",
+      "authors":"Floor Eijkelboom · 2026",
+      "rw":"01ktspm69d6ej7cdz4aytbsrg7","url":"https://flow-based-llms.github.io/","read":"queued",
+      "mech":"Flow matching for <i>discrete</i> text: reframe the target as a <b>posterior over tokens on the simplex</b> trained with cross-entropy (Variational Flow Matching), then <b>distill the continuous flow into a Categorical Flow Map</b> that jumps in one or two steps. Softmax + cross-entropy turn out to be exactly the geometrically correct objective.",
+      "headline":"\"You can't distill a staircase\"",
+      "detail":"Distillability is framed as a structural advantage continuous flows have over discrete-diffusion LLMs — every token position refined in parallel, nothing committed until the end.",
+      "analyst":"Sibling to the Dieleman flow-maps explainer; centres the variational/simplex framing rather than embedding-space diffusion."
+    },
+    {
+      "slug":"pao-huang-2026-flux-matching","type":"paper","lever":"reframe",
+      "title":"Flux Matching","full":"Generative Modeling with Flux Matching",
+      "authors":"Pao-Huang, Qiu, Ermon · 2026",
+      "rw":"01ks7dtbdm9rgh311b3qb2g7yd","url":"https://arxiv.org/abs/2605.07319","read":"queued",
+      "mech":"Generalizes score matching from 'match the unique score' to 'match <b>any</b> vector field whose Fokker–Planck stationary distribution is the data'. The score is one point in an infinite family; the <b>vector field becomes a design choice</b>, fit via a projected Fisher divergence.",
+      "headline":"faster-mixing fields",
+      "detail":"Non-reversible fields mix faster → fewer sampling steps to reach the target. Honest trade: ~2–4× more training cost than DSM; the win is structure (interpretability, mixing), not raw FID.",
+      "analyst":"Exposes a hidden constraint — every score-matching paper since 2019 implicitly targeted the score. Part of a 2026 cluster arguing the dynamics matter more than scale."
+    },
+    {
+      "slug":"yang-2026-replaid-continuous-diffusion","type":"paper","lever":"reframe",
+      "title":"RePlaid","full":"Continuous Diffusion Scales Competitively with Discrete Diffusion",
+      "authors":"Yang, Guo, Sahoo, Chen, … Vahdat · 2026",
+      "rw":"01ks7ds32gk7a714w9my9bw261","url":"https://arxiv.org/abs/2605.18530","read":"queued",
+      "mech":"Argues 'continuous diffusion doesn't scale' was a <b>protocol artifact</b>. Aligning Plaid with modern discrete-DLM practice (LayerNorm, AdaLN-Zero, RoPE, self-conditioning) yields RePlaid. The point for efficiency: continuous latents enable <b>ODE solvers and single-step distillation</b> that discrete diffusion can't do.",
+      "headline":"64× → 20×",
+      "detail":"Compute gap vs autoregressive narrows from a cited 64× to 20×; 22.1 PPL on OpenWebText (SOTA among continuous DLMs); beats MDLM in the over-trained regime.",
+      "analyst":"A protocol-corrected re-evaluation in the spirit of Chinchilla revising Kaplan — and it puts continuous diffusion's distillation/edit advantages back on the menu."
+    },
+    {
+      "slug":"jiha-autoregression-vs-diffusion","type":"blog","lever":"reframe",
+      "title":"AR vs Diffusion via OT","full":"Autoregression vs Diffusion — Understanding Sampling via Optimal Transport",
+      "authors":"Ji-Ha · 2026",
+      "rw":"01ktspp43h5azbrhrnf692x02v","url":"https://jiha-kim.github.io/posts/autoregression-vs-diffusion-understanding-sampling-via-optimal-transport/","read":"queued",
+      "mech":"Both AR and diffusion transport noise → data. <b>AR = Knothe–Rosenblatt</b> (triangular, ordered, stacked 1-D inverse-CDF — exact but order-biased); <b>diffusion = a learned unconstrained map</b> toward the symmetric <b>Brenier map</b>. Trajectory curvature is exactly the OT path-crossing penalty.",
+      "headline":"one transport problem",
+      "detail":"Predicts the AR-text / diffusion-image split keeps blurring as transport solvers improve. Same OT/path-crossing lens that OT-Flows-by-Design exploits to straighten paths.",
+      "analyst":"The conceptual bridge: it names why straightening the coupling (lever 1) is the lever — crossings are the cost OT would uncross."
+    },
+    {
+      "slug":"accelerated-diffusion-tutorial","type":"blog","lever":"distill",
+      "title":"FastGen tutorial","full":"Tutorial on Accelerated Diffusion Models (CVPR 2026)",
+      "authors":"CVPR 2026 FastGen Tutorial",
+      "rw":"01ktw25r0ps86fvv6jyf6y77s7","url":"https://cvpr26-tutorial-fastgen.github.io/","read":"queued",
+      "mech":"CVPR 2026 tutorial + open-source <b>FastGen</b> library on real-time diffusion: speeding up sampling, training efficient samplers, and applying acceleration to interactive world models.",
+      "headline":"a tooling pointer",
+      "detail":"Placeholder note — the fetched payload had null content, so specific methods / numbers are not yet captured. Worth re-fetching once materials are live.",
+      "analyst":"Useful as a maintained codebase to track; the 'interactive world models' angle ties diffusion acceleration to the world-model direction, not just image FID."
+    }
+  ],
+  "bars": [
+    {"slug":"cai-2026-mode-mean-seeking","who":"Mode meets Mean","sub":"vs 50-NFE SFT baseline","factor":12.5,"cap":"4 NFE vs 50 — ≈12× fewer function evals (long video)","lever":"distill"},
+    {"slug":"bartosh-2026-dual-rate-diffusion","who":"Dual-Rate","sub":"vs base diffusion, ImageNet 64²","factor":4.2,"cap":"≈4× less compute at better FID (1.12 vs 1.25)","lever":"cheaper"},
+    {"slug":"lee-2026-looped-diffusion-lm","who":"LoopMDM","sub":"matched test NLL, LM1B","factor":3.34,"cap":"3.34× fewer training FLOPs by looping","lever":"loop"},
+    {"slug":"yang-2026-replaid-continuous-diffusion","who":"RePlaid","sub":"AR compute gap, 64×→20×","factor":3.2,"cap":"3.2× closer to AR after protocol fix","lever":"reframe"},
+    {"slug":"malnick-2026-designing-ot-flows","who":"OT Flows by Design","sub":"curvature, FFHQ vs IFM","factor":2.42,"cap":"2.4× straighter trajectories (0.083 vs 0.201)","lever":"straighter"},
+    {"slug":"shing-diffusionblocks","who":"DiffusionBlocks","sub":"training memory, B blocks","factor":3.0,"cap":"~1/B training memory — scales with #blocks (illustrative)","lever":"cheaper","approx":true}
+  ],
+  "edges": [
+    ["dieleman-diffusion-integral","malnick-2026-designing-ot-flows"],
+    ["dieleman-diffusion-integral","bartosh-2026-dual-rate-diffusion"],
+    ["dieleman-diffusion-integral","yang-2026-replaid-continuous-diffusion"],
+    ["dieleman-diffusion-integral","flow-based-llms-intro"],
+    ["dieleman-diffusion-integral","shing-diffusionblocks"],
+    ["dieleman-diffusion-integral","pao-huang-2026-flux-matching"],
+    ["malnick-2026-designing-ot-flows","jiha-autoregression-vs-diffusion"],
+    ["cai-2026-mode-mean-seeking","pao-huang-2026-flux-matching"],
+    ["cai-2026-mode-mean-seeking","bartosh-2026-dual-rate-diffusion"],
+    ["cai-2026-mode-mean-seeking","yang-2026-replaid-continuous-diffusion"],
+    ["pao-huang-2026-flux-matching","yang-2026-replaid-continuous-diffusion"],
+    ["pao-huang-2026-flux-matching","shing-diffusionblocks"],
+    ["bartosh-2026-dual-rate-diffusion","shing-diffusionblocks"],
+    ["bartosh-2026-dual-rate-diffusion","yang-2026-replaid-continuous-diffusion"],
+    ["lee-2026-looped-diffusion-lm","shing-diffusionblocks"],
+    ["accelerated-diffusion-tutorial","shing-diffusionblocks"],
+    ["accelerated-diffusion-tutorial","dieleman-diffusion-integral"],
+    ["flow-based-llms-intro","jiha-autoregression-vs-diffusion"]
+  ]
+}
+</script>
+
+<script>
+const DATA = JSON.parse(document.getElementById('vault-data').textContent);
+const leverMap = Object.fromEntries(DATA.levers.map(l => [l.key, l]));
+const itemMap  = Object.fromEntries(DATA.items.map(i => [i.slug, i]));
+const RC = rough.svg ? null : null; // placeholder
+
+function el(tag, attrs={}, html){ const e=document.createElementNS('http://www.w3.org/2000/svg',tag);
+  for(const k in attrs) e.setAttribute(k,attrs[k]); if(html!=null) e.textContent=html; return e; }
+
+/* ---------- legend + stats ---------- */
+(function(){
+  const lg = document.getElementById('legend');
+  DATA.levers.forEach(l=>{
+    const s=document.createElement('span'); s.innerHTML=`<i style="background:${l.color}"></i>${l.name}`;
+    lg.appendChild(s);
+  });
+  const papers=DATA.items.filter(i=>i.type==='paper').length;
+  const blogs=DATA.items.filter(i=>i.type==='blog').length;
+  const stats=[
+    {n:papers,l:'deep paper notes',c:'📄'},
+    {n:blogs,l:'blog / survey notes',c:'✍️'},
+    {n:DATA.levers.length,l:'efficiency levers',c:'🎚️'},
+    {n:'4',l:'NFE — fastest sampler here',c:'⚡'},
+    {n:'64→20×',l:'biggest gap closed (RePlaid)',c:'📉'}
+  ];
+  const wrap=document.getElementById('stats');
+  stats.forEach(s=>{ const d=document.createElement('div'); d.className='card sketch stat';
+    d.innerHTML=`<div class="c">${s.c}</div><div class="n">${s.n}</div><div class="l">${s.l}</div>`;
+    wrap.appendChild(d); });
+})();
+
+/* ---------- lever glyphs (hand-drawn) ---------- */
+function leverGlyph(svg, kind, color){
+  const rc=rough.svg(svg); const o={stroke:color, roughness:1.6, strokeWidth:2.4};
+  const add=n=>svg.appendChild(n);
+  if(kind==='straight'){
+    add(rc.curve([[6,52],[40,18],[70,50],[104,16],[150,46]],{stroke:'#b9ad93',roughness:2.2,strokeWidth:2}));
+    add(rc.line(6,52,150,16,{...o})); // straight shot
+    add(rc.circle(6,52,9,{...o,fill:color,fillStyle:'solid'}));
+    add(rc.circle(150,16,9,{...o,fill:color,fillStyle:'solid'}));
+  } else if(kind==='jump'){
+    for(let i=0;i<5;i++) add(rc.circle(14+i*4,50-i*2,5,{stroke:'#b9ad93',roughness:1.8}));
+    add(rc.path('M14 50 q 70 -60 130 -34',{...o})); // big jump arc
+    add(rc.circle(14,50,9,{...o,fill:color,fillStyle:'solid'}));
+    add(rc.circle(144,16,9,{...o,fill:color,fillStyle:'solid'}));
+  } else if(kind==='loop'){
+    add(rc.circle(70,32,40,{...o}));
+    add(rc.path('M70 12 l 8 -4 l -2 9 z',{...o,fill:color,fillStyle:'solid'}));
+    add(rc.path('M96 50 q 26 6 44 -4',{...o}));
+  } else if(kind==='heavylight'){
+    add(rc.rectangle(8,12,52,44,{...o,fill:color,fillStyle:'hachure',hachureGap:4}));
+    add(rc.rectangle(78,22,34,26,{...o}));
+    add(rc.line(60,34,78,35,{...o}));
+  } else if(kind==='reframe'){
+    add(rc.path('M14 50 C 50 6, 100 6, 140 50',{...o}));
+    add(rc.path('M14 50 C 50 16, 100 70, 140 30',{stroke:color,roughness:1.6,strokeWidth:2.4,strokeLineDash:[6,5]}));
+    add(rc.circle(14,50,8,{...o,fill:color,fillStyle:'solid'}));
+  }
+}
+
+/* ---------- render levers ---------- */
+(function(){
+  const wrap=document.getElementById('levers');
+  DATA.levers.forEach(l=>{
+    const items=DATA.items.filter(i=>i.lever===l.key);
+    const card=document.createElement('div'); card.className='card sketch lever';
+    card.innerHTML=`
+      <div class="tag"><span class="dot" style="background:${l.color}"></span>${l.name}</div>
+      <svg class="glyph" width="160" height="64" viewBox="0 0 160 64"></svg>
+      <p>${l.blurb}</p>
+      <ul>${items.map(i=>`<li><b>${i.title}</b> — ${i.headline}</li>`).join('')}</ul>`;
+    wrap.appendChild(card);
+    leverGlyph(card.querySelector('svg'), l.glyph, l.color);
+  });
+})();
+
+/* ---------- core problem diagram ---------- */
+(function(){
+  const svg=document.getElementById('coreDiagram'); const rc=rough.svg(svg);
+  // noise cloud (left) and data manifold (right)
+  for(let i=0;i<26;i++){ const x=70+Math.cos(i*1.7)*46+(i%5)*4, y=150+Math.sin(i*2.3)*70;
+    svg.appendChild(rc.circle(x,y,5,{stroke:'#8a8270',roughness:2})); }
+  svg.appendChild(rc.path('M880 70 q 80 80 0 160 q -40 -80 0 -160',{stroke:'#1f9183',roughness:1.8,strokeWidth:2.6,fill:'rgba(31,145,131,.10)',fillStyle:'solid'}));
+  // many-step curved trajectory (top, slow)
+  const slow='M120 110 C 260 40, 360 200, 470 110 S 690 40, 880 120';
+  svg.appendChild(rc.path(slow,{stroke:'#d24a66',roughness:1.4,strokeWidth:2.6}));
+  // step dots along slow path
+  const steps=[[120,110],[210,84],[300,118],[388,150],[470,110],[560,72],[660,96],[770,128],[880,120]];
+  steps.forEach(p=>svg.appendChild(rc.circle(p[0],p[1],7,{stroke:'#d24a66',fill:'#d24a66',fillStyle:'solid',roughness:1.6})));
+  // straight few-step trajectory (bottom, fast)
+  svg.appendChild(rc.path('M120 200 q 380 30 760 -8',{stroke:'#e0951f',roughness:1.1,strokeWidth:3}));
+  svg.appendChild(rc.circle(120,200,9,{stroke:'#e0951f',fill:'#e0951f',fillStyle:'solid',roughness:1.4}));
+  svg.appendChild(rc.circle(880,192,9,{stroke:'#e0951f',fill:'#e0951f',fillStyle:'solid',roughness:1.4}));
+  // labels
+  const t=(x,y,s,c,sz=20,f='Gaegu')=>{const n=el('text',{x,y,fill:c,'font-family':f,'font-size':sz,'font-weight':700});n.textContent=s;svg.appendChild(n);};
+  t(40,40,'NOISE','#6b6256',22,'Caveat');
+  t(905,55,'DATA','#1f9183',22,'Caveat');
+  t(150,72,'curved field → many ODE steps  (slow, expensive)','#d24a66',18);
+  t(150,238,'straightened / jumped → 1–few steps  (the goal)','#e0951f',18);
+  t(470,290,'Sampling = integrating a velocity field along non-crossing paths','#23252b',19,'Caveat');
+})();
+
+/* ---------- consistency-model spotlight diagram ---------- */
+(function(){
+  const svg=document.getElementById('consistencyDiagram'); const rc=rough.svg(svg);
+  const t=(x,y,s,c,sz=14,f='Gaegu',anchor='start',w=700)=>{const n=el('text',{x,y,fill:c,'font-family':f,'font-size':sz,'font-weight':w,'text-anchor':anchor});n.textContent=s;svg.appendChild(n);};
+  // endpoints: noise (left, t=1) -> data (right, t=0)
+  const nx=70, ny=235, dx=470, dy=120;
+  // the ODE trajectory (one path)
+  const path='M70 235 C 170 150, 230 250, 320 150 S 420 90, 470 120';
+  svg.appendChild(rc.path(path,{stroke:'#8a8270',roughness:1.3,strokeWidth:2.4}));
+  // sample points along the path (denoiser re-evaluated each step)
+  const pts=[[70,235],[150,176],[210,205],[270,170],[320,150],[388,118],[470,120]];
+  // local tangent arrows = the integrand v
+  const tang=[[150,176,28,-20],[270,170,30,-26],[388,118,30,2]];
+  tang.forEach(([x,y,dxx,dyy])=>{
+    svg.appendChild(rc.line(x,y,x+dxx,y+dyy,{stroke:'#46699f',roughness:1,strokeWidth:2}));
+    svg.appendChild(rc.path(`M${x+dxx} ${y+dyy} l -7 -1 l 4 6 z`,{stroke:'#46699f',fill:'#46699f',fillStyle:'solid',roughness:1}));
+  });
+  pts.forEach(p=>svg.appendChild(rc.circle(p[0],p[1],6,{stroke:'#8a8270',fill:'#efe9da',fillStyle:'solid',roughness:1.4})));
+  // x_s marked point (mid)
+  const sx=210, sy=205;
+  svg.appendChild(rc.circle(sx,sy,11,{stroke:'#d24a66',fill:'#d24a66',fillStyle:'solid',roughness:1.4}));
+  // the JUMP = the integral, dashed arc straight to x_0
+  svg.appendChild(rc.path('M210 205 Q 330 40 466 122',{stroke:'#d24a66',roughness:1.1,strokeWidth:3,strokeLineDash:[9,7]}));
+  svg.appendChild(rc.path('M466 122 l -12 -2 l 6 11 z',{stroke:'#d24a66',fill:'#d24a66',fillStyle:'solid',roughness:1}));
+  // endpoints markers
+  svg.appendChild(rc.circle(nx,ny,9,{stroke:'#1f9183',fill:'#1f9183',fillStyle:'solid',roughness:1.4}));
+  svg.appendChild(rc.circle(dx,dy,12,{stroke:'#1f9183',fill:'#1f9183',fillStyle:'solid',roughness:1.4}));
+  // labels
+  t(40,225,'noise',  '#6b6256',14,'Gaegu','end');
+  t(40,243,'t = 1',  '#8a8270',12,'Gaegu','end');
+  t(486,118,'data','#1f9183',16,'Caveat');
+  t(486,134,'x₀  (t = 0)','#1f9183',12,'Gaegu');
+  t(190,232,'xₛ','#d24a66',16,'Caveat','middle');
+  t(300,90,'denoiser = local slope v','#46699f',13,'Gaegu');
+  t(300,106,'(re-evaluated every step)','#46699f',11,'Gaegu');
+  t(258,38,'consistency model: one jump = ∫ₛ⁰ v dτ','#d24a66',14.5,'Gaegu','middle');
+  t(280,318,'Many small tangents to integrate  vs  one learned jump to x₀','#23252b',15,'Caveat','middle');
+})();
+
+/* ---------- speedup bars ---------- */
+(function(){
+  const svg=document.getElementById('barChart'); const rc=rough.svg(svg);
+  const bars=DATA.bars; const max=Math.max(...bars.map(b=>b.factor));
+  const x0=300, x1=1040, top=24, rowH=62;
+  bars.forEach((b,i)=>{
+    const y=top+i*rowH; const col=leverMap[b.lever].color;
+    const w=(b.factor/max)*(x1-x0);
+    // label
+    const who=el('text',{x:24,y:y+22,'font-family':'Gaegu','font-size':19,'font-weight':700,fill:'#23252b'});who.textContent=b.who; svg.appendChild(who);
+    const sub=el('text',{x:24,y:y+40,'font-family':'Inter','font-size':12,fill:'#6b6256'});sub.textContent=b.sub; svg.appendChild(sub);
+    // bar
+    svg.appendChild(rc.rectangle(x0,y+4,w,30,{stroke:col,strokeWidth:2,roughness:1.8,fill:col,fillStyle:b.approx?'hachure':'solid',hachureGap:5,fillWeight:2}));
+    // factor + caption
+    const fx=el('text',{x:x0+w+10,y:y+25,'font-family':'Caveat','font-size':26,'font-weight':700,fill:col});fx.textContent=(b.approx?'~':'')+b.factor.toString().replace(/\.0$/,'')+'×'; svg.appendChild(fx);
+    const cap=el('text',{x:x0,y:y+50,'font-family':'Gaegu','font-size':13.5,fill:'#6b6256'});cap.textContent=b.cap; svg.appendChild(cap);
+  });
+  // baseline tick
+  svg.appendChild(rc.line(x0,top-2,x0,top+bars.length*rowH-12,{stroke:'#b9ad93',roughness:1.5,strokeLineDash:[4,5]}));
+  const bl=el('text',{x:x0-4,y:top+bars.length*rowH+6,'font-family':'Gaegu','font-size':12,fill:'#8a8270','text-anchor':'middle'});bl.textContent='1× (baseline)';svg.appendChild(bl);
+})();
+
+/* ---------- paper cards + filters ---------- */
+function readBadge(r){ const m={read:'#1f9183',deep:'#1f9183',skimmed:'#e0951f',queued:'#8a8270'};
+  return `<span class="badge" style="border-color:${m[r]||'#8a8270'};color:${m[r]||'#8a8270'}">${r}</span>`; }
+
+function renderPapers(filter){
+  const wrap=document.getElementById('papers'); wrap.innerHTML='';
+  DATA.items.filter(i=>filter==='all'||i.lever===filter).forEach(i=>{
+    const lv=leverMap[i.lever];
+    const c=document.createElement('div'); c.className='card sketch pcard';
+    c.innerHTML=`
+      <div class="lvbar" style="background:${lv.color}"></div>
+      <div class="top">
+        <span class="typepill">${i.type==='paper'?'paper':'blog'}</span>
+        <h3>${i.title}</h3>
+        <div class="auth">${i.full}<br>${i.authors}</div>
+      </div>
+      <div class="body">
+        <div class="mech">${i.mech}</div>
+        <div class="headline" style="color:${lv.color}">${i.headline}</div>
+        <div style="font-size:13px">${i.detail}</div>
+        <div class="badges">
+          <span class="badge lv" style="background:${lv.color}">${lv.name}</span>
+          ${readBadge(i.read)}
+        </div>
+        <div class="badges"><span class="badge an">analyst's view</span>
+          <span style="font-size:12.5px;color:#6b6256">${i.analyst}</span></div>
+        <div class="rw">rw_id <code>${i.rw}</code> · <a href="${i.url}" target="_blank" rel="noopener">source ↗</a></div>
+      </div>`;
+    wrap.appendChild(c);
+  });
+}
+(function(){
+  const fwrap=document.getElementById('filters');
+  const all=[{key:'all',name:'All',color:'#23252b'},...DATA.levers];
+  all.forEach((l,idx)=>{
+    const chip=document.createElement('div'); chip.className='chip'+(idx===0?' active':''); chip.textContent=l.name;
+    chip.style.setProperty('--c',l.color);
+    if(idx===0){chip.style.background=l.color;chip.style.color='#fff';chip.style.borderColor='transparent';}
+    chip.onclick=()=>{
+      [...fwrap.children].forEach(ch=>{ch.classList.remove('active');ch.style.background='';ch.style.color='';ch.style.borderColor='';});
+      chip.classList.add('active'); chip.style.background=l.color; chip.style.color='#fff'; chip.style.borderColor='transparent';
+      renderPapers(l.key);
+    };
+    fwrap.appendChild(chip);
+  });
+  renderPapers('all');
+})();
+
+/* ---------- constellation ---------- */
+(function(){
+  const svg=document.getElementById('constellation'); const rc=rough.svg(svg);
+  const W=1080,H=520, cx=W/2, cy=H/2;
+  const nodes=DATA.items.map(i=>i.slug);
+  // hub = dieleman in centre, rest on a ring
+  const ring=nodes.filter(s=>s!=='dieleman-diffusion-integral');
+  const pos={}; pos['dieleman-diffusion-integral']=[cx,cy];
+  const R=205;
+  ring.forEach((s,k)=>{ const a=-Math.PI/2 + k*(2*Math.PI/ring.length);
+    pos[s]=[cx+Math.cos(a)*R, cy+Math.sin(a)*(R*0.82)]; });
+  // edges
+  const edgeEls=[];
+  DATA.edges.forEach(([a,b])=>{
+    if(!pos[a]||!pos[b]) return;
+    const ln=rc.line(pos[a][0],pos[a][1],pos[b][0],pos[b][1],{stroke:'#c0b69e',roughness:1.6,strokeWidth:1.6});
+    ln.dataset.a=a; ln.dataset.b=b; ln.style.transition='opacity .2s'; svg.appendChild(ln); edgeEls.push(ln);
+  });
+  // nodes
+  const nodeEls={};
+  nodes.forEach(s=>{
+    const i=itemMap[s]; const col=leverMap[i.lever].color; const [x,y]=pos[s];
+    const hub = s==='dieleman-diffusion-integral';
+    const g=el('g',{cursor:'pointer'}); g.appendChild(rc.circle(x,y,hub?34:24,{stroke:col,strokeWidth:2.4,roughness:1.8,fill:col,fillStyle:'solid',fillWeight:3,hachureGap:3}));
+    const lbl=el('text',{x,y:y+(hub?48:40),'text-anchor':'middle','font-family':'Gaegu','font-size':hub?15:13,'font-weight':700,fill:'#3a3d44'});
+    lbl.textContent=i.title; g.appendChild(lbl);
+    g.onclick=()=>{
+      const on=g.dataset.on==='1';
+      Object.values(nodeEls).forEach(n=>n.style.opacity=on?1:.28);
+      edgeEls.forEach(e=>e.style.opacity=on?1:.1);
+      g.style.opacity=1;
+      if(!on) edgeEls.forEach(e=>{ if(e.dataset.a===s||e.dataset.b===s){ e.style.opacity=1; e.setAttribute('stroke',col); e.setAttribute('stroke-width',3);
+        const other=e.dataset.a===s?e.dataset.b:e.dataset.a; if(nodeEls[other])nodeEls[other].style.opacity=1; }});
+      else edgeEls.forEach(e=>{e.setAttribute('stroke','#c0b69e');e.setAttribute('stroke-width',1.6);});
+      Object.values(nodeEls).forEach(n=>n.dataset.on='0'); g.dataset.on=on?'0':'1';
+    };
+    svg.appendChild(g); nodeEls[s]=g;
+  });
+  // hub caption
+  const cap=el('text',{x:cx,y:cy-44,'text-anchor':'middle','font-family':'Caveat','font-size':18,fill:'#6b6256'});
+  cap.textContent='the survey that ties it together'; svg.appendChild(cap);
+})();
+</script>
+</body>
+</html>

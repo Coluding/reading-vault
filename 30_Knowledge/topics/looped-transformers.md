@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: looped-transformers
-last_updated: 2026-06-03
+last_updated: 2026-07-08
 ---
 
 # Looped Transformers
@@ -28,6 +28,9 @@ is the architectural sibling of [[topics/recursive-reasoning]] (latent recursion
 ## Efficiency (removing the quadratic-attention tax)
 
 - [[papers/deng-2026-lt2-looped]] — **LT2**: replaces softmax attention in looped transformers with **subquadratic** mixers (linear: GDN/KDA; sparse: DSA). "Looping turns compute into context" — loop × DPLR linear attn → **rank-$T$** memory update; loop × window-$w$ sparse → **$O(Tw)$** receptive field. Hybrid (Full+GDN) beats the full-attention loop by +2.1 pts at ~5× decode throughput; converts pretrained Ouro into **Ouro-Hybrid-1.4B**.
+
+## Recent
+- [[papers/movahedi-2026-fixed-point-reasoners]] — FPRM (Fixed-Point Reasoning Model) is a non-hierarchical Looped Transformer for latent reasoning that (a) makes deep looping trainable by switching fr
 
 ## Related topics
 

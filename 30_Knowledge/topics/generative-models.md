@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: generative-models
-last_updated: 2026-06-22
+last_updated: 2026-07-08
 ---
 
 # Generative Models
@@ -32,6 +32,11 @@ The line of methods that learn $p(x)$ or $p(x \mid c)$ from samples — covering
 ## Latent-variable / variational
 
 - [[papers/baek-2026-gram]] — GRAM frames recursive reasoning as a latent-variable generative process trained via amortized variational inference; doubles as an unconditional generative model when input conditioning is empty; achieves 99.05% valid Sudoku boards from empty inputs.
+
+## Recent
+- [[papers/porcher-2026-flowwm]] — **FlowWM** is a stochastic visual world model that runs **flow matching directly inside the high-dimensional feature space of a frozen pretrained enco
+- [[papers/shi-2026-gpc-motor-control]] — GPC (Generative Pretrained Controllers) builds general-purpose, reusable controllers for physics-based character animation by borrowing the LLM recipe
+- [[blogs/mccormick-world-models]] — A long (~18k word) manifesto from Packy McCormick, co-written with the team at his World Model startup **General Intuition**, arguing that World Model
 
 ## Related topics
 
