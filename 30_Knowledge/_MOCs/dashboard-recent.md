@@ -12,6 +12,16 @@ Most recent items added to the vault, regardless of category. Refreshed by
 
 ## This week
 
+_(2026-07-10 — **/paper-search**: 6 physics-in-video-generation siblings to [[papers/zhao-2026-phyworld]] & [[papers/lin-2026-phyground]], pulled directly from arXiv (not via Readwise — `rw_id: ""`, `read_state: skimmed`). Split benchmark axis / method axis.)_
+
+### Papers (paper-search — physics-in-video cluster)
+- [[papers/meng-2024-phygenbench]] — **PhyGenBench** (ICML 2025): the *seminal* physics-commonsense T2V benchmark — 160 prompts / 27 laws / 4 domains + hierarchical **PhyGenEval** judge; best model (Gen-3) only 0.51; scaling & prompt-engineering both insufficient.
+- [[papers/gu-2025-phyworldbench]] — **PhyWorldBench** (ICLR 2026 oral): 1,050-prompt benchmark with an **anti-physics** tier + MLLM-judge (CAP); best model (Pika 2.0) only 0.262 joint success. *The benchmark PhyGround critiques for its closed-source judge.*
+- [[papers/cao-2026-judgefit]] — **JudgeFit**: physics VLM-judges disagree with humans and each other; a per-VLM discovered taxonomy lifts human agreement ~32% across 16 VLMs.
+- [[papers/begiristain-2026-cronos]] — **CRONOS**: intervention-based counterfactual-consistency benchmark (hold the physical event fixed, vary viewpoint/scene/appearance); video generators are alarmingly **viewpoint**-sensitive — pattern-matching, not 3D physics.
+- [[papers/xiong-2026-physalign]] — **PhysAlign** *(method sibling to PhyWorld)*: a LoRA adapter aligning Wan2.2 I2V features to a V-JEPA2 teacher + 3D depth for physics coherence, with no visual-quality tradeoff; free at inference.
+- [[papers/xue-2026-acwm-phys]] — **ACWM-Phys**: benchmarks **action-conditioned** video world models across rigid/deformable/particle/kinematics; OoD failure tracks task complexity, not physics category. (Bridges to robotics.)
+
 _(Triaged 2026-07-08 — **backfill** of the 2026-06-15 → 07-07 Worker-outage gap: world models, video/physics diffusion, reasoning & looped transformers, representation learning, robotics. 14 papers, 7 blogs, 1 reject.)_
 
 ### Papers

@@ -16,6 +16,7 @@ _Vault notes touching robotics._
 - [[blogs/interlatent-ai-robotics]] — A first-principles tour of how modern "physical AI" robot policies are built, framed around the idea that a robot policy is just a function mapping ob
 - [[papers/karcini-2026-robots-beyond-vla]] — This is a position/survey paper from Motoniq.ai (with collaborators at Stanford, ETH Zurich, IIT, TU Darmstadt, UCL) arguing that generalist robotics
 - [[papers/higuera-2026-visuo-tactile-world-models]] — 
+- [[papers/xue-2026-acwm-phys]] — **ACWM-Phys**: benchmark for **action-conditioned** video world models across rigid-body / kinematic / deformable / particle interactions; OoD generalization tracks task complexity (not physics category), and architecture ablations favor causal VAEs + cross-attention conditioning — useful signal for video-model-as-robot-simulator work.
 
 ## Organizations
 - [[websites/embodyx]] — Silicon Valley physical-AI startup building edge-first VLM/VLA foundation models for robots, vehicles, and cameras; founders Weiwei Chen & Yanzhi Wang (Northeastern) authored [[papers/zhao-2026-phyworld]] and [[papers/lin-2026-phyground]]. Backed by NSF, NVIDIA, Google AI for Startups.
