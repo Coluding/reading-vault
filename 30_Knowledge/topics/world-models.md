@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: world-models
-last_updated: 2026-07-08
+last_updated: 2026-07-10
 ---
 
 # World Models
@@ -27,6 +27,9 @@ Learned models of environment dynamics — pixel-, latent-, or token-level predi
 ## Perspectives & surveys
 - [[blogs/mccormick-world-models]] — General Intuition manifesto/survey: World Models as a new foundation-model class ($P(s_{t+1}\mid s_t,a_t)$ vs video's $P(x_{t+1}\mid x_t)$); maps the field's four waves and every major lab (latent/JEPA vs generative/diffusion, VLAs vs World-Model agents); bets on action-labeled gaming data.
 - [[blogs/joseph-world-models-interpretability]] — reframes "world model" as a foundation model's *internal* causal structure (the Internal World Model); argues world models and interpretability are the same program (causal discovery + white-box evaluation). Explicit contrast to the external/generative view above.
+
+## Organizations
+- [[websites/embodyx]] — physical-AI startup shipping edge-first VLM/VLA foundation models; founders (Weiwei Chen, Yanzhi Wang) authored the vault's physics-faithful world-model work ([[papers/zhao-2026-phyworld]], [[papers/lin-2026-phyground]]).
 
 ## Related topics
 - [[topics/jepa]]

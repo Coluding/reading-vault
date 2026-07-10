@@ -1,6 +1,6 @@
 ---
 type: moc
-last_updated: 2026-07-08
+last_updated: 2026-07-10
 status: living
 
 ---
@@ -36,6 +36,9 @@ _(Triaged 2026-07-08 — **backfill** of the 2026-06-15 → 07-07 Worker-outage 
 - [[blogs/mccormick-world-models]] — **World Models: Computing the Uncomputable**: A long (~18k word) manifesto from Packy McCormick, co-written with the team at his World Model startup **General Intuition**, arguing that World Model.
 - [[blogs/haegele-magnitude-direction]] — Improving Neural Network Training by Decoupling the Magnitude and Direction of Weight Vectors: The post introduces **Magnitude-Direction Decoupling (MD)**: constrain each weight matrix's *direction* to a fixed-norm sphere while giving it a separ.
 - _Readwise changelogs (low priority):_ [[blogs/readwise-changelog-2026-06-26]], [[blogs/readwise-changelog-2026-07-03]], [[blogs/readwise-changelog-2026-06-19]].
+
+### Websites
+- [[websites/embodyx]] — *(ingested 07-10)* **EmbodyX**: Silicon Valley physical-AI startup building edge-first VLM/VLA foundation models for robots, vehicles, and cameras. Founders Weiwei Chen & Yanzhi Wang (Northeastern) authored the vault's [[papers/zhao-2026-phyworld]] and [[papers/lin-2026-phyground]]; backed by NSF, NVIDIA, Google AI for Startups.
 
 ### Rejected
 - Loom (loom.com) — off-topic product page (not AI/math/CS).

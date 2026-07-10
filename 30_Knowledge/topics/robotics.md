@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: robotics
-last_updated: 2026-07-08
+last_updated: 2026-07-10
 ---
 
 # Robotics
@@ -16,3 +16,6 @@ _Vault notes touching robotics._
 - [[blogs/interlatent-ai-robotics]] — A first-principles tour of how modern "physical AI" robot policies are built, framed around the idea that a robot policy is just a function mapping ob
 - [[papers/karcini-2026-robots-beyond-vla]] — This is a position/survey paper from Motoniq.ai (with collaborators at Stanford, ETH Zurich, IIT, TU Darmstadt, UCL) arguing that generalist robotics
 - [[papers/higuera-2026-visuo-tactile-world-models]] — 
+
+## Organizations
+- [[websites/embodyx]] — Silicon Valley physical-AI startup building edge-first VLM/VLA foundation models for robots, vehicles, and cameras; founders Weiwei Chen & Yanzhi Wang (Northeastern) authored [[papers/zhao-2026-phyworld]] and [[papers/lin-2026-phyground]]. Backed by NSF, NVIDIA, Google AI for Startups.
