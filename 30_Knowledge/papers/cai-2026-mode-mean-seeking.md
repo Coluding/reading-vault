@@ -27,6 +27,7 @@ read_state: read
 relevance: high
 added: 2026-06-10
 last_updated: 2026-06-17
+comment: Need to understand why the KL loss is enough to discard the long video generation head and the fact that we actually remov ethe long video generation head completely during inference is astonishing to me
 ---
 
 # Mode Seeking meets Mean Seeking for Fast Long Video Generation

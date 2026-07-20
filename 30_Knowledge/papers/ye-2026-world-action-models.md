@@ -11,7 +11,7 @@ priority: high
 read_state: queued
 relevance: ""
 added: 2026-07-08
-last_updated: 2026-07-08
+last_updated: 2026-07-14
 ---
 
 # World Action Models are Zero-shot Policies
@@ -117,6 +117,15 @@ This is a flagship demonstration that a **video-diffusion prior is a better subs
 - Scaling laws for WAMs (model × data × compute) — explicitly left open; would determine whether this beats VLAs at fixed compute.
 - Binary success rates (vs task progress) across the full benchmark would clarify absolute reliability.
 - How does the shared-timestep choice (vs decoupled, as in Flash) trade off against alignment for the *main* model, beyond convergence speed?
+
+## Release status
+
+*(Not addressed in the originally fetched paper content; checked live on 2026-07-14 via the project page, which is outside the arXiv text so treat as supplementary, not part of the paper's own claims.)*
+
+- **Code**: released — GitHub repo linked from the project page (`github.com/dreamzero0/dreamzero`).
+- **Dataset**: no full downloadable dataset dump found. The project page links an "Eval Gallery" (100+ zero-shot rollout videos) and a "30-min play data" gallery for the YAM cross-embodiment experiments (`dreamzero0.github.io/yam_gallery/`), but that page is a filterable *visualizer* (credited "adapted from Jimmy Wu"), not a data-download portal — no raw trajectories/actions confirmed downloadable there.
+- Training data (AgiBot ~500h teleop, DROID) are pre-existing datasets, not something DreamZero itself is releasing.
+- _needs verification_: whether the GitHub repo itself bundles or links a downloadable data release (not checked — only the project page and its galleries were fetched).
 
 ## Connections
 

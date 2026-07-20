@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: generative-models
-last_updated: 2026-07-10
+last_updated: 2026-07-20
 ---
 
 # Generative Models
@@ -29,6 +29,14 @@ The line of methods that learn $p(x)$ or $p(x \mid c)$ from samples — covering
 - [[papers/bartosh-2026-dual-rate-diffusion]] — splits the denoiser into a heavy **context encoder** (run every $K$-th step for global structure) and a light **denoising model** (run every step for local detail); 2–4× lower FLOPs at equal/better ImageNet FID, composes with Moment Matching Distillation. Spectral framing: global low-frequencies are slow, so don't recompute them every step.
 - [[papers/ding-2024-diffusion-world-model]] — *(also [[topics/world-models]])* diffusion as a one-shot trajectory predictor: generate a whole length-$T$ future in a single pass instead of recursive one-step rollout, killing compounding error in offline RL (44% over one-step models, 4.6× faster than Decision Diffuser).
 
+## Latent spaces for generation (RAE / tokenizer line)
+
+- [[papers/zheng-2025-rae-dit]] — **the RAE paper** (Xie lab): frozen DINOv2/SigLIP2/MAE encoder + trained ViT decoder as the latent space for DiTs; rank argument (Theorem 1) for width ≥ token dim; 1.51 FID w/o guidance on ImageNet-256, argues RAE should replace SD-VAE as the default.
+- [[papers/liu-2026-improving-rae-reconstruction]] — **LV-RAE**: shallow residual encoder adds back the low-level detail frozen VFM features drop (PSNR 32.32 near-lossless); diagnoses + fixes decoder hypersensitivity to off-manifold latents via noise-augmented fine-tuning.
+- [[papers/liu-2026-geometric-autoencoder]] — **GAE**: three principled fixes for VFM-semantic compact latents — bottleneck-level teacher alignment, hyperspherical RMSNorm (no KL), dynamic noise sampling; gFID 1.31 w/o CFG.
+- [[papers/li-2026-semantic-autoencoder]] — **S-AE** (CVPR 2026): "unified latent space" — semantically discriminative *and* reconstruction-faithful off frozen DINOv3, via high channel dim + semantic regularization; strong on low-data/high-res domains.
+- [[papers/kerssies-2026-delta-tokens]] — **DeltaTok**: temporal cousin of the RAE line — a frozen-VFM-feature *delta* per frame pair compressed to one continuous token turns video into a 1-D sequence for world modeling.
+
 ## Latent-variable / variational
 
 - [[papers/baek-2026-gram]] — GRAM frames recursive reasoning as a latent-variable generative process trained via amortized variational inference; doubles as an unconditional generative model when input conditioning is empty; achieves 99.05% valid Sudoku boards from empty inputs.
@@ -38,6 +46,7 @@ The line of methods that learn $p(x)$ or $p(x \mid c)$ from samples — covering
 - [[papers/porcher-2026-flowwm]] — **FlowWM** is a stochastic visual world model that runs **flow matching directly inside the high-dimensional feature space of a frozen pretrained enco
 - [[papers/shi-2026-gpc-motor-control]] — GPC (Generative Pretrained Controllers) builds general-purpose, reusable controllers for physics-based character animation by borrowing the LLM recipe
 - [[blogs/mccormick-world-models]] — A long (~18k word) manifesto from Packy McCormick, co-written with the team at his World Model startup **General Intuition**, arguing that World Model
+- [[papers/ding-2024-world-models-survey]] — survey whose "future prediction" branch catalogs the generative world-model landscape (Sora, Cosmos, Genie, GAIA-1) alongside model-based-RL and LLM world knowledge.
 
 ## Related topics
 

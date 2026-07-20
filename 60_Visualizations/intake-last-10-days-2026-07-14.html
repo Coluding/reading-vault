@@ -1,0 +1,281 @@
+<title>Vault Intake — Last 10 Days</title>
+<style>
+  :root{
+    --bg:#f7f7f5; --panel:#ffffff; --ink:#1a1a1a; --muted:#6b6b6b; --line:#e5e3dd;
+    --accent:#5b5bd6; --accent-soft:#ecebfb;
+    --hi:#c0392b; --hi-bg:#fdecea; --med:#b7791f; --med-bg:#fdf3e0; --low:#607d8b; --low-bg:#eceff1;
+    --paper:#2e7d5b; --paper-bg:#e6f4ee; --blog:#8e44ad; --blog-bg:#f3e9f8; --site:#0277bd; --site-bg:#e3f2fb;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#15161a; --panel:#1e2027; --ink:#e9e9ec; --muted:#9a9ba3; --line:#2c2f38;
+      --accent:#9d9dff; --accent-soft:#26264a;
+      --hi:#ff7b6e; --hi-bg:#3a1f1c; --med:#e0b463; --med-bg:#352a16; --low:#90a4ae; --low-bg:#232a2e;
+      --paper:#6cd3a3; --paper-bg:#173026; --blog:#d9a7f2; --blog-bg:#2c1f38; --site:#6cc4f5; --site-bg:#12303f;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#15161a; --panel:#1e2027; --ink:#e9e9ec; --muted:#9a9ba3; --line:#2c2f38;
+    --accent:#9d9dff; --accent-soft:#26264a;
+    --hi:#ff7b6e; --hi-bg:#3a1f1c; --med:#e0b463; --med-bg:#352a16; --low:#90a4ae; --low-bg:#232a2e;
+    --paper:#6cd3a3; --paper-bg:#173026; --blog:#d9a7f2; --blog-bg:#2c1f38; --site:#6cc4f5; --site-bg:#12303f;
+  }
+  :root[data-theme="light"]{
+    --bg:#f7f7f5; --panel:#ffffff; --ink:#1a1a1a; --muted:#6b6b6b; --line:#e5e3dd;
+    --accent:#5b5bd6; --accent-soft:#ecebfb;
+    --hi:#c0392b; --hi-bg:#fdecea; --med:#b7791f; --med-bg:#fdf3e0; --low:#607d8b; --low-bg:#eceff1;
+    --paper:#2e7d5b; --paper-bg:#e6f4ee; --blog:#8e44ad; --blog-bg:#f3e9f8; --site:#0277bd; --site-bg:#e3f2fb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:920px;margin:0 auto;padding:40px 22px 80px}
+  header{margin-bottom:34px}
+  .kicker{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 8px}
+  h1{font-size:30px;line-height:1.15;margin:0 0 10px;letter-spacing:-.02em}
+  .lede{color:var(--muted);font-size:15.5px;max-width:66ch;margin:0}
+  .stats{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:88px}
+  .stat b{display:block;font-size:22px;line-height:1;letter-spacing:-.01em}
+  .stat span{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+  section{margin-top:38px}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:0 0 4px;padding-bottom:10px;border-bottom:2px solid var(--line)}
+  .sec-head h2{font-size:19px;margin:0;letter-spacing:-.01em}
+  .sec-head .n{font-size:13px;color:var(--muted);font-weight:600}
+  .sec-note{color:var(--muted);font-size:13.5px;margin:8px 0 18px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:11px 0}
+  .card-top{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:7px}
+  .name{font-weight:700;font-size:15.5px;letter-spacing:-.01em}
+  .name a{color:inherit;text-decoration:none;border-bottom:1.5px solid var(--accent-soft)}
+  .name a:hover{border-bottom-color:var(--accent)}
+  .claim{margin:0;color:var(--ink);font-size:14.5px}
+  .claim .lead{color:var(--muted)}
+  .meta{margin-top:9px;font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+  .meta a{color:var(--accent);text-decoration:none}
+  .meta a:hover{text-decoration:underline}
+  .badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    padding:2.5px 7px;border-radius:5px}
+  .b-paper{color:var(--paper);background:var(--paper-bg)} .b-blog{color:var(--blog);background:var(--blog-bg)}
+  .b-site{color:var(--site);background:var(--site-bg)}
+  .b-hi{color:var(--hi);background:var(--hi-bg)} .b-med{color:var(--med);background:var(--med-bg)} .b-low{color:var(--low);background:var(--low-bg)}
+  code{background:var(--accent-soft);color:var(--accent);padding:1px 5px;border-radius:4px;font-size:12px}
+  footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px}
+</style>
+
+<div class="wrap">
+<header>
+  <p class="kicker">Reading Vault · Intake Briefing</p>
+  <h1>What landed in the last 10 days</h1>
+  <p class="lede">31 new deep-notes filed 2026-07-03 → 07-13 — almost entirely a backfill of the Worker-outage gap (06-15 → 07-07) plus a <code>/paper-search</code> sweep of the physics-in-video cluster. Grouped below by theme, each with its main claim and a link to the source.</p>
+  <div class="stats">
+    <div class="stat"><b>31</b><span>notes</span></div>
+    <div class="stat"><b>24</b><span>papers</span></div>
+    <div class="stat"><b>6</b><span>blogs</span></div>
+    <div class="stat"><b>1</b><span>website</span></div>
+    <div class="stat"><b>11</b><span>physics-video</span></div>
+  </div>
+</header>
+
+<!-- ===================== SECTION 1 ===================== -->
+<section>
+  <div class="sec-head"><h2>① Physics faithfulness in video / world models</h2><span class="n">11 items</span></div>
+  <p class="sec-note">The dominant theme: can generative video models actually obey physics, and how do we measure it? Splits into <b>benchmarks</b> (do they fail, and by how much) and <b>methods</b> (how to fix it), converging on the vault's own <a href="https://arxiv.org/abs/2605.19242">PhyWorld</a>/<a href="https://arxiv.org/abs/2605.10806">PhyGround</a> line.</p>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-hi">high</span><span class="name"><a href="https://arxiv.org/abs/2410.05363">PhyGenBench</a></span></div>
+    <p class="claim"><span class="lead">Meng et al., ICML 2025 — </span>The seminal physics-commonsense text-to-video benchmark: 160 prompts / 27 physical laws / 4 domains with a hierarchical <b>PhyGenEval</b> judge. Best model (Gen-3) scores only <b>0.51</b>; scaling and prompt-engineering are both shown insufficient.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2410.05363">arxiv.org/2410.05363</a> · <code>papers/meng-2024-phygenbench</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-hi">high</span><span class="name"><a href="https://arxiv.org/abs/2507.13428">PhyWorldBench</a></span></div>
+    <p class="claim"><span class="lead">Gu et al., ICLR 2026 oral — </span>A 1,050-prompt benchmark adding an <b>anti-physics</b> tier (asking for impossible events) plus an MLLM-judge (CAP). Best model (Pika 2.0) reaches only <b>0.262</b> joint success. This is the benchmark PhyGround critiques for its closed-source judge.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2507.13428">arxiv.org/2507.13428</a> · <code>papers/gu-2025-phyworldbench</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-med">med</span><span class="name"><a href="https://arxiv.org/abs/2606.22918">JudgeFit</a></span></div>
+    <p class="claim"><span class="lead">Cao et al. — </span>Physics VLM-judges disagree with humans <i>and</i> each other. A per-VLM discovered taxonomy ("each judge its own yardstick") lifts human agreement by ~<b>32%</b> across 16 VLMs — a critique of one-size-fits-all judging.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2606.22918">arxiv.org/2606.22918</a> · <code>papers/cao-2026-judgefit</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-med">med</span><span class="name"><a href="https://arxiv.org/abs/2605.23699">CRONOS</a></span></div>
+    <p class="claim"><span class="lead">Begiristain et al. — </span>Intervention-based counterfactual-consistency benchmark: hold the physical event fixed, vary viewpoint/scene/appearance. Finding: video generators are alarmingly <b>viewpoint-sensitive</b> — evidence they pattern-match rather than model 3D physics.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2605.23699">arxiv.org/2605.23699</a> · <code>papers/begiristain-2026-cronos</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-hi">high</span><span class="name"><a href="https://arxiv.org/abs/2606.05328">The Invisible Hand of Physics</a></span></div>
+    <p class="claim"><span class="lead">Esmati et al. — </span>Asks whether video diffusion models <i>internally encode</i> physical structure even when their outputs violate physics. Argues the knowledge is present in the latents but not surfaced in generation — a representation-vs-generation gap.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2606.05328">arxiv.org/2606.05328</a> · <code>papers/esmati-2026-invisible-hand-physics</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-hi">high</span><span class="name"><a href="https://arxiv.org/abs/2605.19242">PhyWorld</a></span></div>
+    <p class="claim"><span class="lead">Zhao et al. (EmbodyX / Northeastern) — </span>A physics-faithful world model for video generation combining flow matching with RL-based physics alignment. One of the vault's two anchor papers for this cluster.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2605.19242">arxiv.org/2605.19242</a> · <code>papers/zhao-2026-phyworld</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-hi">high</span><span class="name"><a href="https://arxiv.org/abs/2605.10806">PhyGround</a></span></div>
+    <p class="claim"><span class="lead">Lin et al. — </span>Benchmarks physical <i>reasoning</i> (not just realism) in generative world models, and critiques prior benchmarks' closed-source judges. The method-side sibling to PhyWorld.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2605.10806">arxiv.org/2605.10806</a> · <code>papers/lin-2026-phyground</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-med">med</span><span class="name"><a href="https://arxiv.org/abs/2603.13770">PhysAlign</a></span></div>
+    <p class="claim"><span class="lead">Xiong et al. — </span>A LoRA adapter aligning Wan2.2 image-to-video features to a <b>V-JEPA2 teacher</b> plus 3D depth for physics coherence, with <b>no visual-quality tradeoff</b> and free at inference. Method sibling to PhyWorld.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2603.13770">arxiv.org/2603.13770</a> · <code>papers/xiong-2026-physalign</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-hi">high</span><span class="name"><a href="https://arxiv.org/abs/2601.10553">Inference-time Physics Alignment</a></span></div>
+    <p class="claim"><span class="lead">Yuan et al., FAIR / Meta Superintelligence Labs — </span>Much of the physics-implausibility in SOTA video generators can be corrected <b>at inference time</b> by steering with latent world models — no retraining needed.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2601.10553">arxiv.org/2601.10553</a> · <code>papers/yuan-2026-physics-alignment</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-med">med</span><span class="name"><a href="https://arxiv.org/abs/2605.08567">ACWM-Phys</a></span></div>
+    <p class="claim"><span class="lead">Xue et al. — </span>Benchmarks <b>action-conditioned</b> video world models across rigid / deformable / particle / kinematics regimes. Out-of-distribution failure tracks <i>task complexity</i>, not physics category — and bridges the cluster to robotics.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2605.08567">arxiv.org/2605.08567</a> · <code>papers/xue-2026-acwm-phys</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-hi">high</span><span class="name"><a href="https://arxiv.org/abs/2604.04913">Delta Tokens</a></span></div>
+    <p class="claim"><span class="lead">Kerssies et al. — </span>"A frame is worth one token": efficient generative world modeling by encoding each frame as a compact <b>delta token</b> relative to the previous frame, slashing the token budget for video world models.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2604.04913">arxiv.org/2604.04913</a> · <code>papers/kerssies-2026-delta-tokens</code></div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 2 ===================== -->
+<section>
+  <div class="sec-head"><h2>② World models, policies &amp; robotics</h2><span class="n">10 items</span></div>
+  <p class="sec-note">World models as simulators for control, action-conditioned policies, and the physical-AI stack — including three orienting blog essays and one org profile.</p>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-hi">high</span><span class="name"><a href="https://arxiv.org/abs/2602.15922">World Action Models are Zero-shot Policies</a></span></div>
+    <p class="claim"><span class="lead">Ye et al. (NVIDIA et al.) — </span>Introduces <b>DreamZero</b>, a 14B World Action Model built on a pretrained image-to-video diffusion backbone (Wan2.1-I2V-14B) that acts as a zero-shot robot policy — generation and action from one model.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2602.15922">arxiv.org/2602.15922</a> · <code>papers/ye-2026-world-action-models</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-med">med</span><span class="name"><a href="https://arxiv.org/abs/2509.19080">World4RL</a></span></div>
+    <p class="claim"><span class="lead">Jiang et al. — </span>A two-stage framework using a <b>diffusion world model as a frozen high-fidelity simulator</b> in which to refine an imitation-learned policy via RL — decoupling policy improvement from real-robot rollouts.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2509.19080">arxiv.org/2509.19080</a> · <code>papers/jiang-2025-world4rl</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-hi">high</span><span class="name"><a href="https://arxiv.org/abs/2606.29059">FlowWM</a></span></div>
+    <p class="claim"><span class="lead">Porcher et al. — </span>A stochastic visual world model that runs <b>flow matching directly in the feature space of a frozen pretrained encoder</b> rather than pixel space — cheaper, and stochastic-by-design for uncertain futures.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2606.29059">arxiv.org/2606.29059</a> · <code>papers/porcher-2026-flowwm</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-hi">high</span><span class="name"><a href="https://arxiv.org/abs/2410.24185">DexMimicGen</a></span></div>
+    <p class="claim"><span class="lead">Jiang et al. (NVIDIA) — </span>An automated data-generation system turning a <i>handful</i> of human teleop demos into a large imitation-learning dataset for <b>bimanual dexterous manipulation</b> — attacking the data bottleneck.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2410.24185">arxiv.org/2410.24185</a> · <code>papers/jiang-2024-dexmimicgen</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-med">med</span><span class="name"><a href="https://arxiv.org/abs/2606.29148">GPC</a></span></div>
+    <p class="claim"><span class="lead">Shi et al. (Xue Bin Peng) — </span>Generative Pretrained Controllers borrow the LLM recipe — large-scale generative pretraining — to build general-purpose, <b>transferable motor-control</b> policies for physics-based character animation.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2606.29148">arxiv.org/2606.29148</a> · <code>papers/shi-2026-gpc-motor-control</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-hi">high</span><span class="name"><a href="https://arxiv.org/abs/2606.15956">Temporal Difference in Vision (TDV)</a></span></div>
+    <p class="claim"><span class="lead">Daithankar, Gladstone, LeCun, Ji — </span>A self-supervised recipe for learning image representations from video that <b>drops strong inductive assumptions</b>, using temporal differences between frames as the learning signal.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2606.15956">arxiv.org/2606.15956</a> · <code>papers/daithankar-2026-temporal-difference-vision</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-blog">blog</span><span class="badge b-hi">high</span><span class="name"><a href="https://interlatent.com/blog/interlatent-modern-ai-robotics-first-principles">Modern AI Robotics from First Principles</a></span></div>
+    <p class="claim"><span class="lead">Interlatent — </span>A first-principles tour of physical-AI robot policies, framing a policy as a function from observations to actions and building up the modern stack (imitation, world models, RL) from there.</p>
+    <div class="meta"><a href="https://interlatent.com/blog/interlatent-modern-ai-robotics-first-principles">interlatent.com</a> · <code>blogs/interlatent-ai-robotics</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-blog">blog</span><span class="badge b-hi">high</span><span class="name"><a href="https://www.soniajoseph.ai/world-models-and-interpretability-are-two-sides-of-the-same-coin-2/">World models &amp; interpretability</a></span></div>
+    <p class="claim"><span class="lead">Sonia Joseph — </span>Proposes a fourth definition of "world model" — the <b>Internal World Model</b> — arguing that understanding a model's internal representations (interpretability) and building world models are the same problem.</p>
+    <div class="meta"><a href="https://www.soniajoseph.ai/world-models-and-interpretability-are-two-sides-of-the-same-coin-2/">soniajoseph.ai</a> · <code>blogs/joseph-world-models-interpretability</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-blog">blog</span><span class="badge b-hi">high</span><span class="name"><a href="https://www.notboring.co/p/world-models">World Models: Computing the Uncomputable</a></span></div>
+    <p class="claim"><span class="lead">Packy McCormick (w/ General Intuition) — </span>A ~18k-word manifesto arguing world models are the next platform: systems that simulate reality to compute otherwise-intractable outcomes. Strategy/market framing, not technical.</p>
+    <div class="meta"><a href="https://www.notboring.co/p/world-models">notboring.co</a> · <code>blogs/mccormick-world-models</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-site">website</span><span class="badge b-med">med</span><span class="name"><a href="https://www.embodyx.io/">EmbodyX</a></span></div>
+    <p class="claim"><span class="lead">Ingested 07-10 — </span>Silicon Valley physical-AI startup building <b>edge-first VLM/VLA foundation models</b> for robots, vehicles, and cameras. Founders Weiwei Chen &amp; Yanzhi Wang (Northeastern) authored the vault's PhyWorld and PhyGround; backed by NSF, NVIDIA, Google AI for Startups.</p>
+    <div class="meta"><a href="https://www.embodyx.io/">embodyx.io</a> · <code>websites/embodyx</code></div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 3 ===================== -->
+<section>
+  <div class="sec-head"><h2>③ Reasoning, recurrence &amp; architectures</h2><span class="n">6 items</span></div>
+  <p class="sec-note">Latent reasoning, looped/recurrent transformers, and rethinking how model capacity is allocated.</p>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-hi">high</span><span class="name"><a href="https://arxiv.org/abs/2606.16222">Latent Thought Flow (LTF)</a></span></div>
+    <p class="claim"><span class="lead">Zou et al. — </span>Makes LLM reasoning happen inside the model's <b>continuous hidden space</b> instead of decoded chain-of-thought tokens — more efficient latent reasoning without emitting intermediate text.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2606.16222">arxiv.org/2606.16222</a> · <code>papers/zou-2026-latent-thought-flow</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-hi">high</span><span class="name"><a href="https://arxiv.org/abs/2606.18206">Fixed-Point Reasoners (FPRM)</a></span></div>
+    <p class="claim"><span class="lead">Movahedi et al. (Orvieto lab) — </span>A non-hierarchical Looped Transformer for latent reasoning that makes deep looping <b>trainable</b> by switching to a fixed-point formulation — stable and adaptive depth as an inference-time knob.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2606.18206">arxiv.org/2606.18206</a> · <code>papers/movahedi-2026-fixed-point-reasoners</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-hi">high</span><span class="name"><a href="https://arxiv.org/abs/2606.06479">Pretraining Recurrent Networks without Recurrence</a></span></div>
+    <p class="claim"><span class="lead">Kumar &amp; Isola (MIT) — </span>Introduces <b>Supervised Memory Training (SMT)</b>, a way to train nonlinear RNNs <i>without</i> backpropagation-through-time — sidestepping BPTT's cost and instability.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2606.06479">arxiv.org/2606.06479</a> · <code>papers/kumar-2026-supervised-memory-training</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-med">med</span><span class="name"><a href="https://arxiv.org/abs/2606.23670">Tapered Language Models</a></span></div>
+    <p class="claim"><span class="lead">Bayat, Behrouz, Courville — </span>Transformers give every layer the same MLP width; this paper argues for <b>tapering</b> that width across depth, reallocating parameters for better compute-efficiency at fixed budget.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2606.23670">arxiv.org/2606.23670</a> · <code>papers/bayat-2026-tapered-language-models</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-med">med</span><span class="name"><a href="https://arxiv.org/abs/2606.15386">A Compositional Framework for Open-ended Intelligence</a></span></div>
+    <p class="claim"><span class="lead">Momennejad &amp; Raileanu — </span>A theoretical/position paper proposing a formal object for open-ended intelligence built from a finite set of <b>compositional primitives</b>. No experiments — a framework contribution.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2606.15386">arxiv.org/2606.15386</a> · <code>papers/momennejad-2026-compositional-open-ended</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-paper">paper</span><span class="badge b-hi">high</span><span class="name"><a href="https://arxiv.org/abs/2602.14486">Revisiting the Platonic Representation Hypothesis</a></span></div>
+    <p class="claim"><span class="lead">Gröger, Wen, Brbić — </span>An <b>Aristotelian</b> counter to the Platonic Representation Hypothesis: nets trained on different data/modalities don't converge to one ideal representation; similarity is grounded in shared structure of the data, not a universal Platonic form.</p>
+    <div class="meta"><a href="https://arxiv.org/abs/2602.14486">arxiv.org/2602.14486</a> · <code>papers/groger-2026-aristotelian-view</code></div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 4 ===================== -->
+<section>
+  <div class="sec-head"><h2>④ Optimization &amp; housekeeping</h2><span class="n">4 items</span></div>
+  <p class="sec-note">One training-dynamics post, plus three low-priority Readwise changelogs kept for the audit trail.</p>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-blog">blog</span><span class="badge b-med">med</span><span class="name"><a href="https://haeggee.github.io/posts/magnitude-direction-decoupling">Decoupling Magnitude &amp; Direction of Weights</a></span></div>
+    <p class="claim"><span class="lead">Alexander Hägele — </span>Introduces <b>Magnitude-Direction Decoupling (MD)</b>: constrain each weight matrix's <i>direction</i> to a fixed-norm sphere while giving its <i>magnitude</i> a separate learnable parameter — improving training dynamics.</p>
+    <div class="meta"><a href="https://haeggee.github.io/posts/magnitude-direction-decoupling">haeggee.github.io</a> · <code>blogs/haegele-magnitude-direction</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-top"><span class="badge b-blog">blog</span><span class="badge b-low">low</span><span class="name">Readwise &amp; Reader Changelogs</span></div>
+    <p class="claim"><span class="lead">Reading-tools, low signal — </span>Three product changelogs (<a href="https://docs.readwise.io/changelog#june-19-2026">Jun 19</a>, <a href="https://docs.readwise.io/changelog#june-26-2026">Jun 26</a>, <a href="https://docs.readwise.io/changelog#july-3-2026">Jul 3</a>) kept for the audit trail rather than durable value.</p>
+    <div class="meta"><code>blogs/readwise-changelog-2026-06-19 · -06-26 · -07-03</code></div>
+  </div>
+</section>
+
+<footer>
+  Generated 2026-07-14 from <code>30_Knowledge/**</code> notes with <code>added:</code> in 2026-07-03 → 07-13 · claims drawn from each note's TL;DR and the recent-dashboard. Priority / type badges reflect note frontmatter. Two anchor papers of the physics cluster — PhyWorld &amp; PhyGround — trace back to the <b>EmbodyX</b> founders.
+</footer>
+</div>

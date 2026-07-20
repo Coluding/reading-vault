@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: robotics
-last_updated: 2026-07-10
+last_updated: 2026-07-20
 ---
 
 # Robotics
@@ -17,6 +17,9 @@ _Vault notes touching robotics._
 - [[papers/karcini-2026-robots-beyond-vla]] — This is a position/survey paper from Motoniq.ai (with collaborators at Stanford, ETH Zurich, IIT, TU Darmstadt, UCL) arguing that generalist robotics
 - [[papers/higuera-2026-visuo-tactile-world-models]] — 
 - [[papers/xue-2026-acwm-phys]] — **ACWM-Phys**: benchmark for **action-conditioned** video world models across rigid-body / kinematic / deformable / particle interactions; OoD generalization tracks task complexity (not physics category), and architecture ablations favor causal VAEs + cross-attention conditioning — useful signal for video-model-as-robot-simulator work.
+- [[papers/zhou-2024-robodreamer]] — **RoboDreamer** (ICML 2024): compositional video-diffusion world model for robot planning; deployed on RLBench via inverse-dynamics action inference, beats UniPi and Hiveformer; 81.3% unseen-task success on RT-1 human eval.
+- [[papers/chen-2026-actionable-simulators]] — position survey: world models for embodied use must be *actionable simulators* (causal structure, constraints, long-horizon stability), not visual engines; calls for closed-loop decision-oriented evaluation over FID/FVD.
+- [[papers/ding-2024-world-models-survey]] — survey with a full section on world models for embodied/robotics intelligence (Dreamer, TD-MPC2, V-JEPA 2, WHAM slotted into its taxonomy) plus sim-to-real as a named open problem.
 
 ## Organizations
 - [[websites/embodyx]] — Silicon Valley physical-AI startup building edge-first VLM/VLA foundation models for robots, vehicles, and cameras; founders Weiwei Chen & Yanzhi Wang (Northeastern) authored [[papers/zhao-2026-phyworld]] and [[papers/lin-2026-phyground]]. Backed by NSF, NVIDIA, Google AI for Startups.

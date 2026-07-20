@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: video-generation
-last_updated: 2026-07-10
+last_updated: 2026-07-20
 ---
 
 # Video Generation
@@ -18,3 +18,8 @@ _Vault notes touching video generation._
 - [[papers/xiong-2026-physalign]] — **PhysAlign**: a LoRA adapter aligning Wan2.2 I2V features to a V-JEPA2 teacher + 3D depth for physics coherence, with no visual-quality tradeoff and free inference.
 - [[papers/xue-2026-acwm-phys]] — **ACWM-Phys**: benchmarks action-conditioned video world models across rigid/deformable/particle/kinematics; OoD failure tracks task complexity, not physics category.
 - [[papers/cai-2026-mode-mean-seeking]] — The paper attacks the "fidelity–horizon gap" in scaling video generation from seconds to minutes: long, coherent video data is scarce, so models train
+- [[papers/kerssies-2026-delta-tokens]] — **DeltaTok/DeltaWorld**: one continuous delta token per frame (change measured in frozen DINOv3 feature space) + Best-of-Many objective; matches/beats Cosmos on dense forecasting at 35× fewer params, ~2,000× fewer FLOPs.
+- [[papers/gao-2025-adaworld]] — **AdaWorld**: latent-action-conditioned autoregressive video diffusion (built on SVD) pretrained on ~2B frames from 1000+ environments; latent actions transfer across scenes zero-shot.
+- [[papers/zhou-2024-robodreamer]] — **RoboDreamer**: compositional text-to-video generation for robot planning; per-sub-instruction diffusion scores averaged at sampling time generalize zero-shot to novel instruction combinations.
+- [[papers/chen-2026-actionable-simulators]] — position survey: high-fidelity video generation ≠ physical/causal understanding ("visual conflation"); FID/FVD correlate weakly with planning performance — calls for closed-loop evaluation.
+- [[papers/ding-2024-world-models-survey]] — survey slotting video-generation world models (Sora, Cosmos, Genie, GAIA-1) into a two-branch taxonomy of the world-model literature.

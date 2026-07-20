@@ -1,6 +1,6 @@
 ---
 type: moc
-last_updated: 2026-07-10
+last_updated: 2026-07-20
 status: living
 
 ---
@@ -11,6 +11,31 @@ Most recent items added to the vault, regardless of category. Refreshed by
 `/process-inbox`.
 
 ## This week
+
+_(Triaged 2026-07-20 — cleared the 07-07 → 07-16 raw backlog: the 07-10 world-models + RAE-latent-space wave, plus two blogs. Deep notes were written in an earlier interrupted session; this pass completed MOC links, author indices, routing, and the commit. 16 unique items from 31 bullets — the Worker double-posted most. Two clusters dominate: **VFM-latent-space world models** (DINO-world, DeltaTok, AdaWorld) and the **representation-autoencoder line** (RAE, LV-RAE, GAE, S-AE).)_
+
+### Papers
+- [[papers/zheng-2025-rae-dit]] — **the RAE paper** (Xie lab): frozen DINOv2/SigLIP2/MAE encoder + trained ViT decoder replaces SD-VAE for DiTs; width ≥ token dim (Theorem 1); 1.51 FID w/o guidance on ImageNet-256, ~47× training speedup. Anchor of the RAE cluster.
+- [[papers/liu-2026-improving-rae-reconstruction]] — **LV-RAE**: shallow residual encoder on a frozen VFM manifold restores the low-level detail RAEs drop (PSNR 32.32 near-lossless); noise-robust decoder fine-tuning fixes off-manifold hypersensitivity.
+- [[papers/liu-2026-geometric-autoencoder]] — **GAE**: bottleneck alignment to a downsampled DINOv2 teacher + hyperspherical RMSNorm latent (no KL) + dynamic noise sampling; gFID 1.31 w/o CFG at d=32.
+- [[papers/li-2026-semantic-autoencoder]] — **S-AE** (CVPR 2026): one latent space for understanding *and* generation off frozen DINOv3; strong on low-data/high-res domains; faster DiT convergence than DC-AE.
+- [[papers/baldassarre-2025-dino-world-models]] — **DINO-world** (Meta, LeCun co-author): video world model predicting in frozen DINOv2 latent space; beats V-JEPA/COSMOS on dense forecasting at a tiny fraction of the compute; post-trainable action blocks for planning.
+- [[papers/kerssies-2026-delta-tokens]] — **DeltaTok/DeltaWorld**: one continuous delta token per frame (change in frozen DINOv3 space) + Best-of-Many objective; Cosmos-level forecasting at 35× fewer params, ~2,000× fewer FLOPs.
+- [[papers/gao-2025-adaworld]] — **AdaWorld** (ICML 2025): action-free pretraining via continuous latent actions (β-VAE bottleneck over frame pairs); zero-shot action transfer, fast adaptation to new action spaces.
+- [[papers/zhou-2024-robodreamer]] — **RoboDreamer** (ICML 2024): compositional text-to-video robot planning — product-of-experts over parsed sub-instructions; 81.3% unseen-task success on RT-1.
+- [[papers/zuo-2026-qwen-agentworld]] — **Qwen-AgentWorld**: first *native* language world model — next-observation prediction from pre-training onward; an LLM as environment simulator for general agents.
+- [[papers/ding-2024-world-models-survey]] — Tsinghua survey: understand-the-present vs predict-the-future as the field's organizing dichotomy; the best current map + benchmark catalog.
+- [[papers/chen-2026-actionable-simulators]] — Oxford position survey: "visual conflation" — realism ≠ dynamics; world models must become *actionable simulators* with closed-loop decision-oriented evaluation.
+- _(also routed this pass, deep-noted earlier via /paper-search: [[papers/zhao-2026-phyworld]], [[papers/lin-2026-phyground]], and [[papers/kerssies-2026-delta-tokens]]'s siblings below.)_
+
+### Blogs
+- [[blogs/velickovic-gdl-book]] — **GDL textbook** (Veličković, MIT Press 2026) released chapter-by-chapter as free drafts; tracking note — triggered creation of [[topics/geometric-deep-learning]].
+- [[blogs/readwise-changelog-2026-07-10]] — Reader changelog: Markdown uploads, Daily Review API endpoint, `language` save parameter, MCP response slimming.
+
+### Duplicates
+- "World Models: Computing the Uncomputable" (07-07 bullet) — same rw-id already processed in the 07-08 backfill → [[blogs/mccormick-world-models]].
+
+## Earlier
 
 _(2026-07-10 — **/paper-search**: 6 physics-in-video-generation siblings to [[papers/zhao-2026-phyworld]] & [[papers/lin-2026-phyground]], pulled directly from arXiv (not via Readwise — `rw_id: ""`, `read_state: skimmed`). Split benchmark axis / method axis.)_
 
@@ -52,8 +77,6 @@ _(Triaged 2026-07-08 — **backfill** of the 2026-06-15 → 07-07 Worker-outage 
 
 ### Rejected
 - Loom (loom.com) — off-topic product page (not AI/math/CS).
-
-## Earlier
 
 _(Triaged 2026-06-22 — the flow-matching / OT / generative cluster, plus robotics, attention, reliability, and geometry. Source-saved 06-10 to 06-15.)_
 

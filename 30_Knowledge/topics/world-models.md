@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: world-models
-last_updated: 2026-07-10
+last_updated: 2026-07-20
 ---
 
 # World Models
@@ -29,8 +29,15 @@ Learned models of environment dynamics — pixel-, latent-, or token-level predi
 - [[papers/cao-2026-judgefit]] — VLM physics-judges disagree with humans *and each other*; **JudgeFit** discovers a **per-VLM** error taxonomy via human-calibrated pruning, +~32% Spearman agreement across 16 VLMs. Directly targets the judge-bias problem behind PhyGround's PhyJudge-9B.
 - [[papers/xiong-2026-physalign]] — LoRA adapter makes Wan2.2 I2V **physically coherent** via synthetic rigid-body clips + Gram-relational alignment to a frozen V-JEPA2 teacher + depth constraints; better physics *and* visual quality, free at inference. Method sibling to PhyWorld (alignment vs DPO).
 - [[papers/xue-2026-acwm-phys]] — benchmark for **action-conditioned** video world models across 4 physics categories (rigid/deformable/particle/kinematics); OoD generalization tracks *task complexity*, not physics category — evidence models lean on appearance over physics.
+- [[papers/baldassarre-2025-dino-world-models]] — **DINO-world**: generalist video world model predicting future frames in *frozen DINOv2 latent space* (~1.1B cross-attention predictor, 60M web videos, smooth-L1 + 3-axial RoPE); beats V-JEPA/COSMOS on dense forecasting (+6.3 mIoU VSPW @0.5s) at a tiny fraction of COSMOS's compute; post-trainable with lightweight action blocks for planning.
+- [[papers/kerssies-2026-delta-tokens]] — **DeltaTok/DeltaWorld**: compresses each frame-to-frame *change* in frozen DINOv3 feature space into a single continuous delta token (~1,024× token reduction) + Best-of-Many objective (K noise queries, backprop through the closest); best-of-20 beats Cosmos on dense forecasting with 35× fewer params and ~2,000× fewer FLOPs.
+- [[papers/gao-2025-adaworld]] — **AdaWorld** (ICML 2025): action-free world-model pretraining — a β-VAE bottleneck extracts continuous latent actions from consecutive-frame pairs; SVD-based autoregressive diffusion WM over ~2B frames / 1000+ envs; zero-shot action transfer (FVD 767 vs 1545 on LIBERO) and fast adaptation (56.7% Procgen goal-reaching vs 26% action-agnostic).
+- [[papers/zhou-2024-robodreamer]] — **RoboDreamer** (ICML 2024): compositional text-to-video robot planning — parse instruction into action/relation sub-phrases, average per-factor diffusion scores (product-of-experts); zero-shot recombination lifts unseen-task success to 81.3% vs 46.9% (AVDC) on RT-1.
+- [[papers/zuo-2026-qwen-agentworld]] — **Qwen-AgentWorld**: first *native* language world model — a text generator trained from pre-training onward to predict the next environment observation given interaction history and action; positions LWMs as simulators for general (tool-use/computer) agents.
 
 ## Perspectives & surveys
+- [[papers/ding-2024-world-models-survey]] — Tsinghua survey organizing the field around *understand-the-present vs predict-the-future* (Ha–Schmidhuber 2018 vs LeCun's JEPA); two-branch taxonomy (implicit representation vs future prediction), four application domains, six open problems; the field's best current **map** with a benchmarks catalog.
+- [[papers/chen-2026-actionable-simulators]] — Oxford position survey naming **"visual conflation"** (visual realism ≠ dynamics understanding); argues world models must become *actionable simulators* — causal structure, domain constraints, long-horizon stability — with closed-loop decision-oriented evaluation; distinguishes perceptual vs *dynamical/causal* hallucinations, medical decision-making as epistemic stress test.
 - [[blogs/mccormick-world-models]] — General Intuition manifesto/survey: World Models as a new foundation-model class ($P(s_{t+1}\mid s_t,a_t)$ vs video's $P(x_{t+1}\mid x_t)$); maps the field's four waves and every major lab (latent/JEPA vs generative/diffusion, VLAs vs World-Model agents); bets on action-labeled gaming data.
 - [[blogs/joseph-world-models-interpretability]] — reframes "world model" as a foundation model's *internal* causal structure (the Internal World Model); argues world models and interpretability are the same program (causal discovery + white-box evaluation). Explicit contrast to the external/generative view above.
 

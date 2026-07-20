@@ -1,17 +1,24 @@
 ---
 type: paper
-title: "Flow Matching in Feature Space for Stochastic World Modeling"
-authors: ["François Porcher", "Nicolas Carion", "Karteek Alahari", "Shizhe Chen"]
+title: Flow Matching in Feature Space for Stochastic World Modeling
+authors:
+  - François Porcher
+  - Nicolas Carion
+  - Karteek Alahari
+  - Shizhe Chen
 year: 2026
-venue: "arXiv preprint"
+venue: arXiv preprint
 url: https://arxiv.org/abs/2606.29059
 rw_id: 01kwz6a5a0aybz926grrr614d2
-topics: [flow-matching, world-models, generative-models]
+topics:
+  - flow-matching
+  - world-models
+  - generative-models
 priority: high
-read_state: queued
+read_state: done
 relevance: ""
 added: 2026-07-08
-last_updated: 2026-07-08
+last_updated: 2026-07-15
 ---
 
 ## TL;DR
@@ -36,6 +43,15 @@ $$x_\tau = (1-\tau)x_0 + \tau x_1.$$
 For the linear path the ground-truth velocity field is $u^\star(x_\tau, \tau) = x_1 - x_0$ (constant in $\tau$). A network $u_\theta(x_\tau, x_{\text{ctx}}, \tau)$ is trained to approximate it, learning $p(x_{\text{future}} \mid x_{\text{ctx}})$. Sampling integrates the ODE $\frac{dx_\tau}{d\tau} = u_\theta(x_\tau, x_{\text{ctx}}, \tau)$ from $x_0 \sim p_{\text{noise}}$ at $\tau=0$ to $\tau=1$.
 
 **Model.** A Transformer latent generative architecture operating directly in DINOv3 features. Input is the noisy target latent $x_\tau$, conditioned on $x_{\text{ctx}}$ via **cross-attention**. Positional embeddings are decomposed into temporal + spatial components with **RoPE** applied to both $x_\tau$ and $x_{\text{ctx}}$. Two parts: (1) a **backbone** = 2 DiT-style blocks, dimension 256, with query–key normalization for stability; (2) a **projection head** fed via **AdaLN** conditioning — shallow but **wide**: 2 projection layers of dimension **1024**, predicting $u_\theta(x_\tau,\tau)$. The wide head (1024) deliberately exceeds the per-patch latent dim ($d=384$), which the paper finds critical for accurate velocity prediction in high-dim latents (echoing RAE, Zheng et al. 2025).
+
+**Block-level detail (verified against the primary-source PDF/Figure 2 — the arXiv HTML render mis-OCRs the block counts as "22"; the true counts are 2 and 2).** The model is only **4 transformer blocks total**, an unusually shallow design:
+- **Backbone block** (dim 256, ×2): `Self-Attention → AdaLN → Cross-Attention (Q=target, K/V=context) → AdaLN → FFN → AdaLN`, each sub-layer residual and gated by AdaLN conditioned on the timestep $\tau$ embedding. Query–key normalization (Henry et al. 2020) stabilizes attention at this feature scale.
+- **Wide head block** (dim 1024, ×2): conditioned on the backbone's output *via AdaLN* (not concatenation) — Figure 2 shows the same shape as the backbone (cross-attention-to-context + FFN + AdaLN) just at 4× the width, outputting the final velocity $u_\theta(x_\tau,\tau)$ projected back down to $D=384$.
+- RoPE (temporal + spatial decomposed) lets attention resolve "which frame / which patch" without learned absolute position embeddings — this is what makes cross-attention correctly align a target patch with the matching context patches.
+- The paper's own ablation (depth 2→8 → no gain; width is the real lever, saturating around 1024) explains *why* they landed on this cheap-backbone / expensive-head shape: DINOv3 already supplies the semantic/dynamics prior, so the flow-matching head only has to learn a comparatively simple velocity field on top of it.
+- **Not specified anywhere in the paper**: attention head count, FFN expansion ratio. Code is public (`github.com/facebookresearch/flowwm`) if exact values are needed.
+
+**Parameter count [analyst's view / estimate — not stated in the paper].** Grepping the full extracted PDF text for "param" turns up nothing about model size. Back-of-envelope with standard QKVO attention and an assumed 4× FFN ratio (unconfirmed): backbone ≈ 2M, wide head ≈ 25M → **roughly 30–40M trainable parameters total**, order-of-magnitude only. This sits in front of a separately **frozen** DINOv3 ViT-S encoder (~21M params, untrained) that does the actual visual representation learning. For scale, this is ~3 orders of magnitude smaller than DreamZero's 14B video-diffusion backbone ([[papers/ye-2026-world-action-models]]) — consistent with FlowWM's thesis that the encoder (not the generative head) is where the heavy lifting belongs.
 
 ### Training objectives
 **(1) Standard flow-matching loss** — conditional expected squared error:

@@ -88,6 +88,23 @@ something the vault doesn't have, mark it `_needs note_` in `research.md` and ad
 it to the reading queue — don't write from memory. `draft.md` prose is the user's
 voice; Claude scaffolds and gathers, and only ghost-writes sections when asked.
 
+### Mode E — Website ingest (manual, skill-triggered)
+
+The user wants to capture a **company / research-org website** — a lab, startup,
+or product site that publishes research — and understand what they do by linking
+it to what the vault already knows. Trigger:
+
+- `/ingest-website <url>` (or "ingest this website: {url}") → fetch the site
+  **live via `WebFetch`**, extract the org's profile (mission, research agenda,
+  notable work, people), write `30_Knowledge/websites/{slug}.md`, and cross-link
+  it to existing papers, blogs, topics, and author indices.
+
+Unlike Modes A–B, **websites do not flow through Readwise or the Worker** — there
+is no rw-id, no payload sidecar, no `00_Inbox` routing. The skill writes straight
+to `30_Knowledge/websites/`. The no-fabrication rule holds: every stated fact
+comes from a fetched page (or a cited `WebSearch` result), never from memory. See
+Part 15 for the full contract; the procedure lives in `.claude/commands/ingest-website.md`.
+
 ---
 
 ## Part 3 — Hard rules
@@ -98,10 +115,12 @@ voice; Claude scaffolds and gathers, and only ghost-writes sections when asked.
    don't know it. Write `_needs verification_` and stop.
 3. **Always cite the rw-id** in deep notes via the `rw_id` frontmatter
    field, so future-you can re-fetch the source.
-4. **Never invent new note types in `30_Knowledge`** (`papers | blogs | threads | newsletters`
+4. **Never invent new note types in `30_Knowledge`** (`papers | blogs | threads | newsletters | websites`
    are the only categories there). Ask before extending. _(The `50_Writing/`
    workspace has its own draft types — `blog-draft | blog-research | blog-draft-body` —
-   per Part 14; these are separate and do not count as Knowledge categories.)_
+   per Part 14; these are separate and do not count as Knowledge categories.)_ The
+   `websites` category is fed **manually** by the `/ingest-website` skill (Mode E),
+   not by the Worker inbox — see Part 15.
 5. **Never edit `90_Meta/`** unless the user explicitly asks (that's
    Worker code and scripts).
 6. **One commit per `/process-inbox` run.** The Worker writes commit-per-
@@ -267,6 +286,27 @@ last_updated: 2026-05-21
 ---
 ```
 
+### Website note (`30_Knowledge/websites/{slug}.md`)
+
+Fed by the `/ingest-website` skill (Mode E / Part 15). No `rw_id` — websites
+don't come through Readwise; cite the fetched pages in the body's `## Source`.
+
+```yaml
+---
+type: website
+title: "Physical Intelligence"        # org / site name
+org: "Physical Intelligence"
+url: https://www.physicalintelligence.company/
+topics: [robotics, vla, imitation-learning]
+research_areas: ["robot foundation models", "vision-language-action policies"]
+people: ["Sergey Levine", "Chelsea Finn"]   # names found on the site
+priority: high        # high | medium | low
+read_state: skimmed   # queued | skimmed | deep | abandoned
+added: 2026-07-10
+last_updated: 2026-07-10
+---
+```
+
 ### Topic MOC (`30_Knowledge/topics/{slug}.md`)
 
 ```yaml
@@ -296,6 +336,7 @@ last_updated: 2026-05-21
 - Payload JSON: `00_Inbox/raw/payloads/{rw-id}.json` (Worker writes once, stays put)
 - Processed raw bullets: `00_Inbox/raw/processed/{YYYY-MM-DD}.md`
 - Deep note: `30_Knowledge/{papers|blogs|threads}/{slug}.md` (kebab-case slug per Part 5)
+- Website note: `30_Knowledge/websites/{org-slug}.md` (kebab-case org slug, e.g. `physical-intelligence`; skill-fed, no inbox stage — see Part 15)
 - Topic MOC: `30_Knowledge/topics/{topic-slug}.md`
 - Author index: `30_Knowledge/authors/{firstname-lastname}.md`
 - Blog draft workspace: `50_Writing/{blog-slug}/{index|research|draft}.md` (kebab-case blog-slug; see Part 14)
@@ -543,6 +584,61 @@ Brief rundown of the main items / topics in this issue.
 - Newsletter source: [[authors/...]]
 ```
 
+### Website notes (target: 400–900 words; go longer for orgs with a large relevant body of work)
+
+For company / research-org sites fed by `/ingest-website` (Mode E / Part 15).
+The value is in the **cross-links** — a website note that doesn't connect the org
+to existing papers/blogs/topics/authors has failed its job. Every stated fact
+must come from a fetched page (or a cited `WebSearch` result); interpretation goes
+only under `[analyst's view]`.
+
+```markdown
+## TL;DR
+
+(3–5 sentences) Who they are, what they build or research, the domain, and why
+they matter to the vault. Name their flagship work if they have one.
+
+## What they do
+
+(1–2 paragraphs) Mission in their own words where possible. Product vs. pure
+research, stage/funding if the site states it, the problem they're attacking.
+
+## Research agenda
+
+The themes / directions they work on, bulleted. Ground each in something the site
+actually says — a research page, a publications list, a manifesto.
+
+## Notable work
+
+- Named papers, projects, model/product releases they highlight, with links.
+- **Cross-link every item the vault already holds**: `[[papers/...]]`,
+  `[[blogs/...]]`. For work the org highlights that the vault lacks, mark it
+  `_needs note_` so it can be queued for reading — don't invent a summary.
+
+## People
+
+Founders / key researchers named on the site. Link `[[authors/...]]` where the
+vault already tracks them; note the affiliation. Do not fabricate roles.
+
+## How it connects to the vault [analyst's view]
+
+*Your synthesis.* Which vault papers/blogs/topics this org sits next to, what
+reading it suggests, where they compete with or extend work already noted.
+
+## Connections
+
+- Topic MOCs: [[topics/...]]
+- Related papers: [[papers/...]]
+- Related blogs: [[blogs/...]]
+- Authors: [[authors/...]]
+
+## Source
+
+Pages actually fetched, with the date, so a re-fetch later is easy:
+- https://…/research — fetched 2026-07-10
+- https://…/about — fetched 2026-07-10
+```
+
 ---
 
 ## Part 13 — Gotchas
@@ -606,3 +702,48 @@ where the user drafts blog posts, mining the knowledge base for material.
 - **Don't ghost-write unprompted.** Default to scaffolding + research; only write
   prose into `draft.md` when the user asks.
 - Published pieces may stay here (`status: published`) or move to `40_Archive/`.
+
+---
+
+## Part 15 — Website ingest (`30_Knowledge/websites/`)
+
+A fifth Knowledge category for **company / research-org websites** — labs,
+startups, and product sites that publish research the user wants to understand
+and connect to what they read. Unlike the other four categories, websites are
+**not** captured by the Readwise Worker; they are ingested manually.
+
+### How it differs from the inbox flow
+
+| | papers / blogs / threads / newsletters | websites |
+|---|---|---|
+| Source | Readwise Reader → Worker webhook | a URL the user hands you |
+| Capture | automatic (`00_Inbox/raw/…`) | manual, `/ingest-website <url>` |
+| Content fetch | Readwise Document Export API (`rw_id`) | live `WebFetch` (+ `WebSearch`) |
+| Identifier | `rw_id` frontmatter | none — cite fetched pages in `## Source` |
+| Inbox routing | yes (`00_Inbox/{type}/`) | none — writes straight to Knowledge |
+
+### The skill
+
+`/ingest-website <url>` (procedure in `.claude/commands/ingest-website.md`):
+
+1. Fetch the landing page plus the pages that describe the research
+   (`/research`, `/publications`, `/blog`, `/about`, `/team`) — 2–5 pages.
+2. Extract org name, what they do, research agenda, notable work, and people.
+3. Write `30_Knowledge/websites/{org-slug}.md` (frontmatter Part 7, body Part 12).
+4. **Cross-link** — `grep` the vault for the org's people, work, and topics, and
+   wire real `[[wikilinks]]` to existing `papers/`, `blogs/`, `authors/`, and
+   `topics/`. This is the whole point of a website note.
+5. Add the org under an `## Organizations` section in each relevant topic MOC,
+   backlink from any existing author indices, refresh `dashboard-recent.md`, and
+   commit once (`ingest website: {org-name}`).
+
+### Rules
+
+- **No fabrication.** Everything stated traces to a fetched page or a cited
+  `WebSearch` result — never funding, headcount, or publications from memory.
+- **Cross-link only to notes that exist.** Work the org highlights that the vault
+  lacks is a `_needs note_` reading suggestion, not a dead link dressed as fact.
+- **Same singleton discipline as triage.** Don't spin up a topic MOC or author
+  index off a website alone — wait for a real paper/blog to join it.
+- **Update-in-place on re-ingest.** If `websites/{org-slug}.md` exists, refresh it
+  and bump `last_updated` rather than duplicating.
