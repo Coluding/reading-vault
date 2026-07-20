@@ -383,6 +383,11 @@ After processing the inbox:
    - Items rejected (with reason)
 2. Run `git add -A && git commit -m "triage YYYY-MM-DD"` (commit, don't push — user pushes manually).
 3. Update `30_Knowledge/_MOCs/dashboard-recent.md` with the newest items.
+4. Update `30_Knowledge/_MOCs/papers-index.md`: add each new paper **once** under
+   its primary group (create a new group only when ≥3 papers would populate it;
+   otherwise use the closest existing group). This index is the scannable
+   all-papers overview — topic MOCs remain the multi-membership view. Bump its
+   paper count and `last_updated`.
 
 ---
 
