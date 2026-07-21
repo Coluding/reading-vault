@@ -35,6 +35,9 @@ _(Triaged 2026-07-20 — cleared the 07-07 → 07-16 raw backlog: the 07-10 worl
 ### Duplicates
 - "World Models: Computing the Uncomputable" (07-07 bullet) — same rw-id already processed in the 07-08 backfill → [[blogs/mccormick-world-models]].
 
+### Rejected
+- Readwise & Reader Changelog "July 17, 2026" (07-20 bullet, ×2 double-post) — `reject: off-topic` (product changelog, not AI/math/CS). _Note: departs from prior practice of low-priority changelog notes; payload JSON retained if reversal is wanted._
+
 ## Earlier
 
 _(2026-07-10 — **/paper-search**: 6 physics-in-video-generation siblings to [[papers/zhao-2026-phyworld]] & [[papers/lin-2026-phyground]], pulled directly from arXiv (not via Readwise — `rw_id: ""`, `read_state: skimmed`). Split benchmark axis / method axis.)_
