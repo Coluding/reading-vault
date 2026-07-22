@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: video-generation
-last_updated: 2026-07-20
+last_updated: 2026-07-22
 ---
 
 # Video Generation
@@ -23,3 +23,6 @@ _Vault notes touching video generation._
 - [[papers/zhou-2024-robodreamer]] — **RoboDreamer**: compositional text-to-video generation for robot planning; per-sub-instruction diffusion scores averaged at sampling time generalize zero-shot to novel instruction combinations.
 - [[papers/chen-2026-actionable-simulators]] — position survey: high-fidelity video generation ≠ physical/causal understanding ("visual conflation"); FID/FVD correlate weakly with planning performance — calls for closed-loop evaluation.
 - [[papers/ding-2024-world-models-survey]] — survey slotting video-generation world models (Sora, Cosmos, Genie, GAIA-1) into a two-branch taxonomy of the world-model literature.
+
+## Syntheses
+- [[_synthesis/physics-grounding-video-world-models]] — physics grounding in video/world models: benchmarks, alignment methods, internal probing (12 papers, 2026-07-22)

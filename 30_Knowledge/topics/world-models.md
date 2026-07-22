@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: world-models
-last_updated: 2026-07-20
+last_updated: 2026-07-22
 ---
 
 # World Models
@@ -43,6 +43,9 @@ Learned models of environment dynamics — pixel-, latent-, or token-level predi
 
 ## Organizations
 - [[websites/embodyx]] — physical-AI startup shipping edge-first VLM/VLA foundation models; founders (Weiwei Chen, Yanzhi Wang) authored the vault's physics-faithful world-model work ([[papers/zhao-2026-phyworld]], [[papers/lin-2026-phyground]]).
+
+## Syntheses
+- [[_synthesis/physics-grounding-video-world-models]] — physics grounding in video/world models: benchmarks, alignment methods, internal probing (12 papers, 2026-07-22)
 
 ## Related topics
 - [[topics/jepa]]
