@@ -361,7 +361,7 @@ last_updated: 2026-05-21
 - Topic MOC: `30_Knowledge/topics/{topic-slug}.md`
 - Author index: `30_Knowledge/authors/{firstname-lastname}.md`
 - Blog draft workspace: `50_Writing/{blog-slug}/{index|research|draft}.md` (kebab-case blog-slug; see Part 14)
-- Topic synthesis: `30_Knowledge/_synthesis/{topic-slug}.md` (skill-fed by `/synthesize`, one file per topic, updated in place on re-run — see Part 16)
+- Topic synthesis: `30_Knowledge/_synthesis/{topic-slug}.md` plus a derived `{topic-slug}.html` visual overview (skill-fed by `/synthesize`, one pair per topic, updated in place on re-run — see Part 16)
 
 ---
 
@@ -803,6 +803,12 @@ regenerated in place as the vault grows (git history keeps old snapshots).
 - **One page, dense.** 600–1000 words for a very technical reader — equations
   and exact numbers from the notes, no filler. Topics that need more get split
   into sub-topic syntheses.
+- **HTML overview alongside, always.** Every run also writes
+  `_synthesis/{topic-slug}.html` — a small, self-contained (inline CSS, no
+  external assets) visual rendering of the note: paper cards with role badges
+  and headline numbers, the comparison table, a distinct `[analyst's view]`
+  box, gaps. The `.md` is the source of truth; the HTML adds no new claims and
+  is regenerated with the note in the same commit.
 
 ### Frontmatter (`30_Knowledge/_synthesis/{topic-slug}.md`)
 

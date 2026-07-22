@@ -8,7 +8,9 @@ argument-hint: <topic>
 Produce a **one-page, technically dense synthesis** of a topic from the papers
 already in the vault: surface each paper's main claims, **compare** the papers
 (assumptions, methods, results, disagreements), and combine them into a single
-coherent picture. The output is a durable note under `30_Knowledge/_synthesis/`.
+coherent picture. The output is a durable note under `30_Knowledge/_synthesis/`,
+**always accompanied by a small single-file HTML overview** (`{topic-slug}.html`
+next to the note) that presents the same content with visual clarity.
 
 This is **vault-mining, not reading**: the synthesis is built exclusively from
 existing `30_Knowledge` deep notes. No web fetches, no Readwise API calls, no
@@ -72,18 +74,37 @@ for one.
    than duplicating. A synthesis is a snapshot of the vault — regenerating it
    as the vault grows is the intended lifecycle.
 
-6. **Cross-link.**
+6. **Build the HTML overview** at `30_Knowledge/_synthesis/{topic-slug}.html` —
+   always, not optionally. This is a *rendering* of the markdown note for fast
+   visual scanning, not a second document:
+   - **Content**: strictly derived from the `.md` note — same claims, same
+     numbers, nothing new. Structure it as: a header (topic, date, N papers),
+     the picture-in-brief as a lede, a **paper grid** (one compact card per
+     paper: slug, role badge core/contrast/supporting, one-line claim, its
+     headline number set off visually), the **comparison table**, a visually
+     distinct `[analyst's view]` synthesis box, and a gaps list.
+   - **Form**: one self-contained file — inline CSS, no external assets, no
+     JS frameworks. Small (aim well under ~40KB). Readable typography,
+     restrained palette, role/severity color accents; support light and dark
+     via `prefers-color-scheme`. Tables scroll horizontally in their own
+     container rather than overflowing the page.
+   - **Lifecycle**: regenerated in place on every re-run, in the same commit
+     as the note. If the `.md` changes, the `.html` must be rebuilt — never
+     let them drift apart. After writing it, send it to the user with
+     `SendUserFile` (display: render) so they see it immediately.
+
+7. **Cross-link.**
    - In the topic MOC (if it exists), add/refresh a line under a
      `## Syntheses` section: `- [[_synthesis/{topic-slug}]] — one-line scope
      (N papers, YYYY-MM-DD)`.
    - The synthesis itself links every paper it uses via `[[papers/...]]`.
 
-7. **Commit.** `git add -A && git commit -m "synthesis: {topic-slug} ({N} papers)"`.
-   Do not push. One commit per run.
+8. **Commit.** `git add -A && git commit -m "synthesis: {topic-slug} ({N} papers)"`.
+   Do not push. One commit per run (note + HTML overview + MOC edits together).
 
-8. **Print a short summary**: the note path, which papers went in, which were
-   offered but unticked, and any gaps flagged (papers whose notes were too
-   shallow to compare properly — candidates for a deep-read session).
+9. **Print a short summary**: the note and HTML paths, which papers went in,
+   which were offered but unticked, and any gaps flagged (papers whose notes
+   were too shallow to compare properly — candidates for a deep-read session).
 
 ## Note template
 
@@ -160,3 +181,7 @@ promising, and what the vault should read next to close the gaps.
   notes never replace deep notes.
 - **Update-in-place on re-run** for the same topic; the git history preserves
   old snapshots. Never delete.
+- **The HTML overview is mandatory and derived.** Every synthesis ships with
+  its `{topic-slug}.html` sibling; the `.md` note is the source of truth and
+  the HTML must contain no claim or number absent from it. Regenerate both
+  together — a stale HTML is worse than none.

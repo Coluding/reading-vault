@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Physics Grounding in Video &amp; World Models — vault synthesis</title>
+<style>
+  :root {
+    --bg: #faf9f7; --fg: #1a1a1e; --muted: #6b6b74; --card: #ffffff;
+    --line: #e4e2dd; --accent: #2f5f8f; --accent-soft: #eaf1f8;
+    --core: #2f5f8f; --contrast: #a05a2c; --supporting: #6a768a; --framing: #5c7a4f;
+    --analyst-bg: #f5efe4; --analyst-line: #c9a95c;
+    --num: #8a2f2f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16171a; --fg: #e6e4df; --muted: #9a9aa4; --card: #1f2126;
+      --line: #33353c; --accent: #7fa9d4; --accent-soft: #24303d;
+      --core: #7fa9d4; --contrast: #d49a6a; --supporting: #99a5ba; --framing: #9ab884;
+      --analyst-bg: #26231b; --analyst-line: #b39144;
+      --num: #d98a8a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2rem 1.25rem 4rem; background: var(--bg); color: var(--fg);
+    font: 15px/1.55 -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  }
+  main { max-width: 62rem; margin: 0 auto; }
+  header { border-bottom: 2px solid var(--accent); padding-bottom: .9rem; margin-bottom: 1.4rem; }
+  h1 { font-size: 1.45rem; margin: 0 0 .3rem; line-height: 1.25; }
+  .meta { color: var(--muted); font-size: .85rem; }
+  .lede { font-size: 1rem; margin: 0 0 1.6rem; }
+  .lede strong { color: var(--accent); }
+  h2 { font-size: 1.05rem; text-transform: uppercase; letter-spacing: .06em;
+       color: var(--muted); margin: 2rem 0 .8rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: .7rem; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: .7rem .8rem; display: flex; flex-direction: column; gap: .35rem;
+  }
+  .card .top { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
+  .slug { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .78rem; font-weight: 600; }
+  .badge {
+    font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+    padding: .1rem .45rem; border-radius: 99px; color: var(--bg); white-space: nowrap;
+  }
+  .b-core { background: var(--core); } .b-contrast { background: var(--contrast); }
+  .b-supporting { background: var(--supporting); } .b-framing { background: var(--framing); }
+  .claim { font-size: .84rem; }
+  .headline { font-size: .8rem; color: var(--num); font-weight: 650; margin-top: auto; }
+  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
+  table { border-collapse: collapse; width: 100%; font-size: .84rem; min-width: 44rem; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--accent-soft); font-size: .74rem; text-transform: uppercase; letter-spacing: .05em; }
+  tr:last-child td { border-bottom: none; }
+  .axes { display: grid; grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr)); gap: .7rem; margin-top: .8rem; }
+  .axis { background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--accent);
+          border-radius: 6px; padding: .6rem .8rem; font-size: .85rem; }
+  .axis b { display: block; margin-bottom: .2rem; }
+  .analyst {
+    background: var(--analyst-bg); border: 1px solid var(--analyst-line); border-left: 5px solid var(--analyst-line);
+    border-radius: 8px; padding: .9rem 1rem; font-size: .9rem;
+  }
+  .analyst .tag { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+                  color: var(--analyst-line); display: block; margin-bottom: .35rem; }
+  ul.gaps { margin: 0; padding-left: 1.2rem; font-size: .87rem; }
+  ul.gaps li { margin-bottom: .3rem; }
+  .thin { color: var(--contrast); font-style: italic; }
+  code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .85em; }
+  footer { margin-top: 2.2rem; color: var(--muted); font-size: .78rem; border-top: 1px solid var(--line); padding-top: .7rem; }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Physics Grounding in Video &amp; World Models</h1>
+  <div class="meta">Vault synthesis · 12 papers · 2026-07-22 · source of truth: <code>_synthesis/physics-grounding-video-world-models.md</code></div>
+</header>
+
+<p class="lede">Video generators are pitched as world simulators, but every measurement instrument agrees they render physics-violating scenes while looking photorealistic — <strong>"visual conflation"</strong> (Chen &amp; Zhu). Three lines of work: <strong>benchmarks</strong> quantify the failure, <strong>interventions</strong> partially fix it, and <strong>probing</strong> shows the models internally encode physics they fail to render. The frontier question: <em>where is the knowledge lost — and can the judges be trusted?</em></p>
+
+<h2>Papers</h2>
+<div class="grid">
+  <div class="card"><div class="top"><span class="slug">meng-2024-phygenbench</span><span class="badge b-core">core</span></div>
+    <div class="claim">Seminal T2V physics benchmark (160 prompts / 27 laws); physics and semantics are decoupled; scaling &amp; prompting insufficient.</div>
+    <div class="headline">Best model (Gen-3): 0.51 PCA vs ~0.80 semantic</div></div>
+  <div class="card"><div class="top"><span class="slug">gu-2025-phyworldbench</span><span class="badge b-core">core</span></div>
+    <div class="claim">1,050 prompts + Anti-Physics tier: models "rationalize" — revert to real physics or freeze rather than follow violating instructions.</div>
+    <div class="headline">Best joint success: 0.262 (Pika 2.0)</div></div>
+  <div class="card"><div class="top"><span class="slug">lin-2026-phyground</span><span class="badge b-core">core</span></div>
+    <div class="claim">Per-law 1–5 Likert scoring, 37.4K human labels; open PhyJudge-9B judge; solid-body mechanics hardest domain.</div>
+    <div class="headline">No model &gt; 3.3/5 · judge bias 3.3% vs Gemini 16.6%</div></div>
+  <div class="card"><div class="top"><span class="slug">begiristain-2026-cronos</span><span class="badge b-core">core</span></div>
+    <div class="claim">Counterfactual-consistency under interventions; models most fragile to viewpoint — view-dependent, not 3D-aware.</div>
+    <div class="headline">Best event success 22% · Cosmos 2B→14B <em>hurt</em> (→14%)</div></div>
+  <div class="card"><div class="top"><span class="slug">xue-2026-acwm-phys</span><span class="badge b-core">core</span></div>
+    <div class="claim">Action-conditioned benchmark, 4 physics categories, InD/OoD splits; failure tracks task complexity/DoF, not physics category.</div>
+    <div class="headline">Robot Arm ΔM-MSE +40.35 vs stable Push Cube</div></div>
+  <div class="card"><div class="top"><span class="slug">zhao-2026-phyworld</span><span class="badge b-core">core</span></div>
+    <div class="claim">Physics violations as preference learning: rank-16 LoRA DPO over 1,000 human physics pairs on Wan2.2-I2V.</div>
+    <div class="headline">Physics 2.99 → 3.09 · VBench 0.769</div></div>
+  <div class="card"><div class="top"><span class="slug">xiong-2026-physalign</span><span class="badge b-core">core</span></div>
+    <div class="claim">Train-time distillation: Gram-relational alignment to frozen V-JEPA2 + depth loss on 3K Blender clips; free at inference.</div>
+    <div class="headline">PhysicsIQ 29.6 → 38.1% · VBench improves too</div></div>
+  <div class="card"><div class="top"><span class="slug">yuan-2026-physics-alignment</span><span class="badge b-core">core</span></div>
+    <div class="claim">No training: V-JEPA2 "surprise" as differentiable inference-time reward (guidance + Best-of-N); VLM rewards near chance.</div>
+    <div class="headline">PhysicsIQ V2V 55.2 → 62.0% (+6.78, challenge winner)</div></div>
+  <div class="card"><div class="top"><span class="slug">esmati-2026-invisible-hand</span><span class="badge b-core">core</span></div>
+    <div class="claim">Inverted flow-matching sampler + linear probes: DiT states encode plausibility even when outputs violate physics; signal lives in the ODE trajectory, not endpoints.</div>
+    <div class="headline">81.27% probe acc (WAN-1.3B) vs V-JEPA2 71.36%; VAE latents at chance</div></div>
+  <div class="card"><div class="top"><span class="slug">joseph-2026-physics-vwm</span><span class="badge b-supporting">supporting</span></div>
+    <div class="claim">Mid-network "Physics Emergence Zone"; direction is a circular population code — no classical physics engine inside. <span class="thin">Vault note abstract-only — thin.</span></div>
+    <div class="headline">Sharp intermediate-depth transition</div></div>
+  <div class="card"><div class="top"><span class="slug">cao-2026-judgefit</span><span class="badge b-contrast">contrast</span></div>
+    <div class="claim">VLM physics-judges disagree with humans and each other; per-VLM taxonomies help, but the ceiling stays low.</div>
+    <div class="headline">ρ 0.239 → 0.315 (+32%); best judge only ρ=0.484</div></div>
+  <div class="card"><div class="top"><span class="slug">chen-2026-actionable-simulators</span><span class="badge b-framing">framing</span></div>
+    <div class="claim">Position survey: "visual conflation"; perceptual vs causal hallucination; calls for closed-loop, decision-oriented evaluation.</div>
+    <div class="headline">FID/FVD correlate weakly with planning</div></div>
+</div>
+
+<h2>Benchmark comparison</h2>
+<div class="tablewrap"><table>
+  <tr><th>Benchmark</th><th>Object measured</th><th>Scoring</th><th>Judge</th><th>Headline</th></tr>
+  <tr><td>PhyGenBench</td><td>T2V, 27 laws</td><td>0–3 discretized</td><td>GPT-4o pipeline</td><td>best 0.51</td></tr>
+  <tr><td>PhyWorldBench</td><td>T2V + anti-physics</td><td>binary SA/PC</td><td>closed MLLM + CAP</td><td>best 0.262</td></tr>
+  <tr><td>PhyGround</td><td>ti2v, per-law</td><td>1–5 Likert</td><td>humans + open 9B</td><td>best 3.28/5</td></tr>
+  <tr><td>CRONOS</td><td>invariance under interventions</td><td>sensitivity spread</td><td>metric stack + VLM</td><td>best 22%</td></tr>
+  <tr><td>ACWM-Phys</td><td>action-conditioned InD/OoD</td><td>M-MSE / SSIM</td><td>pixel metrics</td><td>OoD tracks DoF</td></tr>
+</table></div>
+
+<div class="axes">
+  <div class="axis"><b>Formulation</b> "Knowing physics" means different things: outcome adherence (PhyGenBench, PhyGround), counterfactual instruction-following (PhyWorldBench), invariance to nuisances (CRONOS), action-conditioned fidelity (ACWM-Phys) — progressively stricter tests. Memorized trajectories pass the first and fail CRONOS's viewpoint intervention: exactly what happens.</div>
+  <div class="axis"><b>Judging is contested</b> PhyWorldBench accepts closed MLLM judges (75.1 PC ROC-AUC); PhyGround rejects them and fine-tunes an open judge; JudgeFit caps fitted VLM judges at ρ≈0.48; WMReward finds VLM rewards near chance while latent-WM surprise works. Convergent: VLMs are weak physics perceivers. Twist (Esmati): the generator's own DiT states out-probe V-JEPA2.</div>
+  <div class="axis"><b>Where the failure lives</b> Training data (PhyGenBench, PhysAlign) vs output distribution (PhyWorld) vs sampling (Yuan). Esmati supplies the mechanism: physics is encoded internally but not expressed. All three fixes buy real but bounded gains (+0.10 Likert / +8.5 / +6.8 PhysicsIQ) — consistent with surfacing latent knowledge, not adding it.</div>
+  <div class="axis"><b>Disagreement on scale</b> CRONOS: Cosmos 2B→14B <em>hurts</em> physical success (22→14%). ACWM-Phys: DiT-S→M improves InD and OoD. PhyGenBench: scaling helps statics, fails dynamics. Not directly comparable — but the vault holds contradictory evidence that scale buys physics.</div>
+</div>
+
+<h2>Synthesis</h2>
+<div class="analyst"><span class="tag">[analyst's view]</span>
+The three lines triangulate one thesis: <b>the representation is ahead of the generation.</b> DiTs demonstrably build linearly decodable physical structure (Esmati; Joseph's emergence zone), yet outputs fail benchmarks because nothing in the objective or sampler makes that structure load-bearing. All three interventions couple a physics-sensitive signal back into generation — and two of three route through V-JEPA2 even though the generator's own internals carry a stronger signal: <b>self-guidance from DiT states is the obvious unexplored combination.</b> Meanwhile the measurement layer is shaky — JudgeFit's ρ≤0.48 ceiling and Gemini's 16.6% bias mean cross-benchmark numbers reflect judge choice as much as capability; PhyGround's human-anchored protocol and PhysicsIQ are the most trustworthy yardsticks. The settling experiment: run a CRONOS-style intervention test on an aligned model — if DPO/WMReward gains survive viewpoint changes, physics was genuinely surfaced; if not, alignment is another appearance shortcut.
+</div>
+
+<h2>Gaps</h2>
+<ul class="gaps">
+  <li><code>joseph-2026-physics-video-world-models</code> — <span class="thin">vault note too thin — deep-read needed</span> (abstract-only).</li>
+  <li><b>Needs note:</b> Garrido et al. 2025 (intuitive physics from V-JEPA — basis for WMReward &amp; PhysAlign's teacher) · PhysicsIQ benchmark paper (shared metric of three method papers) · VideoPhy / VideoPhy-2 · VideoJAM / NewtonGen / WISA · PIN-WM.</li>
+  <li>No vault paper yet tests whether alignment gains transfer to <b>downstream control</b> — the closed-loop evaluation Chen &amp; Zhu demand.</li>
+</ul>
+
+<footer>Derived from the markdown synthesis note; contains no claims absent from it. Regenerated with the note on each /synthesize re-run.</footer>
+</main>
+</body>
+</html>
