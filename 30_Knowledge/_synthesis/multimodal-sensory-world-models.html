@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Multimodal &amp; Sensory World Models — vault synthesis</title>
+<style>
+  :root {
+    --bg: #faf9f7; --fg: #1a1a1e; --muted: #6b6b74; --card: #ffffff;
+    --line: #e4e2dd; --accent: #3d6b5a; --accent-soft: #e9f1ee;
+    --core: #3d6b5a; --contrast: #a05a2c; --framing: #5a5f8f; --supporting: #6a768a;
+    --analyst-bg: #f5efe4; --analyst-line: #c9a95c;
+    --num: #8a2f2f; --warn: #a03535;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16171a; --fg: #e6e4df; --muted: #9a9aa4; --card: #1f2126;
+      --line: #33353c; --accent: #86b3a0; --accent-soft: #23302b;
+      --core: #86b3a0; --contrast: #d49a6a; --framing: #9aa0cf; --supporting: #99a5ba;
+      --analyst-bg: #26231b; --analyst-line: #b39144;
+      --num: #d98a8a; --warn: #e08a8a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #16171a; --fg: #e6e4df; --muted: #9a9aa4; --card: #1f2126;
+    --line: #33353c; --accent: #86b3a0; --accent-soft: #23302b;
+    --core: #86b3a0; --contrast: #d49a6a; --framing: #9aa0cf; --supporting: #99a5ba;
+    --analyst-bg: #26231b; --analyst-line: #b39144;
+    --num: #d98a8a; --warn: #e08a8a;
+  }
+  :root[data-theme="light"] {
+    --bg: #faf9f7; --fg: #1a1a1e; --muted: #6b6b74; --card: #ffffff;
+    --line: #e4e2dd; --accent: #3d6b5a; --accent-soft: #e9f1ee;
+    --core: #3d6b5a; --contrast: #a05a2c; --framing: #5a5f8f; --supporting: #6a768a;
+    --analyst-bg: #f5efe4; --analyst-line: #c9a95c;
+    --num: #8a2f2f; --warn: #a03535;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2rem 1.25rem 4rem; background: var(--bg); color: var(--fg);
+    font: 15px/1.55 -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  }
+  main { max-width: 62rem; margin: 0 auto; }
+  header { border-bottom: 2px solid var(--accent); padding-bottom: .9rem; margin-bottom: 1.4rem; }
+  h1 { font-size: 1.45rem; margin: 0 0 .3rem; line-height: 1.25; }
+  .meta { color: var(--muted); font-size: .85rem; }
+  .lede { font-size: 1rem; margin: 0 0 1.6rem; }
+  .lede strong { color: var(--accent); }
+  h2 { font-size: 1.05rem; text-transform: uppercase; letter-spacing: .06em;
+       color: var(--muted); margin: 2rem 0 .8rem; }
+  h3 { font-size: .8rem; text-transform: uppercase; letter-spacing: .05em;
+       color: var(--accent); margin: 1.2rem 0 .5rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: .7rem; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: .7rem .8rem; display: flex; flex-direction: column; gap: .35rem;
+  }
+  .card .top { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
+  .slug { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .78rem; font-weight: 600; }
+  .badge {
+    font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+    padding: .1rem .45rem; border-radius: 99px; color: var(--bg); white-space: nowrap;
+  }
+  .b-core { background: var(--core); } .b-contrast { background: var(--contrast); }
+  .b-framing { background: var(--framing); } .b-supporting { background: var(--supporting); }
+  .claim { font-size: .84rem; }
+  .headline { font-size: .8rem; color: var(--num); font-weight: 650; margin-top: auto; }
+  .thin { color: var(--warn); font-style: italic; }
+  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
+  table { border-collapse: collapse; width: 100%; font-size: .84rem; min-width: 42rem; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--accent-soft); font-size: .74rem; text-transform: uppercase; letter-spacing: .05em; }
+  tr:last-child td { border-bottom: none; }
+  td.no { color: var(--core); font-weight: 600; } td.yes { color: var(--contrast); font-weight: 600; }
+  .axes { display: grid; grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr)); gap: .7rem; margin-top: .8rem; }
+  .axis { background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--accent);
+          border-radius: 6px; padding: .6rem .8rem; font-size: .85rem; }
+  .axis b { display: block; margin-bottom: .2rem; }
+  .analyst {
+    background: var(--analyst-bg); border: 1px solid var(--analyst-line); border-left: 5px solid var(--analyst-line);
+    border-radius: 8px; padding: .9rem 1rem; font-size: .9rem;
+  }
+  .analyst .tag { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+                  color: var(--analyst-line); display: block; margin-bottom: .35rem; }
+  ul.gaps { margin: 0; padding-left: 1.2rem; font-size: .87rem; }
+  ul.gaps li { margin-bottom: .35rem; }
+  code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .85em; }
+  footer { margin-top: 2.2rem; color: var(--muted); font-size: .78rem; border-top: 1px solid var(--line); padding-top: .7rem; }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Multimodal &amp; Sensory World Models</h1>
+  <div class="meta">Vault synthesis · 11 papers · 2026-07-23 · source of truth: <code>_synthesis/multimodal-sensory-world-models.md</code></div>
+</header>
+
+<p class="lede">Every paper here adds a channel beyond RGB to a world model, but they disagree on what the channel <em>is</em> and where it lives: <strong>sensory grounding</strong> (touch, depth, keypoints), <strong>action as a modality</strong> (inverse dynamics, joint video–action denoising), or <strong>semantic coupling</strong> (frozen VLM embeddings, parsed language, pure text). The strongest shared finding is ablation-shaped — remove the extra channel and performance collapses far beyond what "auxiliary loss" suggests (GenRL's aligner: 0.76 → 0.17). The frontier question: must the second modality be <em>present at inference</em>, or need it only <em>shape the representation during training</em>? Most of the vault says the latter.</p>
+
+<h2>Papers</h2>
+
+<h3>Sensory channels</h3>
+<div class="grid">
+  <div class="card"><div class="top"><span class="slug">higuera-2026-visuo-tactile</span><span class="badge b-core">core</span></div>
+    <div class="claim">VT-WM makes tactile load-bearing for contact physics. <span class="thin">Note is abstract-only — fusion mechanism and baseline unknown.</span></div>
+    <div class="headline">+33% object permanence · +29% motion-law · up to +35% real-robot</div></div>
+  <div class="card"><div class="top"><span class="slug">shang-2025-roboscape</span><span class="badge b-core">core</span></div>
+    <div class="claim"><em>Derives</em> channels from RGB rather than sensing them: depth branch fused per-block into RGB, plus keypoint token-consistency along tracked trajectories.</div>
+    <div class="headline">ΔPSNR 3.34 → 1.99 without both · r = 0.953 policy evaluator</div></div>
+</div>
+
+<h3>Action as the modality</h3>
+<div class="grid">
+  <div class="card"><div class="top"><span class="slug">ivashkov-2026-sensorimotor-wm</span><span class="badge b-core">core</span></div>
+    <div class="claim">SMWM: a single inverse-dynamics head is the <em>sole</em> anti-collapse mechanism — a collapsed encoder can do no better than predicting E[a<sub>t</sub>]. Concentrates latents on controllable DoF.</div>
+    <div class="headline">84% vs 59% (SIGReg) on OGBench-Cube · PCA rank = action dim</div></div>
+  <div class="card"><div class="top"><span class="slug">ye-2026-world-action-models</span><span class="badge b-core">core</span></div>
+    <div class="claim">DreamZero (14B) denoises a joint [z, a] velocity field under the factorization π(o,a) = π(o)·π(a|o) — video prediction × inverse dynamics.</div>
+    <div class="headline">62.2% vs 27.4% task progress · action-free video transfer 38.3 → 55.4%</div></div>
+</div>
+
+<h3>Semantic coupling</h3>
+<div class="grid">
+  <div class="card"><div class="top"><span class="slug">mazzaglia-2024-genrl</span><span class="badge b-core">core</span></div>
+    <div class="claim">Frozen InternVideo2 bolted onto a vision-only world model by a connector (embedding → latent trajectory) plus an aligner closing the vision–language gap.</div>
+    <div class="headline">0.80 vs 0.70 best baseline, 35 reward-free tasks</div></div>
+  <div class="card"><div class="top"><span class="slug">zhou-2024-robodreamer</span><span class="badge b-core">core</span></div>
+    <div class="claim">Factorizes on the <em>condition</em> side — product of per-sub-instruction diffusion scores — so novel instructions are recombinations of in-distribution parts.</div>
+    <div class="headline">81.3% vs 68.8% unparsed (unseen) · goal image → 95.8%</div></div>
+  <div class="card"><div class="top"><span class="slug">tong-2026-beyond-language-modeling</span><span class="badge b-contrast">contrast</span></div>
+    <div class="claim">Argues no such machinery is needed: world modeling <em>emerges</em> under joint pretraining with actions as plain text tokens, saturating at ~1% in-domain data.</div>
+    <div class="headline">Scaling asymmetry: b ≈ 0.63 vision vs 0.53 language</div></div>
+  <div class="card"><div class="top"><span class="slug">zuo-2026-qwen-agentworld</span><span class="badge b-contrast">contrast</span></div>
+    <div class="claim">The limit case of text as the <em>only</em> modality. Controllable Sim RL inside it beats a live search engine — but ranks 5th on GUI domains.</div>
+    <div class="headline">50.3% vs 45.6% F1-item vs real environment</div></div>
+</div>
+
+<h3>Framing &amp; measurement</h3>
+<div class="grid">
+  <div class="card"><div class="top"><span class="slug">karcini-2026-robots-beyond-vla</span><span class="badge b-framing">framing</span></div>
+    <div class="claim">The bottleneck is neither policy nor modality but the missing machinery turning unstructured multimodal experience into grounded supervision — latent transition codes that become actions only under an embodiment-conditioned decoder.</div>
+    <div class="headline">Position paper; four missing pillars</div></div>
+  <div class="card"><div class="top"><span class="slug">ding-2024-world-models-survey</span><span class="badge b-framing">framing</span></div>
+    <div class="claim">Names multimodal integration one of four capabilities separating video world models from plain video generators.</div>
+    <div class="headline">Understand-the-present vs predict-the-future taxonomy</div></div>
+  <div class="card"><div class="top"><span class="slug">yao-2026-apple-pi</span><span class="badge b-supporting">supporting</span></div>
+    <div class="claim">Measures the payoff of understanding machinery: unified understanding-generation models beat the best pure video model — but all cap near 0.40 on Deduction.</div>
+    <div class="headline">0.704 / 0.699 unified vs 0.473 best video</div></div>
+</div>
+
+<h2>Where the modality lives</h2>
+<div class="tablewrap"><table>
+  <tr><th>Paper</th><th>Extra channel</th><th>Fusion mechanism</th><th>Needed at inference?</th></tr>
+  <tr><td>VT-WM</td><td>tactile (sensed)</td><td class="thin">unknown — note too thin</td><td class="yes">yes</td></tr>
+  <tr><td>RoboScape</td><td>depth + keypoints (derived)</td><td>per-block additive feature injection</td><td class="no">no (annotators dropped)</td></tr>
+  <tr><td>SMWM</td><td>action</td><td>auxiliary inverse head, λ·L<sub>inv</sub></td><td class="no">no (head discarded when planning)</td></tr>
+  <tr><td>DreamZero</td><td>action + language + proprio</td><td>joint [z, a] velocity field</td><td class="yes">yes</td></tr>
+  <tr><td>GenRL</td><td>video–language (frozen VLM)</td><td>connector + aligner into latent space</td><td class="yes">yes (prompt only)</td></tr>
+  <tr><td>RoboDreamer</td><td>parsed language, goal image/sketch</td><td>product-of-experts score averaging</td><td class="yes">yes (as conditions)</td></tr>
+  <tr><td>Tong et al.</td><td>text + image + video + action</td><td>modality-specific FFNs → MoE routing</td><td class="yes">yes</td></tr>
+  <tr><td>Qwen-AgentWorld</td><td>text only</td><td>single trajectory schema</td><td>n/a</td></tr>
+</table></div>
+
+<div class="axes">
+  <div class="axis"><b>Formulation</b> The deepest split is <em>what the second modality is for</em>. VT-WM and DreamZero treat it as <b>information</b> the model otherwise lacks (contact state; the action to execute). RoboScape and SMWM treat it as a <b>regularizer</b> — a training-time constraint shaping the representation, then discarded. Not competing answers to one question: derived channels only re-express what pixels already contain, whereas touch is genuinely new information under occlusion.</div>
+  <div class="axis"><b>Where alignment bites</b> GenRL's aligner ablation is the sharpest cross-cutting result: removing it collapses GenRL 0.76 → 0.17, but adding it to baselines using VLM embeddings for <em>similarity scoring</em> changes nothing (0.40 → 0.42). Modality-gap alignment matters enormously when an embedding is an <b>input to another network</b>, barely at all when it is a scalar reward.</div>
+  <div class="axis"><b>Disagreement: emergence vs structure</b> Tong claims actions-as-text plus generic pretraining suffices; RoboDreamer, GenRL and SMWM each build explicit machinery and each show ablating it is catastrophic. Not directly comparable — Tong's world-modeling is navigation (its own note flags this as narrow) while the structural papers test contact-rich control. Karcini rejects both as insufficient.</div>
+  <div class="axis"><b>Disagreement: is text enough?</b> Qwen-AgentWorld's text-only model beats every frontier model overall (58.71) yet ranks 5th on GUI, which its note attributes to missing multimodal pretraining; Apple-π independently finds understanding-heavy unified models beat pure video generators. Both say semantic machinery helps — the GUI gap marks where text-only representation goes lossy.</div>
+</div>
+
+<h2>Synthesis</h2>
+<div class="analyst"><span class="tag">[analyst's view]</span>
+The combined evidence supports a claim none of these papers makes alone: <b>the second modality is usually doing representational work, not informational work.</b> RoboScape's depth is computed from its own RGB; SMWM's actions are already in the dataset; RoboDreamer's parse adds no content to the instruction. In each case the gain comes from <em>constraining what the representation must preserve</em> — which is why the channel can be dropped at inference and the gains persist. That reframes multimodality here as inductive bias, and predicts VT-WM should be the outlier, since occluded contact state is information no camera provides — but the abstract-only note means the vault cannot check whether its gains, unlike the others', <em>require</em> the sensor at rollout. The most promising untried combination is SMWM's inverse-dynamics regularizer over DreamZero's video prior: DreamZero already assumes the IDM factorization but learns it end-to-end with no anti-collapse guarantee, and SMWM shows that exact objective concentrates variance on controllable DoF. Tong's scaling asymmetry is meanwhile the constraint everyone else ignores — at 51× more vision data than language at 1T params, "just add a modality" carries a bill nobody here has priced.
+</div>
+
+<h2>Gaps</h2>
+<ul class="gaps">
+  <li><code>higuera-2026-visuo-tactile-world-models</code> — <span class="thin">vault note too thin — deep-read needed</span>. Abstract-only: fusion mechanism, tactile hardware, baseline identity, and graceful degradation without touch all unknown. The vault's only true extra-sensor paper is also its weakest note.</li>
+  <li><b>Needs note:</b> <b>V-JEPA 2</b> (most-cited absent paper here — Karcini's clearest JEPA↔embodied link, SMWM's anti-collapse comparator) · <b>LAPA / UniVLA</b> (cross-embodiment latent actions, closest realization of Karcini's retargeting pillar) · <b>DynaLang</b> (shares one representation between vision and language <em>inside</em> the world model — GenRL's direct architectural contrast) · <b>Aether / TesserAct</b> (joint RGB-depth models RoboScape argues against but could not measure).</li>
+  <li>No paper here treats audio, force/torque, or proprioception as a first-class modality; the "sensory" side of this topic is one thin note deep.</li>
+</ul>
+
+<footer>Derived from the markdown synthesis note; contains no claims or numbers absent from it. Regenerated with the note on each /synthesize re-run.</footer>
+</main>
+</body>
+</html>

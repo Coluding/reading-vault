@@ -56,6 +56,7 @@ Learned models of environment dynamics — pixel-, latent-, or token-level predi
 
 ## Syntheses
 - [[_synthesis/physics-grounding-video-world-models]] — physics grounding in video/world models: benchmarks, alignment methods, internal probing (12 papers, 2026-07-22)
+- [[_synthesis/multimodal-sensory-world-models]] — how world models add channels beyond RGB: touch, depth, action, language (11 papers, 2026-07-23)
 
 ## Related topics
 - [[topics/jepa]]

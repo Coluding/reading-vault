@@ -26,3 +26,8 @@ _Vault notes touching robotics._
 
 ## Organizations
 - [[websites/embodyx]] — Silicon Valley physical-AI startup building edge-first VLM/VLA foundation models for robots, vehicles, and cameras; founders Weiwei Chen & Yanzhi Wang (Northeastern) authored [[papers/zhao-2026-phyworld]] and [[papers/lin-2026-phyground]]. Backed by NSF, NVIDIA, Google AI for Startups.
+
+## Syntheses
+
+- [[_synthesis/multimodal-sensory-world-models]] — how world models add channels beyond RGB: touch, depth, action, language (11 papers, 2026-07-23)
+

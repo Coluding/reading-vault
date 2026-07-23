@@ -21,3 +21,8 @@ _Vault notes touching representation learning._
 - [[papers/zhang-2026-learnable-novelty]] — **Learnable novelty** (Zhang & Levin): intelligence as maximizing the epiplexity a bounded observer can compress into a model; closed-form reservoir estimator ranks rule 110 top of all 88 ECA; MNIST probe 0.53→0.89 unsupervised; stable intrinsic RL reward (9/10 envs, zero collapses).
 - [[papers/mazzaglia-2024-genrl]] — **GenRL** (NeurIPS 2024): frozen InternVideo2 video–language space aligned to a vision-only world-model latent via a learned connector; language/video-prompted tasks trained purely in imagination; 0.80 vs 0.70 best baseline over 35 reward-free tasks; data-free adaptation variant.
 - [[papers/ivashkov-2026-sensorimotor-world-models]] — **SMWM**: JEPA-style world model whose sole anti-collapse mechanism is a single-step inverse-dynamics head ($\mathcal{L}_{fwd} + \lambda\mathcal{L}_{inv}$); latent rank matches controllable DoF, distractors filtered out; 84% vs 59% (SIGReg) on OGBench-Cube.
+
+## Syntheses
+
+- [[_synthesis/multimodal-sensory-world-models]] — how world models add channels beyond RGB: touch, depth, action, language (11 papers, 2026-07-23)
+
