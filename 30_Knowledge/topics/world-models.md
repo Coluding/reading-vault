@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: world-models
-last_updated: 2026-07-22
+last_updated: 2026-07-23
 ---
 
 # World Models
@@ -34,6 +34,16 @@ Learned models of environment dynamics — pixel-, latent-, or token-level predi
 - [[papers/gao-2025-adaworld]] — **AdaWorld** (ICML 2025): action-free world-model pretraining — a β-VAE bottleneck extracts continuous latent actions from consecutive-frame pairs; SVD-based autoregressive diffusion WM over ~2B frames / 1000+ envs; zero-shot action transfer (FVD 767 vs 1545 on LIBERO) and fast adaptation (56.7% Procgen goal-reaching vs 26% action-agnostic).
 - [[papers/zhou-2024-robodreamer]] — **RoboDreamer** (ICML 2024): compositional text-to-video robot planning — parse instruction into action/relation sub-phrases, average per-factor diffusion scores (product-of-experts); zero-shot recombination lifts unseen-task success to 81.3% vs 46.9% (AVDC) on RT-1.
 - [[papers/zuo-2026-qwen-agentworld]] — **Qwen-AgentWorld**: first *native* language world model — a text generator trained from pre-training onward to predict the next environment observation given interaction history and action; positions LWMs as simulators for general (tool-use/computer) agents.
+- [[papers/piriyakulkij-2025-poe-world]] — **PoE-World**: world model as an exponentially-weighted product of hundreds of LLM-synthesized Python expert programs; from <1000 demo frames, the only method scoring on Montezuma's Revenge (100 vs 0 for PPO@20M); zero-shot to Alt levels.
+- [[papers/lei-2024-spartan]] — **SPARTAN**: Bernoulli-sampled hard attention + sparsity regularisation make transformer attention a state-dependent local causal graph; SHD 1.17 vs 6.29 (CREATE), far more robust to non-causal distractors.
+- [[papers/shang-2025-roboscape]] — **RoboScape**: autoregressive embodied world model injecting physics implicitly via joint depth-prediction + keypoint-consistency losses; SOTA robot video gen, near-real synthetic policy data, r=0.953 policy evaluator.
+- [[papers/wang-2025-wisa]] — **WISA**: makes CogVideoX-5B physics-aware by decomposing physics into textual/qualitative/quantitative conditions — 29 categories gated by Mixture-of-Physical-Experts attention + AdaLN — on curated WISA-32K; VideoPhy PC 0.33→0.38.
+- [[papers/zhu-2026-sana-wm]] — **SANA-WM** (NVIDIA): 2.6B camera-controlled world model generating 60 s 720p video on a single GPU via frame-wise Gated DeltaNet + sparse-softmax hybrid DiT; beats larger open baselines on action-following at ~36× throughput.
+- [[papers/yao-2026-apple-pi]] — **Apple-π**: law-grounded benchmark of physical *reasoning* in video — 400 mechanics cases, Perception→Formulation→Deduction chain-of-frames; best video model 0.473; unified models ~0.70 overall but ~0.40 on Deduction.
+- [[papers/lu-2026-driftworld]] — **DriftWorld**: single-forward-pass action-conditioned world model via drifting (kernelized attraction–repulsion field, no iterative denoising); 17× faster than diffusion WMs at matching quality; Push-T IoU 0.635→0.781 with 50-proposal ranking; 0.95+ policy-eval correlation.
+- [[papers/mazzaglia-2024-genrl]] — **GenRL** (NeurIPS 2024): frozen InternVideo2 video–language space aligned to a vision-only world-model latent via a learned connector; language/video-prompted tasks trained purely in imagination; 0.80 vs 0.70 best baseline over 35 reward-free tasks; data-free adaptation variant.
+- [[papers/saxena-2021-clockwork-vae]] — **Clockwork VAE**: hierarchical latent video model, each level ticking exponentially slower — slow content migrates up for free (KL paid only at active ticks); pure-latent rollouts; Minecraft accurate 400+ frames, MNIST digit identity kept 1000 steps (baselines ~300).
+- [[papers/ivashkov-2026-sensorimotor-world-models]] — **SMWM**: JEPA-style world model whose sole anti-collapse mechanism is a single-step inverse-dynamics head ($\mathcal{L}_{fwd} + \lambda\mathcal{L}_{inv}$); latent rank matches controllable DoF, distractors filtered out; 84% vs 59% (SIGReg) on OGBench-Cube.
 
 ## Perspectives & surveys
 - [[papers/ding-2024-world-models-survey]] — Tsinghua survey organizing the field around *understand-the-present vs predict-the-future* (Ha–Schmidhuber 2018 vs LeCun's JEPA); two-branch taxonomy (implicit representation vs future prediction), four application domains, six open problems; the field's best current **map** with a benchmarks catalog.

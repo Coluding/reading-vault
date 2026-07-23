@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: generative-models
-last_updated: 2026-07-20
+last_updated: 2026-07-23
 ---
 
 # Generative Models
@@ -40,6 +40,7 @@ The line of methods that learn $p(x)$ or $p(x \mid c)$ from samples — covering
 ## Latent-variable / variational
 
 - [[papers/baek-2026-gram]] — GRAM frames recursive reasoning as a latent-variable generative process trained via amortized variational inference; doubles as an unconditional generative model when input conditioning is empty; achieves 99.05% valid Sudoku boards from empty inputs.
+- [[papers/saxena-2021-clockwork-vae]] — **Clockwork VAE**: hierarchical latent video model, each level ticking exponentially slower — slow content migrates up for free (KL paid only at active ticks); pure-latent rollouts; Minecraft accurate 400+ frames, MNIST digit identity kept 1000 steps (baselines ~300).
 
 ## Recent
 - [[papers/xiong-2026-physalign]] — **PhysAlign**: post-trains a Wan2.2 I2V flow-matching model into a **physically coherent** generator via a LoRA adapter — Gram-based relational alignment to a frozen V-JEPA2 teacher + explicit 3D depth constraints, trained on ~3K synthetic rigid-body clips; wins all VBench-I2V metrics with *no* quality tradeoff. (Also [[topics/world-models]], [[topics/video-generation]].)
@@ -47,6 +48,7 @@ The line of methods that learn $p(x)$ or $p(x \mid c)$ from samples — covering
 - [[papers/shi-2026-gpc-motor-control]] — GPC (Generative Pretrained Controllers) builds general-purpose, reusable controllers for physics-based character animation by borrowing the LLM recipe
 - [[blogs/mccormick-world-models]] — A long (~18k word) manifesto from Packy McCormick, co-written with the team at his World Model startup **General Intuition**, arguing that World Model
 - [[papers/ding-2024-world-models-survey]] — survey whose "future prediction" branch catalogs the generative world-model landscape (Sora, Cosmos, Genie, GAIA-1) alongside model-based-RL and LLM world knowledge.
+- [[papers/lu-2026-driftworld]] — **DriftWorld**: single-forward-pass action-conditioned world model via drifting (kernelized attraction–repulsion field, no iterative denoising); 17× faster than diffusion WMs at matching quality; Push-T IoU 0.635→0.781 with 50-proposal ranking; 0.95+ policy-eval correlation.
 
 ## Related topics
 

@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: reinforcement-learning
-last_updated: 2026-07-20
+last_updated: 2026-07-23
 ---
 
 # Reinforcement Learning
@@ -17,3 +17,5 @@ _Vault notes touching reinforcement learning._
 - [[papers/zuo-2026-qwen-agentworld]] — **Qwen-AgentWorld**: a native language world model as environment simulator for agent training — predicting next observations from history+action puts the model-based-RL loop inside a text generator.
 - [[papers/chen-2026-actionable-simulators]] — position survey: a world model's value is decision-support (counterfactuals, intervention planning, long-horizon foresight), not rollout realism; argues for closed-loop decision-oriented evaluation.
 - [[papers/ding-2024-world-models-survey]] — survey whose "implicit representation" branch covers model-based RL (Dreamer, TD-MPC2) as one of the two founding lineages of world models.
+- [[papers/piriyakulkij-2025-poe-world]] — **PoE-World**: world model as an exponentially-weighted product of hundreds of LLM-synthesized Python expert programs; from <1000 demo frames, the only method scoring on Montezuma's Revenge (100 vs 0 for PPO@20M); zero-shot to Alt levels.
+- [[papers/mazzaglia-2024-genrl]] — **GenRL** (NeurIPS 2024): frozen InternVideo2 video–language space aligned to a vision-only world-model latent via a learned connector; language/video-prompted tasks trained purely in imagination; 0.80 vs 0.70 best baseline over 35 reward-free tasks; data-free adaptation variant.

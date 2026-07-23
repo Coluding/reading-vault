@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: diffusion-models
-last_updated: 2026-07-20
+last_updated: 2026-07-23
 ---
 
 # Diffusion Models
@@ -28,6 +28,8 @@ ODE steps via straighter trajectories, distillation, or split denoisers) and by
 - [[papers/yuan-2026-physics-alignment]] — The paper (from FAIR / Meta Superintelligence Labs, dated March 2, 2026) shows that a large share of the physics-implausibility in state-of-the-art vi
 - [[blogs/mccormick-world-models]] — A long (~18k word) manifesto from Packy McCormick, co-written with the team at his World Model startup **General Intuition**, arguing that World Model
 - [[papers/zhou-2024-robodreamer]] — **RoboDreamer**: product-of-experts over per-sub-instruction diffusion score functions (scores averaged at sampling) for compositional zero-shot robot video planning.
+- [[papers/wang-2025-wisa]] — **WISA**: makes CogVideoX-5B physics-aware by decomposing physics into textual/qualitative/quantitative conditions — 29 categories gated by Mixture-of-Physical-Experts attention + AdaLN — on curated WISA-32K; VideoPhy PC 0.33→0.38.
+- [[papers/zhu-2026-sana-wm]] — **SANA-WM** (NVIDIA): 2.6B camera-controlled world model generating 60 s 720p video on a single GPU via frame-wise Gated DeltaNet + sparse-softmax hybrid DiT; beats larger open baselines on action-following at ~36× throughput.
 
 ## Latent spaces / tokenizers (RAE line)
 - [[papers/zheng-2025-rae-dit]] — **RAE**: frozen representation encoder + trained ViT decoder replaces SD-VAE; DiT width ≥ token dim (Theorem 1) + dimension-dependent noise-schedule shift make high-dim latent diffusion work — FID 1.51 w/o guidance / 1.13 with, ~47× training speedup over SiT-XL.

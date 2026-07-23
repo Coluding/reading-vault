@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: open-ended-learning
-last_updated: 2026-05-22
+last_updated: 2026-07-23
 ---
 
 # Open-Ended Learning
@@ -17,6 +17,7 @@ The line of work arguing that *learning systems should continually invent or dis
 ## Modern refinement
 
 - [[papers/jiang-2022-rethinking-exploration]] — generalized exploration as a two-level outer/inner loop that unifies SL and RL. Cites all three foundational papers above; provides the formalism around "increasingly general intelligence (IGI)."
+- [[papers/zhang-2026-learnable-novelty]] — **Learnable novelty** (Zhang & Levin): intelligence as maximizing the epiplexity a bounded observer can compress into a model; closed-form reservoir estimator ranks rule 110 top of all 88 ECA; MNIST probe 0.53→0.89 unsupervised; stable intrinsic RL reward (9/10 envs, zero collapses).
 
 ## Related topics
 

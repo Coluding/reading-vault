@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: exploration
-last_updated: 2026-05-22
+last_updated: 2026-07-23
 ---
 
 # Exploration
@@ -21,6 +21,7 @@ Two distinct senses both treated under "exploration" in this vault: (1) the clas
 ## Inner-loop / intrinsic-reward methods
 
 - [[papers/guo-2022-byol-explore]] — BYOL-style self-predictive loss as joint world-model + intrinsic reward; solves DM-HARD-8 hard-exploration tasks without human demos.
+- [[papers/zhang-2026-learnable-novelty]] — **Learnable novelty** (Zhang & Levin): intelligence as maximizing the epiplexity a bounded observer can compress into a model; closed-form reservoir estimator ranks rule 110 top of all 88 ECA; MNIST probe 0.53→0.89 unsupervised; stable intrinsic RL reward (9/10 envs, zero collapses).
 
 ## Related topics
 

@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: gpu-optimization
-last_updated: 2026-05-25
+last_updated: 2026-07-23
 ---
 
 # GPU Optimization
@@ -17,6 +17,10 @@ Making GPU workloads fast and memory-efficient, as distinct from merely *writing
 
 ## Inference-time memory (KV cache)
 - [[blogs/bansal-kv-cache]] — KV-cache management as the binding constraint in LLM serving; six-era evolution (contiguous → PagedAttention → heterogeneous → distributed → unified) mirroring OS memory management.
+
+## Efficient architectures
+
+- [[papers/zhu-2026-sana-wm]] — **SANA-WM** (NVIDIA): 2.6B camera-controlled world model generating 60 s 720p video on a single GPU via frame-wise Gated DeltaNet + sparse-softmax hybrid DiT; beats larger open baselines on action-following at ~36× throughput.
 
 ## Related topics
 - [[topics/cuda-programming]]

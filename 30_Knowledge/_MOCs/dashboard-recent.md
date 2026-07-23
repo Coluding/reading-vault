@@ -1,6 +1,6 @@
 ---
 type: moc
-last_updated: 2026-07-20
+last_updated: 2026-07-23
 status: living
 
 ---
@@ -11,6 +11,30 @@ Most recent items added to the vault, regardless of category. Refreshed by
 `/process-inbox`.
 
 ## This week
+
+_(Triaged 2026-07-23 — cleared 07-22 + 07-23 raw days: **12 unique papers** from 20 bullets (Worker double-posted most). Two clusters: **structured/causal world models** (PoE-World, SPARTAN, GenRL, Clockwork VAE — several were `_needs note_` gaps flagged by the actionable-simulators survey) and a continuation of the **physics-grounding wave** (RoboScape, WISA, Apple-π). Both title-less arXiv bullets identified from content: 2503.08153 = WISA, 2406.18043 = GenRL — each closes a gap flagged in [[_synthesis/physics-grounding-video-world-models]].)_
+
+### Papers
+- [[papers/piriyakulkij-2025-poe-world]] — **PoE-World** (NeurIPS 2025): world model as a product of hundreds of LLM-synthesized Python expert programs; only method to score on Montezuma's Revenge from <1000 demo frames.
+- [[papers/lei-2024-spartan]] — **SPARTAN** (NeurIPS 2025): hard attention + sparsity regularisation make attention a state-dependent local causal graph; SHD 1.17 vs 6.29, distractor-robust.
+- [[papers/shang-2025-roboscape]] — **RoboScape**: physics-informed embodied world model via joint depth + keypoint-consistency losses; r=0.953 as a policy evaluator.
+- [[papers/wang-2025-wisa]] — **WISA**: physics-aware T2V by decomposing physics into textual/qualitative/quantitative conditions (29 categories, Mixture-of-Physical-Experts attention) on WISA-32K.
+- [[papers/zhu-2026-sana-wm]] — **SANA-WM** (NVIDIA): 60 s of 720p camera-controlled world modeling on one GPU (hybrid Gated DeltaNet / sparse-softmax DiT, ~36× throughput).
+- [[papers/yao-2026-apple-pi]] — **Apple-π**: law-grounded physical-*reasoning* benchmark (Perception→Formulation→Deduction chain-of-frames); best video model 0.473; unified models fail Deduction (~0.40).
+- [[papers/zhang-2026-learnable-novelty]] — **Learnable novelty** (Zhang & Levin): one differentiable objective unifying complexity, abstraction, and exploration; rule 110 ranked top of all 88 ECA unsupervised; stable intrinsic RL reward.
+- [[papers/jiang-2026-robottt]] — **RoboTTT**: TTT fast-weight layers give a VLA policy 8K-timestep context at constant cost; 79% vs 42% on real bimanual assembly; one-shot imitation from a single human video.
+- [[papers/lu-2026-driftworld]] — **DriftWorld**: single-pass world model via drifting generative models (no iterative denoising); 17× faster than diffusion WMs; 0.95+ policy-eval correlation.
+- [[papers/mazzaglia-2024-genrl]] — **GenRL** (NeurIPS 2024): multimodal-foundation world models — language/video task prompts, policies trained purely in imagination; data-free adaptation.
+- [[papers/saxena-2021-clockwork-vae]] — **Clockwork VAE** (2021 classic): hierarchical latents at exponentially slower clocks; 1000-step digit memory where baselines forget by ~300.
+- [[papers/ivashkov-2026-sensorimotor-world-models]] — **SMWM** (Schölkopf lab): inverse dynamics as the *sole* anti-collapse mechanism in a pixel-trained JEPA world model; latents capture exactly the controllable DoF.
+
+### Duplicates
+- Worker double-posted 8 of the 12 bullets (both days); deduplicated during routing.
+
+### Rejected
+- _none this pass_
+
+## Earlier
 
 _(Triaged 2026-07-20 — cleared the 07-07 → 07-16 raw backlog: the 07-10 world-models + RAE-latent-space wave, plus two blogs. Deep notes were written in an earlier interrupted session; this pass completed MOC links, author indices, routing, and the commit. 16 unique items from 31 bullets — the Worker double-posted most. Two clusters dominate: **VFM-latent-space world models** (DINO-world, DeltaTok, AdaWorld) and the **representation-autoencoder line** (RAE, LV-RAE, GAE, S-AE).)_
 
@@ -37,8 +61,6 @@ _(Triaged 2026-07-20 — cleared the 07-07 → 07-16 raw backlog: the 07-10 worl
 
 ### Rejected
 - Readwise & Reader Changelog "July 17, 2026" (07-20 bullet, ×2 double-post) — `reject: off-topic` (product changelog, not AI/math/CS). _Note: departs from prior practice of low-priority changelog notes; payload JSON retained if reversal is wanted._
-
-## Earlier
 
 _(2026-07-10 — **/paper-search**: 6 physics-in-video-generation siblings to [[papers/zhao-2026-phyworld]] & [[papers/lin-2026-phyground]], pulled directly from arXiv (not via Readwise — `rw_id: ""`, `read_state: skimmed`). Split benchmark axis / method axis.)_
 

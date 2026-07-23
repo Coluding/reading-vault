@@ -1,6 +1,6 @@
 ---
 type: moc
-last_updated: 2026-07-20
+last_updated: 2026-07-23
 status: living
 ---
 
@@ -8,9 +8,9 @@ status: living
 
 Every paper in `30_Knowledge/papers/`, exactly **once**, under its *primary* theme — the scannable overview of the whole collection. For multi-membership views (a paper touching several topics), use the topic MOCs in `30_Knowledge/topics/`. Maintained by `/process-inbox`: every new paper note gets one entry here.
 
-**59 papers** as of 2026-07-20.
+**71 papers** as of 2026-07-23.
 
-## World models — core methods & systems (13)
+## World models — core methods & systems (21)
 
 Learned dynamics models: video, latent, and language world models, and what they're used for.
 
@@ -27,8 +27,16 @@ Learned dynamics models: video, latent, and language world models, and what they
 - [[papers/zuo-2026-qwen-agentworld]] (2026) — **Qwen-AgentWorld**: first *native* language world model — next-observation prediction from pre-training onward.
 - [[papers/tong-2026-beyond-language-modeling]] (2026) — world-modeling capabilities emerge from generic multimodal pretraining (Transfusion + MoE); vision-vs-language scaling asymmetry.
 - [[papers/ding-2024-world-models-survey]] (2024) — *survey*: understand-the-present vs predict-the-future as the field's organizing dichotomy; taxonomy + benchmark catalog.
+- [[papers/piriyakulkij-2025-poe-world]] (2025) — **PoE-World** (NeurIPS 2025): world model as an exponentially-weighted product of LLM-synthesized Python expert programs; only method scoring on Montezuma's Revenge from <1000 demo frames.
+- [[papers/lei-2024-spartan]] (2024) — **SPARTAN** (NeurIPS 2025): hard attention + sparsity turn a transformer world model's attention into a state-dependent local causal graph; robust to distractors.
+- [[papers/shang-2025-roboscape]] (2025) — **RoboScape**: physics-informed embodied world model — joint depth + keypoint consistency losses; near-real synthetic policy data, r=0.953 policy evaluator.
+- [[papers/zhu-2026-sana-wm]] (2026) — **SANA-WM** (NVIDIA): minute-scale 720p camera-controlled world modeling on one GPU via hybrid Gated-DeltaNet/sparse-softmax DiT; ~36× throughput.
+- [[papers/lu-2026-driftworld]] (2026) — **DriftWorld**: single-forward-pass world model via drifting generative models; 17× faster than diffusion WMs, 0.95+ policy-eval correlation.
+- [[papers/mazzaglia-2024-genrl]] (2024) — **GenRL** (NeurIPS 2024): multimodal-foundation world models — task prompts from language/video, policies trained purely in imagination; data-free adaptation.
+- [[papers/saxena-2021-clockwork-vae]] (2021) — **Clockwork VAE**: hierarchical latents ticking at exponentially slower clocks; long-horizon video prediction (1000-step digit memory).
+- [[papers/ivashkov-2026-sensorimotor-world-models]] (2026) — **SMWM**: inverse dynamics as the sole anti-collapse mechanism in a pixel-trained JEPA world model; latents capture exactly the controllable DoF.
 
-## Physics in video generation — benchmarks & evaluation (6)
+## Physics in video generation — benchmarks & evaluation (7)
 
 Does generated video obey physics, and how do we measure it?
 
@@ -38,8 +46,9 @@ Does generated video obey physics, and how do we measure it?
 - [[papers/begiristain-2026-cronos]] (2026) — **CRONOS**: counterfactual physical consistency under interventions; video generators are alarmingly viewpoint-sensitive.
 - [[papers/cao-2026-judgefit]] (2026) — **JudgeFit**: physics VLM-judges disagree with humans and each other; per-VLM taxonomies lift agreement ~32%.
 - [[papers/xue-2026-acwm-phys]] (2026) — **ACWM-Phys**: action-conditioned world models across 4 physics categories; OoD failure tracks task complexity, not physics.
+- [[papers/yao-2026-apple-pi]] (2026) — **Apple-π**: law-grounded physical-*reasoning* benchmark (Perception→Formulation→Deduction chain-of-frames); best video model 0.473.
 
-## Physics in video generation — methods & analysis (6)
+## Physics in video generation — methods & analysis (7)
 
 Making video models physics-faithful, and probing whether they already are.
 
@@ -49,6 +58,7 @@ Making video models physics-faithful, and probing whether they already are.
 - [[papers/esmati-2026-invisible-hand-physics]] (2026) — video diffusion models internally *encode* physics even when outputs violate it.
 - [[papers/joseph-2026-physics-video-world-models]] (2026) — interpretability: physics is encoded distributedly with a "Physics Emergence Zone" mid-network.
 - [[papers/chen-2026-actionable-simulators]] (2026) — *position survey*: "visual conflation" — realism ≠ dynamics; world models must become actionable simulators with closed-loop evaluation.
+- [[papers/wang-2025-wisa]] (2025) — **WISA**: physics-aware T2V via decomposed physical conditions (29 categories, Mixture-of-Physical-Experts attention) on WISA-32K.
 
 ## Latent spaces for generation — RAE / tokenizer line (4)
 
@@ -91,15 +101,16 @@ Learning representations by predicting your own future embeddings.
 - [[papers/huang-2026-semantic-tube-prediction]] (2026) — generalizes JEPA to language via the "Geodesic Hypothesis"; claims 16× data-efficiency over Chinchilla.
 - [[papers/groger-2026-aristotelian-view]] (2026) — challenges the Platonic Representation Hypothesis with an Aristotelian view.
 
-## Robotics & embodied learning (3)
+## Robotics & embodied learning (4)
 
 Robot learning beyond the world-model papers above.
 
 - [[papers/jiang-2024-dexmimicgen]] (2024) — **DexMimicGen**: a handful of teleop demos → large bimanual dexterous imitation datasets.
 - [[papers/karcini-2026-robots-beyond-vla]] (2026) — *position*: generalist robotics is bottlenecked by grounding, not policy scaling; four missing pillars.
 - [[papers/shi-2026-gpc-motor-control]] (2026) — **GPC**: LLM-recipe generative pretraining for transferable motor control.
+- [[papers/jiang-2026-robottt]] (2026) — **RoboTTT**: TTT layers give a VLA policy 8K-timestep context at constant cost; 79% vs 42% on real bimanual assembly; context as a scaling axis.
 
-## Exploration & open-endedness (5)
+## Exploration & open-endedness (6)
 
 The older lineage: novelty, self-invented problems, and exploration as the bottleneck.
 
@@ -108,6 +119,7 @@ The older lineage: novelty, self-invented problems, and exploration as the bottl
 - [[papers/schmidhuber-2013-powerplay]] (2013) — **PowerPlay**: self-invention of training problems via simplest-unsolvable-problem search.
 - [[papers/lehman-2011-novelty-search]] (2011) — abandoning objectives: selecting for behavioural novelty beats objective-based search on deceptive problems.
 - [[papers/momennejad-2026-compositional-open-ended]] (2026) — *theory*: a compositional formal object for open-ended intelligence.
+- [[papers/zhang-2026-learnable-novelty]] (2026) — **Learnable novelty** (Zhang & Levin): one differentiable objective unifying complexity, abstraction, exploration; stable intrinsic reward, 9/10 envs.
 
 ## Architectures, optimization & reliability (5)
 

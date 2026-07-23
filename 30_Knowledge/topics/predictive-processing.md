@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: predictive-processing
-last_updated: 2026-06-04
+last_updated: 2026-07-23
 ---
 
 # Predictive Processing
@@ -27,6 +27,10 @@ explainer, and the scholarly critique.
 - [[blogs/clark-surfing-uncertainty-precis]] — **author's own précis** (The Brains Blog). The brain as a multi-layer probabilistic prediction machine; prediction-as-bootstrap of world knowledge (explicitly citing large-corpus ML); perception → understanding → imagination; the embodiment "But…" resolved by active inference. *Primary-source framing.*
 - [[blogs/alexander-surfing-uncertainty-review]] — **Scott Alexander / SSC**, the accessible deep explainer. Two precision-weighted streams reconciled by Bayes at every layer; "cook the books" vs surprisal; the "explain everything" tour: attention, imagination, learning/hyperpriors, motor active inference, placebo, autism (over-precise priors), schizophrenia (weak priors). *Best ML-legible on-ramp.*
 - [[blogs/buskell-surfing-uncertainty-review]] — **Andrew Buskell / BSPS**, the scholarly critique. PP as a "mid-level organizational sketch" argued via cumulative inference-to-best-explanation; isolates an ambiguity in what "moving up the hierarchy" means (spatiotemporal scope vs gist/context vs hyperprior); Holton's "themata" framing of the bottom-up-vs-top-down dispute. *The honest counterweight.*
+
+## Papers
+
+- [[papers/zhang-2026-learnable-novelty]] — **Learnable novelty** (Zhang & Levin): intelligence as maximizing the epiplexity a bounded observer can compress into a model; closed-form reservoir estimator ranks rule 110 top of all 88 ECA; MNIST probe 0.53→0.89 unsupervised; stable intrinsic RL reward (9/10 envs, zero collapses).
 
 ## Related topics
 

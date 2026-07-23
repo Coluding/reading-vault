@@ -18,6 +18,7 @@ last_updated: 2026-07-14
 
 ## TL;DR
 
+
 **Geometric Autoencoder (GAE)** is a principled tokenizer/autoencoder for latent diffusion that fixes three things prior VFM-based latent designs handle heuristically: how to inject Vision-Foundation-Model (VFM) semantics into a *compact* latent, how to constrain the latent distribution, and how to keep reconstruction stable under diffusion noise. Its three moves are (1) **Latent Alignment** — supervise the compressed latent bottleneck directly against a *downsampled* DINOv2 teacher (rather than aligning high-dim encoder features "pre" or projecting latents back up "post"), using a learned "Semantic Teacher" that distills 1024-dim VFM features into a 32/64-dim target; (2) **Latent Normalization** — replace the VAE's KL penalty with a parameter-free RMSNorm that projects the latent mean onto a unit hypersphere; and (3) **Dynamic Noise Sampling** (from σ-VAE) — sample a random noise scale $\sigma$ per step so the decoder learns a continuous, perturbation-robust manifold. On ImageNet-1K 256×256 with a 32-dim latent and a LightningDiT-XL generator, GAE reaches **gFID 1.82 at 80 epochs and 1.31 at 800 epochs without CFG** (1.13 with CFG), beating VA-VAE, REPA-E, FAE and matching/edging RAE, while attaining strong linear-probing accuracy (69.4% at d=32, 78.3% at d=64). The "geometry" is the hyperspherical latent manifold plus bottleneck-level semantic anchoring — not a Riemannian-metric method.
 
 ## Context & motivation
@@ -35,6 +36,7 @@ Learn an autoencoder $(E_p, A_p, D_p)$ mapping an image $x$ to a compact latent 
 Anchor the *compressed bottleneck itself* to a **dimensionality-matched** semantic teacher (a learned downsampler of DINOv2), and replace the KL prior with a hard geometric constraint (unit-hypersphere RMSNorm) plus stochastic noise-scale sampling — giving a latent that is simultaneously compact, semantically rich, and denoising-robust.
 
 ### Architecture / algorithm
+![[Pasted image 20260722003358.png]]
 Dual-branch design (Fig. 2):
 
 - **Pixel branch (trainable):** Encoder $E_p$ (ViT-L, 24 layers, 16 heads, with RMSNorm + SwiGLU refinements) extracts spatial features; a linear **Projector** $A_p$ maps $16\times16\times1024 \to 16\times16\times d$; **Decoder** $D_p$ reconstructs $16\times16\times3$. ViT-based AE is chosen over conv-nets for throughput/scalability [Teng et al. 2025, Sun et al. 2024a].
@@ -45,6 +47,7 @@ Dual-branch design (Fig. 2):
 $$\mu = \text{RMSNorm}(A_p(E_p(x)))$$
 
 Here $\mu$ is the normalized latent **mean** (the deterministic code), living on $\mathbb{S}^{d-1}$ per token.
+![[Pasted image 20260722004643.png]]
 
 **Dynamic Noise Sampling** (σ-VAE [Sun et al. 2024a]). Rather than a fixed posterior variance, a noise scale $\sigma$ is drawn each step and added to $\mu$:
 

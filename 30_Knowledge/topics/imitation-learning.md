@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: imitation-learning
-last_updated: 2026-07-20
+last_updated: 2026-07-23
 ---
 
 # Imitation Learning
@@ -13,3 +13,4 @@ _Vault notes touching imitation learning._
 - [[blogs/interlatent-ai-robotics]] — A first-principles tour of how modern "physical AI" robot policies are built, framed around the idea that a robot policy is just a function mapping ob
 - [[papers/gao-2025-adaworld]] — **AdaWorld**: latent actions let a world model *imitate demonstrated actions across scenes* with no training — action transfer as zero-shot imitation; adaptation initializes the real action interface from averaged latent actions.
 - [[papers/zhou-2024-robodreamer]] — **RoboDreamer**: text-to-video plans executed via an inverse-dynamics model — imitation of imagined (generated) demonstrations rather than collected ones.
+- [[papers/jiang-2026-robottt]] — **RoboTTT**: TTT layers turn GR00T N1.7 into a recurrent policy with gradient-updated fast weights — 8K-timestep context at constant cost; 79% vs 42% on real bimanual assembly; one-shot imitation from one human video; context length as a new scaling axis.
