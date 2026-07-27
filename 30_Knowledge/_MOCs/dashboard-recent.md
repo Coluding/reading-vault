@@ -1,6 +1,6 @@
 ---
 type: moc
-last_updated: 2026-07-23
+last_updated: 2026-07-27
 status: living
 
 ---
@@ -11,6 +11,16 @@ Most recent items added to the vault, regardless of category. Refreshed by
 `/process-inbox`.
 
 ## This week
+
+_(Triaged 2026-07-27 — cleared 07-26 + 07-27 raw days: **1 unique paper** from 4 bullets (Worker double-posted both items). A hard turn away from the world-models wave into **LLM inference systems** — the first speculative-decoding paper in the vault. It activates the long-dangling `topics/llm-inference` MOC, which [[topics/gpu-optimization]] had been linking to since the KV-cache blog landed in May.)_
+
+### Papers
+- [[papers/cheng-2026-dspark]] — **DSpark** (DeepSeek-AI + PKU): semi-autoregressive speculative decoding — deep parallel backbone plus a rank-256 Markov transition head — with confidence-scheduled verification sized against a profiled engine-capacity curve. +30.9% accepted length over Eagle3 (Qwen3-4B); 60–85% faster per-user generation in live DeepSeek-V4 serving. Notable ablation: a 2-layer DSpark beats a 5-layer DFlash.
+
+### Rejected
+- Readwise & Reader Changelog, "July 24, 2026" (rw-id `01kyg6ws1mdbnkhgt5vact8etr`) — off-topic: product release notes for the capture tooling itself.
+
+## Earlier
 
 _(Triaged 2026-07-23 — cleared 07-22 + 07-23 raw days: **12 unique papers** from 20 bullets (Worker double-posted most). Two clusters: **structured/causal world models** (PoE-World, SPARTAN, GenRL, Clockwork VAE — several were `_needs note_` gaps flagged by the actionable-simulators survey) and a continuation of the **physics-grounding wave** (RoboScape, WISA, Apple-π). Both title-less arXiv bullets identified from content: 2503.08153 = WISA, 2406.18043 = GenRL — each closes a gap flagged in [[_synthesis/physics-grounding-video-world-models]].)_
 
@@ -34,7 +44,7 @@ _(Triaged 2026-07-23 — cleared 07-22 + 07-23 raw days: **12 unique papers** fr
 ### Rejected
 - _none this pass_
 
-## Earlier
+## Earlier — 07-20 backlog pass
 
 _(Triaged 2026-07-20 — cleared the 07-07 → 07-16 raw backlog: the 07-10 world-models + RAE-latent-space wave, plus two blogs. Deep notes were written in an earlier interrupted session; this pass completed MOC links, author indices, routing, and the commit. 16 unique items from 31 bullets — the Worker double-posted most. Two clusters dominate: **VFM-latent-space world models** (DINO-world, DeltaTok, AdaWorld) and the **representation-autoencoder line** (RAE, LV-RAE, GAE, S-AE).)_
 

@@ -1,6 +1,6 @@
 ---
 type: moc
-last_updated: 2026-07-23
+last_updated: 2026-07-27
 status: living
 ---
 
@@ -8,7 +8,7 @@ status: living
 
 Every paper in `30_Knowledge/papers/`, exactly **once**, under its *primary* theme — the scannable overview of the whole collection. For multi-membership views (a paper touching several topics), use the topic MOCs in `30_Knowledge/topics/`. Maintained by `/process-inbox`: every new paper note gets one entry here.
 
-**71 papers** as of 2026-07-23.
+**72 papers** as of 2026-07-27.
 
 ## World models — core methods & systems (21)
 
@@ -121,10 +121,11 @@ The older lineage: novelty, self-invented problems, and exploration as the bottl
 - [[papers/momennejad-2026-compositional-open-ended]] (2026) — *theory*: a compositional formal object for open-ended intelligence.
 - [[papers/zhang-2026-learnable-novelty]] (2026) — **Learnable novelty** (Zhang & Levin): one differentiable objective unifying complexity, abstraction, exploration; stable intrinsic reward, 9/10 envs.
 
-## Architectures, optimization & reliability (5)
+## Architectures, optimization & reliability (6)
 
-Everything about the network itself: width allocation, attention, optimizers, faults.
+Everything about the network itself and how it runs: width allocation, attention, optimizers, faults, inference serving.
 
+- [[papers/cheng-2026-dspark]] (2026) — **DSpark** (DeepSeek-AI): semi-autoregressive speculative decoding + hardware-aware verification scheduling; deployed in DeepSeek-V4 serving.
 - [[papers/bayat-2026-tapered-language-models]] (2026) — per-layer MLP width allocation instead of uniform width.
 - [[papers/litman-2026-attention-priors]] (2026) — attention as entropic OT with an implicit uniform prior; principled learnable priors incl. attention-sink bias.
 - [[papers/knight-2026-riemannian-low-rank]] (2026) — Riemannian GD over ten geometries for low-rank params; honest negative result vs AdamW.

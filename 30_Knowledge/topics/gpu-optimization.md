@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: gpu-optimization
-last_updated: 2026-07-23
+last_updated: 2026-07-27
 ---
 
 # GPU Optimization
@@ -17,6 +17,9 @@ Making GPU workloads fast and memory-efficient, as distinct from merely *writing
 
 ## Inference-time memory (KV cache)
 - [[blogs/bansal-kv-cache]] — KV-cache management as the binding constraint in LLM serving; six-era evolution (contiguous → PagedAttention → heterogeneous → distributed → unified) mirroring OS memory management.
+
+## Inference-time compute scheduling
+- [[papers/cheng-2026-dspark]] — **DSpark** (DeepSeek-AI): speculative decoding where verification length is a *scheduling* decision against a profiled `SPS(batch)` engine-capacity table, not a fixed hyperparameter. Production notes are the draw: O(V)→O(d) hidden-state communication in training, ZOS/CUDA-graph-compatible async scheduling, variable-length decode kernels via a marker tensor.
 
 ## Efficient architectures
 
