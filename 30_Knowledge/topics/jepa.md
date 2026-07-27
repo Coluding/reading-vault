@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: jepa
-last_updated: 2026-07-23
+last_updated: 2026-07-27
 ---
 
 # JEPA (Joint Embedding Predictive Architectures)
@@ -21,6 +21,8 @@ _Not yet in vault — JEPA itself, I-JEPA, V-JEPA, PLDM, DINO-WM remain to be de
 - [[papers/maes-2026-leworldmodel]] — first end-to-end stable JEPA from pixels with only a two-term loss (next-embedding MSE + SIGReg); replaces the EMA / stop-gradient / multi-term-loss orthodoxy with a single Cramér–Wold-backed anti-collapse regulariser.
 - [[papers/baldassarre-2025-dino-world-models]] — **DINO-world** (LeCun co-author): sidesteps the collapse problem entirely by *freezing* the DINOv2 encoder and training only the latent predictor — the "foundation-model-encoder frozen for stability" recipe at 1.1B-predictor scale, beating V-JEPA on dense forecasting.
 - [[papers/ivashkov-2026-sensorimotor-world-models]] — **SMWM**: JEPA-style world model whose sole anti-collapse mechanism is a single-step inverse-dynamics head ($\mathcal{L}_{fwd} + \lambda\mathcal{L}_{inv}$); latent rank matches controllable DoF, distractors filtered out; 84% vs 59% (SIGReg) on OGBench-Cube.
+
+- [[blogs/bayat-sigreg-first-principles]] — **the mechanism behind the SIGReg entries above, derived from scratch**: characteristic functions → Fourier uniqueness → Epps–Pulley → quadrature → Cramér–Wold, ending at the anti-collapse guarantee (population minimum is $\mathcal{N}(0,I)$, which is full rank, so collapse can't be optimal). Careful about scope: "the guarantee is about the minimum, not the loss landscape."
 
 ## Related topics
 

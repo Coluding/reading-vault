@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: robotics
-last_updated: 2026-07-23
+last_updated: 2026-07-27
 ---
 
 # Robotics
@@ -23,6 +23,8 @@ _Vault notes touching robotics._
 - [[papers/shang-2025-roboscape]] — **RoboScape**: autoregressive embodied world model injecting physics implicitly via joint depth-prediction + keypoint-consistency losses; SOTA robot video gen, near-real synthetic policy data, r=0.953 policy evaluator.
 - [[papers/jiang-2026-robottt]] — **RoboTTT**: TTT layers turn GR00T N1.7 into a recurrent policy with gradient-updated fast weights — 8K-timestep context at constant cost; 79% vs 42% on real bimanual assembly; one-shot imitation from one human video; context length as a new scaling axis.
 - [[papers/lu-2026-driftworld]] — **DriftWorld**: single-forward-pass action-conditioned world model via drifting (kernelized attraction–repulsion field, no iterative denoising); 17× faster than diffusion WMs at matching quality; Push-T IoU 0.635→0.781 with 50-proposal ranking; 0.95+ policy-eval correlation.
+- [[papers/jain-2026-weaver]] — **WEAVER**: multi-view flow-matching world model for manipulation satisfying fidelity + long-horizon consistency + efficiency at once; ρ=0.870 as policy evaluator, +38% policy improvement, +15% via test-time planning on a real Franka.
+- [[papers/degroot-2023-scenario-motion-planning]] — **Safe Horizon MPC** (TU Delft, 2023): the formal-guarantees counterpoint — bounds the collision probability of the *whole trajectory* jointly over all obstacles via scenario optimization, real-time and distribution-agnostic.
 
 ## Organizations
 - [[websites/embodyx]] — Silicon Valley physical-AI startup building edge-first VLM/VLA foundation models for robots, vehicles, and cameras; founders Weiwei Chen & Yanzhi Wang (Northeastern) authored [[papers/zhao-2026-phyworld]] and [[papers/lin-2026-phyground]]. Backed by NSF, NVIDIA, Google AI for Startups.

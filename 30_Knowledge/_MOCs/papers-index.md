@@ -8,7 +8,7 @@ status: living
 
 Every paper in `30_Knowledge/papers/`, exactly **once**, under its *primary* theme — the scannable overview of the whole collection. For multi-membership views (a paper touching several topics), use the topic MOCs in `30_Knowledge/topics/`. Maintained by `/process-inbox`: every new paper note gets one entry here.
 
-**72 papers** as of 2026-07-27.
+**76 papers** as of 2026-07-27.
 
 ## World models — core methods & systems (21)
 
@@ -91,7 +91,7 @@ Recurrence-in-depth: weight-shared loops, fixed points, and reasoning in hidden 
 - [[papers/chen-2026-training-free-looped]] (2026) — loops a frozen checkpoint's mid-block at inference via the ODE view; no training.
 - [[papers/zou-2026-latent-thought-flow]] (2026) — **LTF**: LLM reasoning inside continuous hidden space instead of decoded chain-of-thought.
 
-## Self-predictive & representation learning (5)
+## Self-predictive & representation learning (7)
 
 Learning representations by predicting your own future embeddings.
 
@@ -100,8 +100,10 @@ Learning representations by predicting your own future embeddings.
 - [[papers/daithankar-2026-temporal-difference-vision]] (2026) — **TDV**: image representations from video via temporal differences, minus strong inductive biases.
 - [[papers/huang-2026-semantic-tube-prediction]] (2026) — generalizes JEPA to language via the "Geodesic Hypothesis"; claims 16× data-efficiency over Chinchilla.
 - [[papers/groger-2026-aristotelian-view]] (2026) — challenges the Platonic Representation Hypothesis with an Aristotelian view.
+- [[papers/knobel-2026-structured-dynamics]] (2026) — **SDM**: primary/residual motion tokens from frozen DINOv2 via future-feature prediction + two weak scene-level anchors.
+- [[papers/dervishi-2026-crossbert]] (2026) — **CrossBERT** (LeCun): BERT's frozen features *degrade* with scale; a bipartite encoder + cross-attention-only predictor restores monotonic scaling.
 
-## Robotics & embodied learning (4)
+## Robotics & embodied learning (6)
 
 Robot learning beyond the world-model papers above.
 
@@ -109,6 +111,8 @@ Robot learning beyond the world-model papers above.
 - [[papers/karcini-2026-robots-beyond-vla]] (2026) — *position*: generalist robotics is bottlenecked by grounding, not policy scaling; four missing pillars.
 - [[papers/shi-2026-gpc-motor-control]] (2026) — **GPC**: LLM-recipe generative pretraining for transferable motor control.
 - [[papers/jiang-2026-robottt]] (2026) — **RoboTTT**: TTT layers give a VLA policy 8K-timestep context at constant cost; 79% vs 42% on real bimanual assembly; context as a scaling axis.
+- [[papers/jain-2026-weaver]] (2026) — **WEAVER**: multi-view flow-matching world model hitting fidelity + consistency + efficiency together; ρ=0.870 evaluator, +38% policy improvement on a real Franka.
+- [[papers/degroot-2023-scenario-motion-planning]] (2023) — **Safe Horizon MPC**: bounds the collision probability of the *whole* planned trajectory via scenario optimization; the formal-guarantees counterpoint to learned planners.
 
 ## Exploration & open-endedness (6)
 

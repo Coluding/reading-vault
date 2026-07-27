@@ -12,10 +12,20 @@ Most recent items added to the vault, regardless of category. Refreshed by
 
 ## This week
 
-_(Triaged 2026-07-27 — cleared 07-26 + 07-27 raw days: **1 unique paper** from 4 bullets (Worker double-posted both items). A hard turn away from the world-models wave into **LLM inference systems** — the first speculative-decoding paper in the vault. It activates the long-dangling `topics/llm-inference` MOC, which [[topics/gpu-optimization]] had been linking to since the KV-cache blog landed in May.)_
+_(Triaged 2026-07-27, two passes. **Pass 1** cleared 07-26 + 07-27: 1 paper (DSpark) + 1 reject. **Pass 2** picked up a second Worker wave that landed mid-session at 13:16–13:18 — 4 papers + 1 blog from 8 bullets. Net for the day: **5 papers, 1 blog, 1 reject**. The day has no single theme; it is three separate threads. (a) **Inference systems** — DSpark, the vault's first speculative-decoding paper, activating the long-dangling `topics/llm-inference`. (b) **What the objective does to the representation** — CrossBERT and the SIGReg tutorial arrive independently at "don't let the reconstruction/prediction loss shape the encoder," and SDM applies the same trick in vision with a deliberately weak cross-attending predictor. (c) **Planning under uncertainty** — WEAVER (learned world model, no guarantees) landing next to a 2023 TU Delft control paper (formal guarantees, no learning), which between them frame an open problem the vault hadn't named.)_
 
 ### Papers
 - [[papers/cheng-2026-dspark]] — **DSpark** (DeepSeek-AI + PKU): semi-autoregressive speculative decoding — deep parallel backbone plus a rank-256 Markov transition head — with confidence-scheduled verification sized against a profiled engine-capacity curve. +30.9% accepted length over Eagle3 (Qwen3-4B); 60–85% faster per-user generation in live DeepSeek-V4 serving. Notable ablation: a 2-layer DSpark beats a 5-layer DFlash.
+- [[papers/dervishi-2026-crossbert]] — **CrossBERT** (Dervishi, Videau & LeCun): under frozen probing, BERT's representations get *worse* as it scales — >500M models fall below one 10× smaller — while perplexity improves. Splitting the encoder from a cross-attention-only reconstruction head restores monotonic scaling; retrieval 40.7 vs 19.2, and at scale frozen features beat fully finetuned baselines.
+- [[papers/jain-2026-weaver]] — **WEAVER**: multi-view flow-matching world model for manipulation, built to satisfy fidelity + long-horizon consistency + efficiency simultaneously. ρ=0.870 as a policy evaluator, +38% policy improvement on π0.5, +15% from best-of-N planning, ~20× faster than Ctrl-World.
+- [[papers/knobel-2026-structured-dynamics]] — **SDM** (Knobel, Zisserman & Asano): separates camera from object motion in *frozen* DINOv2 features into primary/residual tokens, induced by two binary scene-level flags on a quarter of the batch. Beats DeltaTok on 5/7 probes with 8× less training.
+- [[papers/degroot-2023-scenario-motion-planning]] — **Safe Horizon MPC** (TU Delft, 2023): bounds the collision probability of the *entire planned trajectory* jointly over all obstacles via scenario optimization, rather than summing per-step marginals. Distribution-agnostic, real-time (20 Hz), $S{=}1237$ samples for $\epsilon{=}0.05$. Arrived as a title-less bullet; identified from the PDF.
+
+### Blogs
+- [[blogs/bayat-sigreg-first-principles]] — Reza Bayat's ~9k-word from-scratch construction of **SIGReg**: characteristic functions → Fourier uniqueness → Epps–Pulley → quadrature → Cramér–Wold, ending at the anti-collapse guarantee. Supplies the derivation behind the SIGReg term in [[papers/maes-2026-leworldmodel]] and makes the SMWM-vs-SIGReg comparison legible.
+
+### Duplicates
+- Worker double-posted 4 of the 6 unique items across the two passes; deduplicated during routing. One payload sidecar (`01kyhvef2sw64km1mgay1x82hj`, a re-save of [[papers/zhang-2026-learnable-novelty]]) arrived with no bullet at all — logged in the processed file.
 
 ### Rejected
 - Readwise & Reader Changelog, "July 24, 2026" (rw-id `01kyg6ws1mdbnkhgt5vact8etr`) — off-topic: product release notes for the capture tooling itself.

@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: scaling-laws
-last_updated: 2026-07-08
+last_updated: 2026-07-27
 ---
 
 # Scaling Laws
@@ -16,6 +16,8 @@ Empirical power-law characterizations of how model loss / capability scales with
 - [[papers/huang-2026-semantic-tube-prediction]] — geometric prior (Geodesic Hypothesis) + JEPA-style trajectory regulariser; claims 16× LLM data-efficiency over Chinchilla on NL-RX-SYNTH.
 - [[papers/yang-2026-replaid-continuous-diffusion]] — first unified scaling comparison between continuous and discrete diffusion LMs; closes the AR-vs-continuous gap from 64× to 20× via protocol alignment; ELBO-variance minimisation recovers a linear cross-entropy noise schedule.
 - [[blogs/lampinen-continual-learning-problems]] — argues **scale is the quiet solver** of continual learning: catastrophic interference and loss of plasticity are largely artifacts of small models / hard task boundaries, and larger pretrained models forget less (sparser, more orthogonal gradients). Reframes the real open problem as *positive transfer / cumulative learning*, not forgetting.
+
+- [[papers/dervishi-2026-crossbert]] — **CrossBERT**: a scaling law that *reverses* — BERT's frozen-probe performance degrades as models grow (>500M configs fall below a 10× smaller model) while perplexity keeps improving; undertraining excluded by holding data:model above compute-optimal. CrossBERT restores monotonic scaling.
 
 ## Related topics
 

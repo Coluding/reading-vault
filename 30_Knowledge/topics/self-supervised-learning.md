@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: self-supervised-learning
-last_updated: 2026-07-23
+last_updated: 2026-07-27
 ---
 
 # Self Supervised Learning
@@ -17,3 +17,7 @@ _Vault notes touching self supervised learning._
 - [[papers/liu-2026-geometric-autoencoder]] — **GAE**: distills self-supervised DINOv2 semantics into a compact hyperspherical diffusion latent via a learned Semantic Teacher.
 - [[papers/zheng-2025-rae-dit]] — **RAE**: frozen self-supervised encoders (DINOv2, MAE) turn out to be excellent *generative* latent spaces once decoder and DiT width are handled correctly.
 - [[papers/ivashkov-2026-sensorimotor-world-models]] — **SMWM**: JEPA-style world model whose sole anti-collapse mechanism is a single-step inverse-dynamics head ($\mathcal{L}_{fwd} + \lambda\mathcal{L}_{inv}$); latent rank matches controllable DoF, distractors filtered out; 84% vs 59% (SIGReg) on OGBench-Cube.
+- [[papers/knobel-2026-structured-dynamics]] — **SDM**: structured motion representations from *frozen* DINOv2 features; primary/residual token split induced by two weak scene-level flags (static-scene / static-camera) on a quarter of the batch, no motion labels anywhere.
+- [[papers/dervishi-2026-crossbert]] — **CrossBERT** (LeCun co-author): frozen-probe evaluation reveals BERT's representations *degrade* with scale; a bipartite encoder + cross-attention-only predictor fixes it.
+- [[blogs/bayat-sigreg-first-principles]] — tutorial construction of SIGReg, the anti-collapse regulariser: characteristic functions → Epps–Pulley → quadrature → Cramér–Wold, with the population minimum at $\mathcal{N}(0,I)$.
+

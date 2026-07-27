@@ -1,7 +1,7 @@
 ---
 type: moc
 topic: world-models
-last_updated: 2026-07-23
+last_updated: 2026-07-27
 ---
 
 # World Models
@@ -44,6 +44,9 @@ Learned models of environment dynamics — pixel-, latent-, or token-level predi
 - [[papers/mazzaglia-2024-genrl]] — **GenRL** (NeurIPS 2024): frozen InternVideo2 video–language space aligned to a vision-only world-model latent via a learned connector; language/video-prompted tasks trained purely in imagination; 0.80 vs 0.70 best baseline over 35 reward-free tasks; data-free adaptation variant.
 - [[papers/saxena-2021-clockwork-vae]] — **Clockwork VAE**: hierarchical latent video model, each level ticking exponentially slower — slow content migrates up for free (KL paid only at active ticks); pure-latent rollouts; Minecraft accurate 400+ frames, MNIST digit identity kept 1000 steps (baselines ~300).
 - [[papers/ivashkov-2026-sensorimotor-world-models]] — **SMWM**: JEPA-style world model whose sole anti-collapse mechanism is a single-step inverse-dynamics head ($\mathcal{L}_{fwd} + \lambda\mathcal{L}_{inv}$); latent rank matches controllable DoF, distractors filtered out; 84% vs 59% (SIGReg) on OGBench-Cube.
+
+- [[papers/jain-2026-weaver]] — **WEAVER**: the three-desiderata framing (fidelity + long-horizon consistency + efficiency) and the sharp argument that JEPA-style latents can't evaluate pixel-consuming policies; ρ=0.870 policy evaluator on real hardware, ~20× faster than Ctrl-World.
+- [[papers/knobel-2026-structured-dynamics]] — **SDM**: critiques the latent-action line for collapsing scene change into a *single* transition token; separates camera from object motion into primary/residual tokens on frozen DINOv2 features.
 
 ## Perspectives & surveys
 - [[papers/ding-2024-world-models-survey]] — Tsinghua survey organizing the field around *understand-the-present vs predict-the-future* (Ha–Schmidhuber 2018 vs LeCun's JEPA); two-branch taxonomy (implicit representation vs future prediction), four application domains, six open problems; the field's best current **map** with a benchmarks catalog.
