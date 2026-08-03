@@ -25,5 +25,5 @@
   "last_opened_at": null,
   "saved_at": "2026-08-03T19:19:42.695000+00:00",
   "last_moved_at": "2026-08-03T19:19:42.695000+00:00",
-  "event_type": "reader.any_document.created"
+  "event_type": "reader.feed_document.created"
 }
